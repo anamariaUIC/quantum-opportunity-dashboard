@@ -1,7 +1,7 @@
 """
 Quantum × HPC Pathways: South Side Opportunity Dashboard
 Chicago Women in High Performance Computing (Chicago WHPC)
-Ana Marija Sokovic, PhD - Lead Computational Scientist, ACER
+Ana Marija Sokovic, PhD - Lead Computational Scientist, Research Computing
 
 Research dashboard supporting the Quantum × HPC Pathways civic action plan.
 Data sources: ACS 2023, CPS/To&Through 2024, ISTC 2026, BCG/CQE 2024, IBM 2026.
@@ -100,7 +100,7 @@ ECOSYSTEM_ASSETS = pd.DataFrame([
     {"org": "Chicago Quantum Exchange", "type": "Research Hub", "lat": 41.789, "lon": -87.600, "focus": "Ecosystem coordination, education", "community_access": "Limited", "has_community_nav": False},
     {"org": "Argonne National Lab", "type": "National Lab", "lat": 41.716, "lon": -87.979, "focus": "Quantum research, computing", "community_access": "Limited", "has_community_nav": False},
     {"org": "Fermilab", "type": "National Lab", "lat": 41.840, "lon": -88.258, "focus": "Quantum science, SMQ* program", "community_access": "Some", "has_community_nav": False},
-    {"org": "ACER", "type": "University", "lat": 41.870, "lon": -87.650, "focus": "HPC infrastructure, quantum training", "community_access": "Some", "has_community_nav": False},
+    {"org": "Research University HPC Center", "type": "University", "lat": 41.870, "lon": -87.650, "focus": "HPC infrastructure, quantum training", "community_access": "Some", "has_community_nav": False},
     {"org": "Olive Harvey College", "type": "City College", "lat": 41.712, "lon": -87.591, "focus": "SMQ* host, IBM apprenticeship", "community_access": "Strong", "has_community_nav": False},
     {"org": "SMQ* (Fermilab)", "type": "Program", "lat": 41.712, "lon": -87.591, "focus": "10-week quantum program, 37 students", "community_access": "Strong", "has_community_nav": False},
     {"org": "DPI / Chi-Craft (CPS)", "type": "Program", "lat": 41.838, "lon": -87.627, "focus": "Teacher training, student awareness", "community_access": "Strong", "has_community_nav": False},
@@ -296,6 +296,9 @@ tabs = st.tabs([
     "Pathway Ladder",
     "Quantum Skills Map",
     "Quantum Opportunity Index",
+    "Geographic Proximity",
+    "Community Benefits Tracker",
+    "What Success Looks Like",
 ])
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -679,6 +682,23 @@ with tabs[3]:
         "residents to those assets. That is Quantum × HPC Pathways."
     )
 
+    # Partner logo strip
+    partners = [
+        "Chicago Quantum Exchange", "IQMP", "Argonne National Laboratory",
+        "Fermilab", "IBM Quantum", "City Colleges of Chicago",
+        "Chicago Public Schools", "DPI", "Infleqtion", "EeroQ", "Chicago WHPC"
+    ]
+    logos_html = "".join(
+        f"<div style='background:white;border:1.5px solid {TEAL}33;border-radius:8px;"
+        f"padding:6px 14px;font-size:0.78rem;font-weight:600;color:{NAVY}'>{p}</div>"
+        for p in partners
+    )
+    st.markdown(
+        f"<div style='display:flex;flex-wrap:wrap;gap:10px;align-items:center;"
+        f"padding:12px 0 16px 0'>{logos_html}</div>",
+        unsafe_allow_html=True
+    )
+
     col1, col2 = st.columns([2, 1])
 
     with col1:
@@ -745,7 +765,7 @@ with tabs[3]:
     section_header("The Gap in One Table")
     gap_df = pd.DataFrame([
         {"What exists": "Quantum awareness programs", "Who has it": "SMQ*, DPI, Chi-Craft, CQE", "What's missing": "Technical on-ramp for community members"},
-        {"What exists": "HPC infrastructure", "Who has it": "ACER, Argonne, NCSA", "What's missing": "Community access to that infrastructure"},
+        {"What exists": "HPC infrastructure", "Who has it": "Research university HPC centers, Argonne, NCSA", "What's missing": "Community access to that infrastructure"},
         {"What exists": "Mentorship networks", "Who has it": "Chicago WHPC (300+ members)","What's missing": "Structured matching into South Side community"},
         {"What exists": "Certificate pathways", "Who has it": "Olive Harvey, City Colleges","What's missing": "Navigation from awareness to enrollment"},
         {"What exists": "Employer demand", "Who has it": "IBM, IQMP tenants, Argonne","What's missing": "Community-level visibility of roles + credentials"},
@@ -881,7 +901,7 @@ with tabs[4]:
             "step": "5. Internship & Research Exposure",
             "what": "IBM apprenticeships, Argonne student programs, university undergraduate research",
             "who": "Certificate completers and enrolled students",
-            "provider": "IBM (500 apprentices), Argonne, ACER",
+            "provider": "IBM (500 apprentices), Argonne, research universities",
             "exists": True, "ours": False,
             "color": GREEN,
         },
@@ -1425,6 +1445,59 @@ with tabs[6]:
         "All figures should be considered planning estimates."
     )
 
+    st.markdown("---")
+    section_header("QOI Methodology and Weight Rationale",
+                   "Why these weights? The reasoning behind each component.")
+    st.markdown("""
+    The Quantum Opportunity Index is a planning tool designed to identify communities where
+    workforce access intervention has the greatest potential impact. It deliberately avoids
+    pure deficit framing - higher scores reflect unmet potential combined with existing strength,
+    not simply the most disadvantaged communities.
+    """)
+    qoi_weights = [
+        ("40%", "Educational Potential Gap",
+         "Distance from citywide bachelor's attainment (ACS 2023)",
+         f"The largest weight captures unmet potential. Communities where attainment lags "
+         f"the citywide average despite other strengths represent the core access gap this program addresses."),
+        ("20%", "High School Graduation Strength",
+         "HS diploma or higher rate (ACS 2023)",
+         f"Graduation rates signal existing educational foundation and participant readiness. "
+         f"South Side communities score strongly here - participants have foundational credentials."),
+        ("20%", "College Enrollment Culture",
+         "Rate of CPS graduates enrolling in college (CPS To&Through 2024)",
+         f"Higher enrollment signals aspiration and pathway awareness. Communities with "
+         f"stronger enrollment culture produce participants more likely to take next steps."),
+        ("15%", "Youth Population Reach",
+         "Estimated population ages 16-35 (ACS 2023)",
+         f"A larger youth population means greater potential reach. Normalized to the "
+         f"maximum across all study areas."),
+        ("5%", "Transit Proximity to IQMP",
+         "Estimated transit time to IQMP site (CTA route analysis)",
+         f"Physical proximity matters but is weighted lightly - all study areas are "
+         f"within 12-38 minutes, so variance is relatively low."),
+    ]
+    for weight, name, measure, rationale in qoi_weights:
+        st.markdown(
+            f"<div style='background:{LGRAY};border-radius:8px;padding:14px 16px;margin:8px 0'>"
+            f"<div style='display:flex;align-items:center;gap:12px;margin-bottom:6px'>"
+            f"<span style='background:{TEAL};color:white;padding:4px 12px;border-radius:20px;"
+            f"font-weight:700;font-size:1rem'>{weight}</span>"
+            f"<span style='font-weight:600;color:{NAVY};font-size:0.95rem'>{name}</span>"
+            f"</div>"
+            f"<div style='color:{MGRAY};font-size:0.8rem;margin-bottom:4px'>"
+            f"<em>{measure}</em></div>"
+            f"<div style='color:{MGRAY};font-size:0.82rem'>{rationale}</div>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+    callout(
+        "<strong>Limitation note:</strong> The QOI weights reflect program design priorities "
+        "and are not derived from a statistical model. They should be interpreted as a structured "
+        "planning heuristic, not a causal claim. Researchers using these scores in policy contexts "
+        "should test sensitivity across alternative weight configurations."
+    )
+
+
     # Export section
     st.markdown("---")
     section_header("Export")
@@ -1435,7 +1508,7 @@ with tabs[6]:
         st.markdown("#### Policy Brief")
         policy_text = f"""
 QUANTUM × HPC PATHWAYS: SOUTH SIDE OPPORTUNITY BRIEF
-Chicago Women in High Performance Computing | ACER
+Chicago Women in High Performance Computing
 Ana Marija Sokovic, PhD | 2026 Change Collective Fellow
 
 EXECUTIVE SUMMARY
@@ -1464,7 +1537,7 @@ Three-component community program:
 3. Mentorship + Pathway Navigation (5+ matches, Opportunity Guide)
 
 Year 1 budget: $25,000–$50,000
-Partners: ACER, Chicago Quantum Exchange, Argonne, IBM, CPS, Olive Harvey College
+Partners: Research universities, Chicago Quantum Exchange, Argonne, IBM, CPS, Olive Harvey College
 
 Contact: chicagowhpc.org | Mentorship: chicagowhpc.org/mentorship
 """
@@ -1532,12 +1605,327 @@ Contact: Ana Marija Sokovic, PhD | chicagowhpc@gmail.com | chicagowhpc.org
             use_container_width=True
         )
 
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB 7: GEOGRAPHIC PROXIMITY
+# ══════════════════════════════════════════════════════════════════════════════
+with tabs[7]:
+    section_header("Geographic Proximity",
+                   "South Side residents live within 20-40 minutes of one of the largest quantum investments in the world.")
+
+    callout(
+        "<strong>The proximity argument:</strong> The barrier is not distance. "
+        "It is institutional disconnection. These communities are physically close to IQMP "
+        "but organizationally invisible to its hiring pipeline. That is what Quantum x HPC Pathways changes."
+    )
+
+    # Travel time data
+    proximity_df = pd.DataFrame([
+        {"area": "South Chicago",       "transit_min": 12, "drive_min": 8,  "lat": 41.740, "lon": -87.550, "bach_pct": 21.7, "pop": 29381},
+        {"area": "South Shore",         "transit_min": 18, "drive_min": 12, "lat": 41.762, "lon": -87.568, "bach_pct": 24.9, "pop": 31198},
+        {"area": "Calumet Heights",     "transit_min": 15, "drive_min": 10, "lat": 41.726, "lon": -87.573, "bach_pct": 28.4, "pop": 13417},
+        {"area": "Pullman",             "transit_min": 20, "drive_min": 13, "lat": 41.699, "lon": -87.609, "bach_pct": 14.8, "pop": 9872},
+        {"area": "Roseland",            "transit_min": 22, "drive_min": 15, "lat": 41.694, "lon": -87.620, "bach_pct": 16.2, "pop": 41038},
+        {"area": "Chatham",             "transit_min": 32, "drive_min": 18, "lat": 41.744, "lon": -87.625, "bach_pct": 22.8, "pop": 31710},
+        {"area": "Greater Grand Crossing","transit_min": 30,"drive_min": 16,"lat": 41.762, "lon": -87.609, "bach_pct": 17.8, "pop": 29456},
+        {"area": "Woodlawn",            "transit_min": 25, "drive_min": 14, "lat": 41.773, "lon": -87.597, "bach_pct": 22.1, "pop": 25980},
+        {"area": "Auburn Gresham",      "transit_min": 38, "drive_min": 20, "lat": 41.745, "lon": -87.651, "bach_pct": 15.6, "pop": 43844},
+        {"area": "Englewood",           "transit_min": 35, "drive_min": 19, "lat": 41.779, "lon": -87.644, "bach_pct": 11.3, "pop": 24369},
+    ])
+
+    col_prox1, col_prox2 = st.columns([3, 2])
+
+    with col_prox1:
+        # Map showing communities + IQMP with lines
+        fig_prox = px.scatter_map(
+            proximity_df,
+            lat="lat", lon="lon",
+            color="transit_min",
+            size="pop",
+            hover_name="area",
+            hover_data={"transit_min": True, "drive_min": True, "bach_pct": True, "pop": True, "lat": False, "lon": False},
+            color_continuous_scale=[[0, GREEN], [0.4, GOLD], [1, RED]],
+            labels={"transit_min": "Transit time to IQMP (min)", "pop": "Population"},
+            map_style="carto-positron",
+            zoom=11,
+            center={"lat": 41.74, "lon": -87.59},
+            title="Transit time from South Side communities to IQMP site"
+        )
+        # Add IQMP marker
+        fig_prox.add_trace(go.Scattermap(
+            lat=[41.737], lon=[-87.545],
+            mode="markers+text",
+            marker=dict(size=28, color=GOLD, symbol="star"),
+            text=["IQMP"],
+            textposition="top right",
+            name="IQMP Site",
+            hovertext="Illinois Quantum and Microelectronics Park - Former US Steel South Works"
+        ))
+        fig_prox.update_layout(
+            height=460, margin=dict(l=0, r=0, t=40, b=0),
+            coloraxis_colorbar=dict(title="Transit min")
+        )
+        st.plotly_chart(fig_prox, use_container_width=True)
+
+    with col_prox2:
+        st.markdown("#### Transit times to IQMP by community")
+        for _, row in proximity_df.sort_values("transit_min").iterrows():
+            color = GREEN if row["transit_min"] <= 20 else (GOLD if row["transit_min"] <= 30 else RED)
+            bar_w = int(row["transit_min"] / 40 * 100)
+            st.markdown(
+                f"<div style='margin:6px 0'>"
+                f"<div style='display:flex;justify-content:space-between;margin-bottom:2px'>"
+                f"<span style='font-size:0.85rem;font-weight:600;color:{NAVY}'>{row['area']}</span>"
+                f"<span style='font-size:0.85rem;color:{color};font-weight:700'>{row['transit_min']} min</span>"
+                f"</div>"
+                f"<div style='background:#EEE;border-radius:4px;height:8px'>"
+                f"<div style='background:{color};width:{bar_w}%;height:8px;border-radius:4px'></div>"
+                f"</div></div>",
+                unsafe_allow_html=True
+            )
+        st.markdown("")
+        callout(
+            "Source: CTA Bus 26 (South Shore Express), Bus 30 (South Chicago), "
+            "and Metra Electric Line estimates. Times are approximate and "
+            "represent off-peak transit."
+        )
+
+    st.markdown("---")
+    section_header("The Numbers Behind the Proximity Argument")
+
+    total_pop = proximity_df["pop"].sum()
+    within_20 = proximity_df[proximity_df["transit_min"] <= 20]["pop"].sum()
+    within_30 = proximity_df[proximity_df["transit_min"] <= 30]["pop"].sum()
+
+    pc1, pc2, pc3, pc4 = st.columns(4)
+    for col, (val, label, sub, color) in zip(
+        [pc1, pc2, pc3, pc4],
+        [
+            (f"{total_pop:,}", "South Side residents in study area", "10 community areas", NAVY),
+            (f"{within_20:,}", "residents within 20 min of IQMP", "by public transit", GREEN),
+            (f"{within_30:,}", "residents within 30 min of IQMP", "by public transit", GOLD),
+            ("12 min", "closest community: South Chicago", "direct transit to IQMP site", TEAL),
+        ]
+    ):
+        col.markdown(
+            f"<div style='background:{LIGHT_NAVY};border-top:4px solid {color};"
+            f"border-radius:6px;padding:14px;text-align:center'>"
+            f"<div style='font-size:1.6rem;font-weight:700;color:{color}'>{val}</div>"
+            f"<div style='font-size:0.78rem;color:{MGRAY};margin-top:4px'>{label}</div>"
+            f"<div style='font-size:0.72rem;color:{MGRAY};font-style:italic'>{sub}</div>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB 8: COMMUNITY BENEFITS TRACKER
+# ══════════════════════════════════════════════════════════════════════════════
+with tabs[8]:
+    section_header("Community Benefits Tracker",
+                   "Tracking what actually reaches the community - a dataset that does not yet exist anywhere else.")
+
+    callout(
+        "<strong>Why this matters:</strong> IQMP has faced questions about who benefits locally. "
+        "Chicago WHPC is building the community-level participation data that no other organization "
+        "is currently collecting. This tracker documents what reaches residents - not just what is announced."
+    )
+
+    st.markdown("#### Year 1 Targets vs. Progress")
+    st.caption("Program launches fall 2026. Targets established in civic action plan. Progress will be updated quarterly.")
+
+    tracker_data = [
+        ("Community Education Sessions", 0, "3-5", "sessions delivered", TEAL),
+        ("Participants Reached", 0, "40-60", "direct participants", TEAL),
+        ("HPC Workshop Sessions", 0, "4-6", "hands-on workshops", NAVY),
+        ("Workshop Completions", 0, "15-20", "participants completing series", NAVY),
+        ("Mentor Matches", 0, "5+", "matches facilitated", GOLD),
+        ("Employer Partners", 0, "2-3", "formal engagements", GOLD),
+        ("Facility Tours", 0, "1-2", "site visits completed", GREEN),
+        ("Community Orgs Engaged", 0, "4-6", "host site partners", GREEN),
+        ("Internship Opportunities Shared", 0, "3-5", "programs presented to participants", "#8E44AD"),
+        ("Opportunity Guide Downloads", 0, "100+", "community members reached via guide", "#8E44AD"),
+    ]
+
+    col_t1, col_t2 = st.columns(2)
+    for i, (metric, current, target, unit, color) in enumerate(tracker_data):
+        col = col_t1 if i % 2 == 0 else col_t2
+        col.markdown(
+            f"<div style='background:{LGRAY};border-left:4px solid {color};"
+            f"border-radius:6px;padding:12px 16px;margin:6px 0'>"
+            f"<div style='font-weight:600;color:{NAVY};font-size:0.88rem'>{metric}</div>"
+            f"<div style='display:flex;align-items:baseline;gap:8px;margin-top:4px'>"
+            f"<span style='font-size:1.8rem;font-weight:700;color:{color}'>{current}</span>"
+            f"<span style='font-size:0.8rem;color:{MGRAY}'>of {target} target {unit}</span>"
+            f"</div>"
+            f"<div style='background:#E0E0E0;border-radius:4px;height:6px;margin-top:6px'>"
+            f"<div style='background:{color};width:2%;height:6px;border-radius:4px'></div>"
+            f"</div></div>",
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+    section_header("Long-Term Outcomes to Track")
+    st.markdown(
+        "The following outcomes will be tracked over multiple years. "
+        "Year 1 establishes the baseline. Years 2-5 demonstrate trajectory."
+    )
+
+    lt_cols = st.columns(3)
+    lt_data = [
+        ("Year 1 (2026)", [
+            "40-60 community education participants",
+            "15-20 HPC workshop completions",
+            "5+ mentor matches",
+            "2-3 employer partners",
+            "South Side Quantum Opportunity Guide published",
+            "Program toolkit documented for replication",
+        ], TEAL),
+        ("Year 3 (2028)", [
+            "200+ cumulative participants",
+            "Recurring quarterly workshop series",
+            "20+ active mentor relationships",
+            "Internship pipeline with 2+ employers",
+            "CPS Network 17 integration formalized",
+            "First cohort alumni serving as peer mentors",
+        ], NAVY),
+        ("Year 5 (2030)", [
+            "Measurable workforce outcomes (jobs, apprenticeships, college enrollment)",
+            "Program replicated in 2+ other cities via toolkit",
+            "Community-level quantum workforce data published",
+            "Chicago WHPC financially self-sustaining",
+            "IQMP hiring pipeline with South Side community organizations",
+        ], GOLD),
+    ]
+    for col, (year, items, color) in zip(lt_cols, lt_data):
+        col.markdown(
+            f"<div style='background:{color}15;border:2px solid {color};"
+            f"border-radius:8px;padding:16px;height:100%'>"
+            f"<div style='font-weight:700;color:{color};font-size:1rem;margin-bottom:12px'>{year}</div>"
+            + "".join(f"<div style='font-size:0.82rem;color:{NAVY};margin:6px 0;padding-left:8px;border-left:2px solid {color}33'>{item}</div>" for item in items)
+            + "</div>",
+            unsafe_allow_html=True
+        )
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB 9: WHAT SUCCESS LOOKS LIKE
+# ══════════════════════════════════════════════════════════════════════════════
+with tabs[9]:
+    section_header("What Success Looks Like",
+                   "A concrete, time-phased picture of what this program builds toward.")
+
+    callout(
+        "Workforce pipelines are not built in a single year. "
+        "The Year 1 pilot proves the model. Years 2 and 3 scale it. "
+        "By Year 5, South Side residents have a visible, documented pathway into "
+        "Illinois quantum careers - and the data to prove it."
+    )
+
+    st.markdown("---")
+
+    # Timeline visualization
+    timeline = [
+        {
+            "period": "Fall 2026",
+            "label": "Program Launch",
+            "color": TEAL,
+            "outcomes": [
+                "3-5 community education sessions in South Side libraries and schools",
+                "4-6 hands-on HPC workshops with 15-20 participants",
+                "5+ mentor matches through Chicago WHPC network",
+                "South Side Quantum Opportunity Guide published",
+                "2-3 institutional partner agreements signed",
+            ],
+            "metric": "40-60 direct participants"
+        },
+        {
+            "period": "End of Year 1 (Dec 2026)",
+            "label": "Baseline Established",
+            "color": NAVY,
+            "outcomes": [
+                "Complete program toolkit documented and publicly available",
+                "First grant application submitted with outcome data",
+                "Participant progression data collected (training enrollment, mentorship continuation)",
+                "At least 20% of participants take documented next step within 6 months",
+                "Program evaluation published",
+            ],
+            "metric": "Evidence base built"
+        },
+        {
+            "period": "Year 2-3 (2027-2028)",
+            "label": "Scaling",
+            "color": GOLD,
+            "outcomes": [
+                "Workshop series expands to include Qiskit, advanced quantum simulation",
+                "CPS Network 17 partnership formalized - direct school pipeline",
+                "Cohort alumni become peer mentors for incoming participants",
+                "City Colleges of Chicago partnership for credit-bearing pathways",
+                "IBM apprenticeship referral pipeline established",
+            ],
+            "metric": "200+ cumulative participants"
+        },
+        {
+            "period": "Year 4-5 (2029-2030)",
+            "label": "Workforce Outcomes",
+            "color": GREEN,
+            "outcomes": [
+                "First documented job placements or apprenticeships at IQMP ecosystem employers",
+                "Model replicated in 2+ other cities via published toolkit",
+                "Community-level quantum workforce participation data published and cited",
+                "Chicago WHPC financially self-sustaining through institutional partnerships",
+                "IQMP community benefits report includes Chicago WHPC participant data",
+            ],
+            "metric": "Measurable workforce impact"
+        },
+    ]
+
+    for i, stage in enumerate(timeline):
+        col_time, col_content = st.columns([1, 4])
+        with col_time:
+            st.markdown(
+                f"<div style='background:{stage['color']};color:white;border-radius:8px;"
+                f"padding:12px;text-align:center;height:100%;min-height:80px;"
+                f"display:flex;flex-direction:column;justify-content:center'>"
+                f"<div style='font-weight:700;font-size:0.88rem'>{stage['period']}</div>"
+                f"<div style='font-size:0.78rem;margin-top:4px;opacity:0.9'>{stage['label']}</div>"
+                f"<div style='font-size:1rem;font-weight:700;margin-top:6px'>{stage['metric']}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+        with col_content:
+            items_html = "".join(
+                f"<div style='padding:6px 0;border-bottom:1px solid {stage['color']}22;"
+                f"font-size:0.85rem;color:{NAVY}'>{item}</div>"
+                for item in stage["outcomes"]
+            )
+            st.markdown(
+                f"<div style='border:1.5px solid {stage['color']}44;border-radius:8px;"
+                f"padding:12px 16px;height:100%'>{items_html}</div>",
+                unsafe_allow_html=True
+            )
+        if i < len(timeline) - 1:
+            st.markdown(
+                f"<div style='text-align:left;padding-left:60px;font-size:1.2rem;"
+                f"color:{MGRAY};margin:4px 0'>↓</div>",
+                unsafe_allow_html=True
+            )
+
+    st.markdown("---")
+    callout(
+        "<strong>For funders:</strong> Year 1 asks for $25K-$50K to prove the model. "
+        "A successful Year 1 unlocks NSF INCLUDES, DOE workforce programs, EDA Tech Hub funding, "
+        "and corporate education partnerships with IBM, NVIDIA, and AWS. "
+        "The initial investment generates an evidence base that opens significantly larger funding streams."
+    )
+
+
 # ─── FOOTER ───────────────────────────────────────────────────────────────────
 st.markdown("---")
 st.markdown(
     f"""<div style='text-align:center;color:{MGRAY};font-size:0.8rem;padding:12px'>
     Quantum × HPC Pathways | Chicago Women in High Performance Computing (Chicago WHPC) |
-    ACER | Ana Marija Sokovic, PhD | 2026 Change Collective Fellow<br>
+    Ana Marija Sokovic, PhD | 2026 Change Collective Fellow<br>
     Data: ACS 2023 · CPS To&Through 2024 · ISTC 2026 · BCG/CQE 2024 · IBM 2026 ·
     Chicago WHPC survey 2026 (N=181)<br>
     <a href="https://www.chicagowhpc.org" style="color:{TEAL}">chicagowhpc.org</a> |
