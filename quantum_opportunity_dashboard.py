@@ -1,3 +1,4 @@
+
 """
 Quantum × HPC Pathways: South Side Opportunity Dashboard
 Chicago Women in High Performance Computing (Chicago WHPC)
@@ -1377,6 +1378,7 @@ with tabs[8]:
         "available ACS 2023 and CPS 2024 data."
     )
 
+    st.markdown("<div style='margin-top:32px'></div>", unsafe_allow_html=True)
     col1, col2 = st.columns(2)
 
     with col1:
