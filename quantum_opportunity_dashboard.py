@@ -302,25 +302,52 @@ if audience != "Overview":
             "Sponsor the workshop series ($5K–$15K, recognition at all sessions and in materials)",
         ], GOLD)
 
-tabs = st.tabs([
-    "Workforce Bridge",
-    "Why Chicago WHPC?",
-    "Ecosystem Map",
-    "Pathway Ladder",
-    "Why HPC?",
-    "Illinois Opportunity",
-    "South Side Strengths and Assets",
-    "Geographic Proximity",
-    "Community Readiness Profile",
-    "Community Impact Dashboard",
-    "What Success Looks Like",
-    "Partnership Opportunities",
-])
+# ── GROUPED NAVIGATION ────────────────────────────────────────────────────────
+st.markdown(
+    f"<div style='background:{LGRAY};border-radius:8px;padding:10px 16px;margin-bottom:16px'>"
+    f"<div style='font-size:0.78rem;font-weight:700;color:{MGRAY};text-transform:uppercase;"
+    f"letter-spacing:1px;margin-bottom:8px'>Navigate by section</div>"
+    f"</div>",
+    unsafe_allow_html=True
+)
+
+nav_section = st.radio(
+    "Section",
+    ["Why This Matters", "The Ecosystem", "The Evidence", "The Plan", "Get Involved"],
+    horizontal=True,
+    label_visibility="collapsed"
+)
+
+# Sub-page within each section
+sub_pages = {
+    "Why This Matters": ["Workforce Bridge", "Why Chicago WHPC?"],
+    "The Ecosystem":    ["Ecosystem Map", "Why HPC?"],
+    "The Evidence":     ["Illinois Opportunity", "South Side Strengths and Assets",
+                         "Geographic Proximity", "Community Profiles", "Community Readiness Profile"],
+    "The Plan":         ["Pathway Ladder", "What Success Looks Like"],
+    "Get Involved":     ["Community Impact Dashboard", "Partnership Opportunities"],
+}
+
+sub_choice = st.radio(
+    "Page",
+    sub_pages[nav_section],
+    horizontal=True,
+    label_visibility="collapsed"
+)
+
+# Map sub_choice to a numeric index for tab rendering
+all_pages = [p for pages in sub_pages.values() for p in pages]
+page_idx = all_pages.index(sub_choice)
+
+# Use a single set of "tabs" but render only the selected one
+# We implement this as if/elif blocks keyed to sub_choice
+tabs = [None] * len(all_pages)  # placeholder for compatibility
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 0: WORKFORCE BRIDGE
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[0]:
+if sub_choice == "Workforce Bridge":
     section_header("Workforce Bridge",
                    "Awareness programs exist. Educational pathways exist. Employers are coming. What is missing is a workforce bridge connecting residents to opportunity.")
 
@@ -451,7 +478,7 @@ with tabs[0]:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 5: ILLINOIS OPPORTUNITY
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[5]:
+if sub_choice == "Illinois Opportunity":
     section_header("Illinois Opportunity",
                    "The jobs are coming. The question is who will be ready.")
 
@@ -553,7 +580,7 @@ with tabs[5]:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 2: SOUTH SIDE STRENGTHS & GAPS
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[6]:
+if sub_choice == "South Side Strengths and Assets":
     section_header("South Side: Strengths and Assets",
                    "Start with what's there - not what's missing.")
 
@@ -688,7 +715,7 @@ with tabs[6]:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 2: ECOSYSTEM MAP
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[2]:
+if sub_choice == "Ecosystem Map":
     section_header("The Quantum Ecosystem Map",
                    "What exists - and where the navigation layer is missing.")
 
@@ -876,7 +903,7 @@ with tabs[2]:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 3: PATHWAY LADDER
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[3]:
+if sub_choice == "Pathway Ladder":
     section_header("The Pathway Ladder",
                    "From awareness to employment - every rung has a name.")
 
@@ -975,7 +1002,7 @@ with tabs[3]:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 5: QUANTUM SKILLS MAP
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[5]:
+if sub_choice == "Quantum Skills Map":
     section_header("Quantum Skills Map",
                    "What skills the quantum industry needs, who provides them locally, and where Chicago WHPC fills the gap.")
 
@@ -1366,7 +1393,175 @@ with tabs[5]:
 
 # TAB 5: QUANTUM OPPORTUNITY INDEX
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[8]:
+
+if sub_choice == "Community Profiles":
+    section_header("Community Profiles",
+                   "Raw data by community area and comparison neighborhoods. Draw your own conclusions.")
+
+    st.caption(
+        "Inspired by the methodology of Statchen et al. (2026), who compared treated and control "
+        "neighborhoods directly rather than collapsing data into composite scores. "
+        "Comparison communities (marked with *) provide analytical context. "
+        "Source: ACS 5-Year Estimates 2023; CPS To&Through 2024; CDC SVI 2022."
+    )
+
+    callout(
+        "<strong>Methodology note:</strong> This table presents raw indicators without weighting or scoring. "
+        "Readers are invited to interpret the data directly. The Community Readiness Profile tab "
+        "offers a weighted composite for those who prefer a summary measure, with full methodology disclosed."
+    )
+
+    # Build display table
+    display_df = ALL_COMMUNITIES.copy()
+    display_df["Group"] = display_df["group"]
+    display_df["Community"] = display_df["area"].str.replace(" (comp.)", "*", regex=False)
+    display_df["Bachelor's (%)"] = display_df["bach_pct"]
+    display_df["HS Grad (%)"] = display_df["hs_pct"]
+    display_df["College Enroll (%)"] = display_df["college_enroll_pct"]
+    display_df["Youth Pop (16-35)"] = display_df["youth_pop"].apply(lambda x: f"{x:,}")
+    display_df["Median Income ($)"] = display_df["med_income"].apply(lambda x: f"${x:,}")
+    display_df["SVI (CDC 2022)"] = display_df.apply(
+        lambda r: r.get("svi", None) if "svi" in display_df.columns else None, axis=1
+    )
+    display_df["Transit to IQMP (min)"] = display_df["transit_min_iqmp"]
+
+    show_cols = ["Community", "Group", "Bachelor's (%)", "HS Grad (%)",
+                 "College Enroll (%)", "Youth Pop (16-35)", "Median Income ($)", "Transit to IQMP (min)"]
+
+    st.dataframe(
+        display_df[show_cols].sort_values("Bachelor's (%)").set_index("Community"),
+        use_container_width=True,
+        column_config={
+            "Group": st.column_config.TextColumn(width="small"),
+            "Bachelor's (%)": st.column_config.NumberColumn(format="%.1f"),
+            "HS Grad (%)": st.column_config.NumberColumn(format="%.1f"),
+            "College Enroll (%)": st.column_config.NumberColumn(format="%.1f"),
+        }
+    )
+    st.caption("* = comparison community from another part of Chicago")
+
+    st.markdown("---")
+    section_header("Key Observations from the Raw Data")
+
+    obs_cols = st.columns(3)
+    with obs_cols[0]:
+        st.markdown(
+            f"<div style='background:{TEAL}12;border-left:4px solid {TEAL};"
+            f"border-radius:6px;padding:14px;height:100%'>"
+            f"<div style='font-weight:700;color:{TEAL};margin-bottom:8px'>Graduation rates are a strength</div>"
+            f"<div style='font-size:0.85rem;color:{MGRAY}'>"
+            f"Most South Side study communities have HS graduation rates above 80%, "
+            f"comparable to or exceeding some comparison communities. "
+            f"This is a programmatic asset, not a deficit.</div></div>",
+            unsafe_allow_html=True
+        )
+    with obs_cols[1]:
+        st.markdown(
+            f"<div style='background:{NAVY}12;border-left:4px solid {NAVY};"
+            f"border-radius:6px;padding:14px;height:100%'>"
+            f"<div style='font-weight:700;color:{NAVY};margin-bottom:8px'>Bachelor's gap is structural</div>"
+            f"<div style='font-size:0.85rem;color:{MGRAY}'>"
+            f"South Side study communities average 19% bachelor's attainment vs "
+            f"41% citywide and 31-72% in comparison communities. "
+            f"Similar graduation rates but very different postsecondary outcomes "
+            f"point to structural barriers, not individual capability.</div></div>",
+            unsafe_allow_html=True
+        )
+    with obs_cols[2]:
+        st.markdown(
+            f"<div style='background:{GOLD}12;border-left:4px solid {GOLD};"
+            f"border-radius:6px;padding:14px;height:100%'>"
+            f"<div style='font-weight:700;color:{GOLD};margin-bottom:8px'>Youth population is substantial</div>"
+            f"<div style='font-size:0.85rem;color:{MGRAY}'>"
+            f"Combined youth population (16-35) across study areas exceeds 50,000. "
+            f"This is a large potential program audience, not a marginal one. "
+            f"Roseland alone has 7,200 young residents.</div></div>",
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+    section_header("Logic Model: From Inputs to Outcomes",
+                   "Borrowed from evaluation frameworks in Statchen et al. (2026) and standard workforce development practice.")
+
+    logic_cols = st.columns(5)
+    stages = [
+        ("Inputs", [
+            "HPC workshops (4-6 sessions)",
+            "Community education (3-5 sessions)",
+            "Mentor network (300+ members)",
+            "Institutional partners",
+            "South Side Quantum Opportunity Guide",
+            "Computing infrastructure access",
+        ], TEAL),
+        ("arrow", [], ""),
+        ("Exposure Indicators", [
+            "Awareness program attendance",
+            "Facility tours completed",
+            "Guest speakers delivered",
+            "Mentor matches made",
+            "Opportunity Guide downloads",
+        ], NAVY),
+        ("arrow", [], ""),
+        ("Intermediate Outcomes", [
+            "Workshop completion rate",
+            "Technical skill demonstration",
+            "Mentorship continuation at 90 days",
+            "Professional network growth",
+            "Certificate program applications",
+        ], GOLD),
+    ]
+
+    for col, (label, items, color) in zip(logic_cols[:3] + [logic_cols[3], logic_cols[4]], [
+        stages[0], stages[2], stages[4],
+        ("arrow2","",""),("arrow3","","")
+    ]):
+        pass
+
+    # Draw logic model as HTML
+    logic_html = f"""
+    <div style='display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr auto 1fr;
+    gap:8px;align-items:start;margin:16px 0'>
+    """
+    logic_stages = [
+        ("Inputs", ["HPC workshops", "Community sessions", "Mentor network", "Partner relationships",
+                    "Opportunity Guide", "Computing access"], TEAL),
+        (">>", [], ""),
+        ("Exposure", ["Workshop attendance", "Facility tours", "Guest speakers",
+                      "Mentor matches", "Guide downloads"], NAVY),
+        (">>", [], ""),
+        ("Intermediate Outcomes", ["Workshop completion", "Technical skills", "Mentorship at 90 days",
+                                    "Network growth", "Credential applications"], GOLD),
+        (">>", [], ""),
+        ("Long-Term Outcomes", ["STEM enrollment", "Internships", "Apprenticeships",
+                                 "Job placement", "Career transitions"], GREEN),
+        (">>", [], ""),
+        ("Community Impact", ["Documented pathways", "Employer pipeline", "Replicable model",
+                               "Community participation data", "Policy evidence"], RED),
+    ]
+    for label, items, color in logic_stages:
+        if label == ">>":
+            logic_html += f"<div style='text-align:center;font-size:1.5rem;color:{MGRAY};padding-top:20px'>-></div>"
+        else:
+            items_html = "".join(f"<div style='font-size:0.75rem;color:{MGRAY};margin:3px 0;padding-left:6px;border-left:2px solid {color}55'>{item}</div>" for item in items)
+            logic_html += (
+                f"<div style='background:{color}12;border:2px solid {color}44;"
+                f"border-radius:8px;padding:10px'>"
+                f"<div style='font-weight:700;color:{color};font-size:0.82rem;margin-bottom:6px'>{label}</div>"
+                f"{items_html}</div>"
+            )
+    logic_html += "</div>"
+    st.markdown(logic_html, unsafe_allow_html=True)
+
+    callout(
+        "<strong>Why this framework matters:</strong> Funders and evaluators distinguish "
+        "inputs (what we invest), exposure indicators (what participants experience), "
+        "intermediate outcomes (what changes in the short term), and long-term outcomes "
+        "(what changes in careers and community). Chicago WHPC tracks all four levels "
+        "from program launch."
+    )
+
+
+if sub_choice == "Community Readiness Profile":
     section_header("Community Readiness Profile",
                    "A composite readiness score for South Side community areas.")
 
@@ -1937,7 +2132,7 @@ Contact: Ana Marija Sokovic, PhD, MBA | chicagowhpc@gmail.com | chicagowhpc.org
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 7: GEOGRAPHIC PROXIMITY
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[7]:
+if sub_choice == "Geographic Proximity":
     section_header("Geographic Proximity",
                    "South Side residents live within 20-40 minutes of one of the largest quantum investments in the world.")
 
@@ -2049,7 +2244,7 @@ with tabs[7]:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 9: COMMUNITY IMPACT DASHBOARD TRACKER
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[9]:
+if sub_choice == "Community Impact Dashboard":
     section_header("Community Impact Dashboard",
                    "Tracking what actually reaches the community - one of the first systematic efforts to track community-level participation in Illinois' emerging quantum workforce ecosystem.")
 
@@ -2171,7 +2366,7 @@ with tabs[9]:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 10: WHAT SUCCESS LOOKS LIKE LOOKS LIKE
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[10]:
+if sub_choice == "What Success Looks Like":
     section_header("What Success Looks Like",
                    "A concrete, time-phased picture of what this program builds toward.")
 
@@ -2284,7 +2479,7 @@ with tabs[10]:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 1: WHY CHICAGO WHPC?
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[1]:
+if sub_choice == "Why Chicago WHPC?":
     section_header("Why Chicago WHPC?",
                    "Chicago WHPC does not replace existing programs. It connects them.")
 
@@ -2370,7 +2565,7 @@ with tabs[1]:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 4: WHY HPC?
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[4]:
+if sub_choice == "Why HPC?":
     section_header("Why HPC?",
                    "HPC provides employable skills today while preparing participants for future quantum careers.")
 
@@ -2465,7 +2660,7 @@ with tabs[4]:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 11: PARTNERSHIP OPPORTUNITIES
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[11]:
+if sub_choice == "Partnership Opportunities":
     section_header("Partnership Opportunities",
                    "Specific, low-burden ways to participate in Quantum x HPC Pathways.")
 
