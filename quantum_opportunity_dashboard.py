@@ -1586,7 +1586,7 @@ if sub_choice == "Community Readiness Profile":
         "available ACS 2023 and CPS 2024 data."
     )
 
-    st.markdown("<div style='margin-top:32px'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top:80px'></div>", unsafe_allow_html=True)
     col1, col2 = st.columns(2)
 
     with col1:
@@ -1910,39 +1910,73 @@ if sub_choice == "Community Readiness Profile":
 
     fig_timeline = go.Figure()
 
-    for year, event, color, is_program in timeline_events:
-        marker_size = 18 if is_program else 12
+    # Stagger labels: even index = above (y=1.15), odd = below (y=0.85)
+    # This prevents label overlap on the timeline
+    for i, (year, event, color, is_program) in enumerate(timeline_events):
+        marker_size = 20 if is_program else 10
         marker_symbol = "star" if is_program else "circle"
+        y_pos = 1.0
+        # Stagger text position alternating above/below
+        if is_program:
+            text_pos = "top center"
+            y_text = 1.0
+        else:
+            text_pos = "top center" if i % 2 == 0 else "bottom center"
+            y_text = 1.0
+
+        # Add marker only (no text on scatter to avoid overlap)
         fig_timeline.add_trace(go.Scatter(
-            x=[year], y=[1],
-            mode="markers+text",
+            x=[year], y=[y_pos],
+            mode="markers",
             marker=dict(size=marker_size, color=color, symbol=marker_symbol,
                         line=dict(color="white", width=2)),
-            text=[event],
-            textposition="top center" if year % 2 == 0 else "bottom center",
-            textfont=dict(size=10, color=NAVY if not is_program else RED,
-                          family="Arial"),
             hovertemplate=f"<b>{year}</b><br>{event}<extra></extra>",
             name=event,
             showlegend=False
         ))
 
-    # Add vertical line at 2026 launch
-    fig_timeline.add_vrect(
-        x0=2025.7, x1=2026.3,
-        fillcolor=RED, opacity=0.08,
-        layer="below", line_width=0
-    )
-    fig_timeline.add_vline(x=2026, line_dash="dash", line_color=RED, line_width=2,
-                           annotation_text="Program Launch", annotation_position="top",
-                           annotation_font_color=RED)
+    # Add text annotations staggered above/below to prevent overlap
+    for i, (year, event, color, is_program) in enumerate(timeline_events):
+        # Truncate long labels
+        label = event if len(event) <= 35 else event[:32] + "..."
+        if is_program:
+            y_ann = 1.22
+            font_size = 11
+            font_color = RED
+        elif i % 2 == 0:
+            y_ann = 1.14
+            font_size = 9
+            font_color = NAVY
+        else:
+            y_ann = 0.84
+            font_size = 9
+            font_color = MGRAY
 
-    # Add horizontal baseline
+        fig_timeline.add_annotation(
+            x=year, y=y_ann,
+            text=label,
+            showarrow=False,
+            font=dict(size=font_size, color=font_color, family="Arial"),
+            xanchor="center",
+            yanchor="middle",
+            bgcolor="rgba(255,255,255,0.85)",
+            borderpad=2,
+        )
+
+    # Baseline
     fig_timeline.add_hline(y=1, line_color="#DDDDDD", line_width=1)
 
+    # Launch marker
+    fig_timeline.add_vrect(
+        x0=2025.7, x1=2026.3,
+        fillcolor=RED, opacity=0.06,
+        layer="below", line_width=0
+    )
+    fig_timeline.add_vline(x=2026, line_dash="dash", line_color=RED, line_width=1.5)
+
     fig_timeline.update_layout(
-        height=320,
-        margin=dict(l=10, r=10, t=60, b=10),
+        height=420,
+        margin=dict(l=10, r=10, t=30, b=40),
         plot_bgcolor="white", paper_bgcolor="white",
         font_color=MGRAY,
         xaxis=dict(
@@ -1951,7 +1985,7 @@ if sub_choice == "Community Readiness Profile":
             showgrid=True, gridcolor="#F0F0F0",
             title=""
         ),
-        yaxis=dict(visible=False, range=[0.5, 1.8]),
+        yaxis=dict(visible=False, range=[0.65, 1.4]),
         title=dict(
             text="Illinois Quantum Ecosystem Buildout vs. Quantum x HPC Pathways Launch",
             font=dict(size=13, color=NAVY)
