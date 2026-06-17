@@ -1571,22 +1571,8 @@ if sub_choice == "Community Readiness Profile":
     communities with strong educational foundations but persistent structural barriers to
     advanced technology careers.
 
-    **Components (100-point scale):**
-    - Educational potential gap from citywide average (40 pts) - represents upside
-    - High school graduation strength (20 pts)
-    - College enrollment culture (20 pts)
-    - Youth population reach (15 pts)
-    - Transit proximity to IQMP (5 pts)
     """)
 
-    callout(
-        "️ <strong>Methodology note:</strong> The QOI is a planning tool, not a causal measure. "
-        "It is designed to identify communities where intervention has the greatest potential impact, "
-        "not to rank communities by need or deficit. All components are derived from publicly "
-        "available ACS 2023 and CPS 2024 data."
-    )
-
-    st.markdown("<div style='margin-top:80px'></div>", unsafe_allow_html=True)
     col1, col2 = st.columns(2)
 
     with col1:
@@ -1633,6 +1619,14 @@ if sub_choice == "Community Readiness Profile":
             plot_bgcolor="white", paper_bgcolor="white", font_color=MGRAY
         )
         st.plotly_chart(fig_scatter, use_container_width=True)
+
+
+    callout(
+        "️ <strong>Methodology note:</strong> The QOI is a planning tool, not a causal measure. "
+        "It is designed to identify communities where intervention has the greatest potential impact, "
+        "not to rank communities by need or deficit. All components are derived from publicly "
+        "available ACS 2023 and CPS 2024 data."
+    )
 
     st.markdown("---")
     section_header("Study Areas vs. Comparison Communities",
