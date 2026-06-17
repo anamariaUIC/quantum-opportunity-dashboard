@@ -1,4 +1,3 @@
-
 """
 Quantum × HPC Pathways: South Side Opportunity Dashboard
 Chicago Women in High Performance Computing (Chicago WHPC)
@@ -1448,6 +1447,221 @@ with tabs[8]:
         "Youth population is an estimate based on ACS age cohort data. "
         "All figures should be considered planning estimates."
     )
+
+
+    st.markdown("---")
+    section_header("Priority Investment Communities: Quantum Opportunity vs. Social Vulnerability",
+                   "Borrowing methodology from Statchen et al. (2026) who used CDC SVI to weight treatment and control groups in Chicago neighborhood research.")
+
+    st.caption(
+        "Social Vulnerability Index (SVI) scores derived from CDC/ATSDR Social Vulnerability Index 2022, "
+        "Cook County Illinois, aggregated to community area level. SVI combines 16 Census variables across "
+        "four themes: socioeconomic status, household characteristics, racial/ethnic minority status, and "
+        "housing/transportation. Higher SVI = greater vulnerability (0-1 scale). "
+        "Source: CDC/ATSDR GRASP, 2022."
+    )
+
+    # SVI data embedded from CDC 2022 Cook County data, aggregated to community area
+    svi_data = pd.DataFrame([
+        {"area": "South Shore",          "qoi": 54.0, "svi": 0.82, "med_income": 26425,  "poverty_pct": 28.1, "lat": 41.762, "lon": -87.568},
+        {"area": "South Chicago",        "qoi": 57.7, "svi": 0.79, "med_income": 42456,  "poverty_pct": 22.4, "lat": 41.740, "lon": -87.550},
+        {"area": "Woodlawn",             "qoi": 54.3, "svi": 0.84, "med_income": 26415,  "poverty_pct": 31.2, "lat": 41.773, "lon": -87.597},
+        {"area": "Calumet Heights",      "qoi": 48.4, "svi": 0.68, "med_income": 54300,  "poverty_pct": 14.1, "lat": 41.726, "lon": -87.573},
+        {"area": "Greater Grand Crossing","qoi": 60.3,"svi": 0.88, "med_income": 32100,  "poverty_pct": 33.6, "lat": 41.762, "lon": -87.609},
+        {"area": "Roseland",             "qoi": 64.9, "svi": 0.86, "med_income": 38900,  "poverty_pct": 27.8, "lat": 41.694, "lon": -87.620},
+        {"area": "Pullman",              "qoi": 55.3, "svi": 0.81, "med_income": 36700,  "poverty_pct": 26.3, "lat": 41.699, "lon": -87.609},
+        {"area": "Auburn Gresham",       "qoi": 64.4, "svi": 0.89, "med_income": 34500,  "poverty_pct": 29.4, "lat": 41.745, "lon": -87.651},
+        {"area": "Chatham",              "qoi": 55.9, "svi": 0.77, "med_income": 45200,  "poverty_pct": 18.9, "lat": 41.744, "lon": -87.625},
+        {"area": "Englewood",            "qoi": 63.7, "svi": 0.93, "med_income": 22228,  "poverty_pct": 41.2, "lat": 41.779, "lon": -87.644},
+    ])
+
+    # Classify into 2x2 quadrants
+    qoi_median = svi_data["qoi"].median()
+    svi_median = svi_data["svi"].median()
+
+    def classify(row):
+        high_opp = row["qoi"] >= qoi_median
+        high_vuln = row["svi"] >= svi_median
+        if high_opp and high_vuln:
+            return "PRIORITY: High Opportunity + High Vulnerability"
+        elif high_opp and not high_vuln:
+            return "Secondary: High Opportunity + Lower Vulnerability"
+        elif not high_opp and high_vuln:
+            return "Secondary: Lower Opportunity + High Vulnerability"
+        else:
+            return "Monitor: Lower Opportunity + Lower Vulnerability"
+
+    svi_data["quadrant"] = svi_data.apply(classify, axis=1)
+
+    color_map_quad = {
+        "PRIORITY: High Opportunity + High Vulnerability": RED,
+        "Secondary: High Opportunity + Lower Vulnerability": GOLD,
+        "Secondary: Lower Opportunity + High Vulnerability": "#8E44AD",
+        "Monitor: Lower Opportunity + Lower Vulnerability": "#AAAAAA",
+    }
+
+    col_svi1, col_svi2 = st.columns([3, 2])
+
+    with col_svi1:
+        fig_svi = px.scatter(
+            svi_data,
+            x="svi", y="qoi",
+            color="quadrant",
+            color_discrete_map=color_map_quad,
+            size="poverty_pct",
+            hover_name="area",
+            hover_data={"svi": True, "qoi": True, "med_income": True, "poverty_pct": True,
+                        "quadrant": False, "lat": False, "lon": False},
+            labels={
+                "svi": "Social Vulnerability Index (CDC 2022, 0=low, 1=high)",
+                "qoi": "Quantum Opportunity Index",
+                "med_income": "Median HH Income ($)",
+                "poverty_pct": "Poverty Rate (%)"
+            },
+            title="Quantum Opportunity vs. Social Vulnerability (bubble = poverty rate)"
+        )
+        # Add quadrant lines
+        fig_svi.add_hline(y=qoi_median, line_dash="dash", line_color="#CCCCCC",
+                          annotation_text="QOI median", annotation_position="bottom right")
+        fig_svi.add_vline(x=svi_median, line_dash="dash", line_color="#CCCCCC",
+                          annotation_text="SVI median", annotation_position="top left")
+
+        # Add quadrant labels
+        fig_svi.add_annotation(x=0.915, y=65.5, text="PRIORITY", font=dict(color=RED, size=11, family="Arial"),
+                               showarrow=False, bgcolor="white", bordercolor=RED, borderwidth=1)
+        fig_svi.add_annotation(x=0.69, y=50, text="Secondary", font=dict(color=GOLD, size=10, family="Arial"),
+                               showarrow=False)
+
+        # Add community labels
+        for _, row in svi_data.iterrows():
+            fig_svi.add_annotation(
+                x=row["svi"], y=row["qoi"],
+                text=row["area"].split()[0],
+                showarrow=False,
+                font=dict(size=9, color=NAVY),
+                xshift=12, yshift=8
+            )
+
+        fig_svi.update_layout(
+            height=420, margin=dict(l=10, r=10, t=40, b=10),
+            plot_bgcolor="white", paper_bgcolor="white",
+            font_color=MGRAY,
+            legend=dict(orientation="v", y=0.5, x=1.02, title="Quadrant"),
+            showlegend=False
+        )
+        st.plotly_chart(fig_svi, use_container_width=True)
+
+    with col_svi2:
+        st.markdown("#### Community Classification")
+        for quad, color in color_map_quad.items():
+            areas_in_quad = svi_data[svi_data["quadrant"] == quad]["area"].tolist()
+            if not areas_in_quad:
+                continue
+            is_priority = "PRIORITY" in quad
+            st.markdown(
+                f"<div style='background:{color}{'25' if is_priority else '15'};"
+                f"border:{'2px' if is_priority else '1px'} solid {color};"
+                f"border-radius:8px;padding:12px;margin:8px 0'>"
+                f"<div style='font-weight:{'700' if is_priority else '600'};"
+                f"color:{color};font-size:0.82rem;margin-bottom:6px'>{quad}</div>"
+                f"{''.join(f'<div style="font-size:0.85rem;color:{NAVY};margin:3px 0">- {a}</div>' for a in areas_in_quad)}"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+
+        callout(
+            "<strong>Reading the chart:</strong> Communities in the upper-right quadrant "
+            "(high quantum opportunity + high social vulnerability) represent the highest-priority "
+            "targets for Quantum x HPC Pathways. They have the greatest unmet potential "
+            "and the greatest structural barriers. This framing is borrowed from Statchen et al. (2026), "
+            "who used SVI to balance treatment and control groups in their Chicago neighborhood study. "
+            "Source: CDC/ATSDR SVI 2022."
+        )
+
+    st.markdown("---")
+    section_header("Illinois Quantum Ecosystem Timeline",
+                   "The buildout is accelerating. Quantum x HPC Pathways launches at the right moment.")
+
+    st.caption(
+        "Timeline based on publicly announced milestones. Sources: IQMP newsroom, "
+        "CQE announcements, Capitol News Illinois, Chicago Sun-Times."
+    )
+
+    timeline_events = [
+        (2018, "National Quantum Initiative Act signed", "#888888", False),
+        (2020, "Chicago Quantum Exchange established as NSF center", TEAL, False),
+        (2021, "IQMP site selected: former US Steel South Works", NAVY, False),
+        (2022, "Illinois Quantum and Microelectronics Park announced", NAVY, False),
+        (2023, "CQE designated EDA Tech Hub (Bloch)", TEAL, False),
+        (2024, "PsiQuantum partnership announced", "#2980B9", False),
+        (2025, "NSF Regional Innovation Engines development award (CQE)", TEAL, False),
+        (2026, "IBM FutureNow: 750 jobs + 500 apprenticeships at IQMP", GREEN, False),
+        (2026, "ISTC quantum workforce report: 33,441 IL completions", GOLD, False),
+        (2026, "Quantum x HPC Pathways launches", RED, True),
+        (2027, "IQMP construction phase complete (projected)", NAVY, False),
+        (2028, "First IQMP tenant operations (projected)", NAVY, False),
+        (2030, "IBM apprenticeship cohorts fully operational (projected)", GREEN, False),
+    ]
+
+    fig_timeline = go.Figure()
+
+    for year, event, color, is_program in timeline_events:
+        marker_size = 18 if is_program else 12
+        marker_symbol = "star" if is_program else "circle"
+        fig_timeline.add_trace(go.Scatter(
+            x=[year], y=[1],
+            mode="markers+text",
+            marker=dict(size=marker_size, color=color, symbol=marker_symbol,
+                        line=dict(color="white", width=2)),
+            text=[event],
+            textposition="top center" if year % 2 == 0 else "bottom center",
+            textfont=dict(size=10, color=NAVY if not is_program else RED,
+                          family="Arial"),
+            hovertemplate=f"<b>{year}</b><br>{event}<extra></extra>",
+            name=event,
+            showlegend=False
+        ))
+
+    # Add vertical line at 2026 launch
+    fig_timeline.add_vrect(
+        x0=2025.7, x1=2026.3,
+        fillcolor=RED, opacity=0.08,
+        layer="below", line_width=0
+    )
+    fig_timeline.add_vline(x=2026, line_dash="dash", line_color=RED, line_width=2,
+                           annotation_text="Program Launch", annotation_position="top",
+                           annotation_font_color=RED)
+
+    # Add horizontal baseline
+    fig_timeline.add_hline(y=1, line_color="#DDDDDD", line_width=1)
+
+    fig_timeline.update_layout(
+        height=320,
+        margin=dict(l=10, r=10, t=60, b=10),
+        plot_bgcolor="white", paper_bgcolor="white",
+        font_color=MGRAY,
+        xaxis=dict(
+            range=[2017.5, 2031],
+            tickmode="linear", dtick=1,
+            showgrid=True, gridcolor="#F0F0F0",
+            title=""
+        ),
+        yaxis=dict(visible=False, range=[0.5, 1.8]),
+        title=dict(
+            text="Illinois Quantum Ecosystem Buildout vs. Quantum x HPC Pathways Launch",
+            font=dict(size=13, color=NAVY)
+        )
+    )
+    st.plotly_chart(fig_timeline, use_container_width=True)
+
+    callout(
+        "<strong>The timing argument:</strong> Workforce pipelines cannot be built at the moment "
+        "employers begin hiring. The IBM announcement (2026) and IQMP construction completion (2027) "
+        "mean the hiring window opens in 2027-2028. A community program launching in fall 2026 "
+        "is precisely timed to build awareness, skills, and professional networks "
+        "before that window opens - not after."
+    )
+
 
     st.markdown("---")
     section_header("QOI Methodology and Weight Rationale",
