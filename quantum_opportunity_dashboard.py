@@ -479,107 +479,133 @@ if sub_choice == "Workforce Bridge":
 # TAB 5: ILLINOIS OPPORTUNITY
 # ══════════════════════════════════════════════════════════════════════════════
 if sub_choice == "Why Now?":
-    section_header("Why Now?",
-                   "The jobs are coming. The question is who will be ready.")
+    # ── EXECUTIVE SUMMARY HERO ────────────────────────────────────────────────
+    st.markdown(
+        f"""<div style='background:linear-gradient(135deg,{NAVY} 0%,{TEAL} 100%);
+        border-radius:12px;padding:36px 40px;margin-bottom:28px'>
+        <div style='font-size:1.5rem;font-weight:700;color:white;line-height:1.4;margin-bottom:16px'>
+        Illinois is making one of the largest public investments in advanced technology in its history.
+        </div>
+        <div style='font-size:1rem;color:#B8D4E8;line-height:1.7;margin-bottom:20px'>
+        IQMP, CQE, IBM, Argonne, Fermilab, universities, and employers are building
+        a globally competitive quantum and advanced technology ecosystem on Chicago's South Side.
+        The challenge is ensuring South Side residents can participate in the opportunities
+        being created — not just observe them from a distance.
+        </div>
+        <div style='background:rgba(255,255,255,0.12);border-radius:8px;padding:16px 20px'>
+        <div style='font-size:0.95rem;font-weight:600;color:white'>
+        Quantum x HPC Pathways is a community-based workforce bridge designed to address
+        that challenge — beginning with a Winter 2026 pilot on Chicago's South Side.
+        </div>
+        </div>
+        </div>""",
+        unsafe_allow_html=True
+    )
 
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.markdown(f"#### Illinois Quantum-Relevant Completions by Field (2024)")
-        st.caption("Source: ISTC, CQE, IQMP, Illinois EDC - 'Mapping Illinois' Quantum Talent Pipeline,' May 2026")
-        fig = px.bar(
-            ISTC_FIELDS.sort_values("completions", ascending=True),
-            x="completions", y="field", orientation="h",
-            color="share_pct",
-            color_continuous_scale=[[0, "#B8D4E8"], [1, TEAL]],
-            labels={"completions": "Completions (2024)", "field": "", "share_pct": "% of Total"},
-            text="completions"
-        )
-        fig.update_traces(textposition="outside")
-        fig.update_layout(
-            height=320, margin=dict(l=10, r=60, t=10, b=10),
-            coloraxis_showscale=False,
-            plot_bgcolor="white", paper_bgcolor="white",
-            font_color=MGRAY
-        )
-        st.plotly_chart(fig, use_container_width=True)
-
-    with col2:
-        st.markdown("#### IQMP Jobs by Category and Credential Requirement")
-        st.caption("Source: IBM FutureNow announcement (Capitol News Illinois, April 2026); IQMP projections")
-        fig2 = px.bar(
-            IQMP_JOBS,
-            x="category", y="jobs",
-            color="category",
-            color_discrete_sequence=[TEAL, NAVY, GOLD, GREEN, RED],
-            text="jobs",
-            custom_data=["credential_min", "timeline"]
-        )
-        fig2.update_traces(
-            textposition="outside",
-            hovertemplate="<b>%{x}</b><br>Jobs: %{y}<br>Min credential: %{customdata[0]}<br>Timeline: %{customdata[1]}<extra></extra>"
-        )
-        fig2.update_layout(
-            height=320, margin=dict(l=10, r=10, t=10, b=60),
-            showlegend=False,
-            plot_bgcolor="white", paper_bgcolor="white",
-            font_color=MGRAY,
-            xaxis_tickangle=-20
-        )
-        st.plotly_chart(fig2, use_container_width=True)
+    # ── KEY FACTS ROW ─────────────────────────────────────────────────────────
+    metric_row([
+        ("projected regional quantum economic impact by 2035", "$80B",
+         "BCG/CQE 2024 (projected, not confirmed)", TEAL),
+        ("IBM jobs + apprenticeships announced at IQMP", "1,250",
+         "750 FT + 500 apprenticeships (announced April 2026)", NAVY),
+        ("quantum-relevant IL postsecondary completions in 2024", "33,441",
+         "+33% since 2018 National Quantum Initiative Act (ISTC 2026)", GOLD),
+        ("South Side residents within 20 min transit of IQMP", "72,000+",
+         "South Chicago (12 min), South Shore (18 min), Calumet Heights (15 min)", GREEN),
+    ])
 
     st.markdown("---")
-    col3, col4 = st.columns(2)
 
-    with col3:
-        st.markdown("#### Quantum-Relevant Completions by Credential Level (Illinois, 2024)")
-        st.caption("Source: ISTC 2026. Certificate programs are the single largest category.")
-        fig3 = px.pie(
-            ISTC_CREDENTIALS,
-            values="completions_2024",
-            names="credential",
-            color_discrete_sequence=[TEAL, NAVY, GOLD, GREEN, "#7F8C8D"],
-            hole=0.4
-        )
-        fig3.update_traces(textposition="outside", textinfo="percent+label")
-        fig3.update_layout(
-            height=320, margin=dict(l=10, r=10, t=10, b=10),
-            showlegend=False,
-            paper_bgcolor="white", font_color=MGRAY
-        )
-        st.plotly_chart(fig3, use_container_width=True)
+    # ── WHY NOW: THE TIMING ARGUMENT ─────────────────────────────────────────
+    col_a, col_b = st.columns([3, 2])
+    with col_a:
+        section_header("The Timing Argument",
+                       "Workforce pipelines cannot be built at the moment employers begin hiring.")
+        st.markdown("""
+        The IBM announcement (April 2026) and IQMP construction timeline mean the hiring
+        window opens in **2027-2028**. A community program launching in Winter 2026 is
+        precisely timed to build awareness, skills, and professional networks
+        **before** that window opens — not after.
 
-    with col4:
-        st.markdown("#### Key Workforce Facts")
-        facts = [
-            (TEAL, "$80B", "projected regional economic impact by 2035 (BCG/CQE)"),
-            (NAVY, "33,441", "quantum-relevant IL completions in 2024 (ISTC)"),
-            (GOLD, "+33%", "growth since 2018 National Quantum Initiative Act"),
-            (GREEN, "750", "IBM FutureNow full-time jobs committed at IQMP"),
-            (GREEN, "500", "IBM apprenticeships, designed with City Colleges"),
-            (TEAL, "44%", "of completions are in Computer & Information Sciences"),
-            (NAVY, "~12K", "certificate-level completions in 2024 - accessible without a 4-year degree"),
+        This is not a new problem. When major technology investments land in cities
+        without community workforce preparation, surrounding neighborhoods observe
+        economic activity without participating in it. The time to build the pipeline
+        is now — while the ecosystem is still forming.
+        """)
+
+        callout(
+            "The organization does not need to create a new pipeline. It needs to open existing ones. - <a href=\"https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view\" target=\"_blank\">Quantum x HPC Pathways Civic Action Plan, 2026</a>"
+        )
+
+    with col_b:
+        section_header("Key Milestones")
+        milestones = [
+            (2017, "Chicago Quantum Exchange founded", TEAL, False),
+            (2021, "IQMP site selected: former US Steel South Works", NAVY, False),
+            (2023, "CQE designated EDA Tech Hub (The Bloch)", TEAL, False),
+            (2024, "IQMP formally announced, $500M+ state investment", NAVY, False),
+            (2025, "IQMP groundbreaking", NAVY, False),
+            (2026, "IBM FutureNow: 750 jobs + 500 apprenticeships", GREEN, False),
+            (2026, "QUANTUM x HPC PATHWAYS PILOT", RED, True),
+            (2027, "First IQMP operations (projected)", NAVY, False),
+            (2028, "IBM apprenticeship cohorts begin (projected)", GREEN, False),
         ]
-        for color, val, label in facts:
+        for year, event, color, is_program in milestones:
+            weight = "700" if is_program else "400"
+            bg = f"{color}20" if is_program else "transparent"
+            border = f"2px solid {color}" if is_program else f"1px solid {color}44"
             st.markdown(
-                f"""<div style='display:flex;align-items:center;margin:8px 0;
-                background:{LGRAY};border-radius:6px;padding:8px 12px'>
-                <span style='font-size:1.4rem;font-weight:700;color:{color};min-width:70px'>{val}</span>
-                <span style='color:{MGRAY};font-size:0.85rem;margin-left:12px'>{label}</span>
-                </div>""",
+                f"<div style='display:flex;gap:10px;align-items:center;margin:5px 0;"
+                f"background:{bg};border-radius:6px;padding:{'8px 10px' if is_program else '4px 6px'};{f"border:{border}" if is_program else ''}'>"
+                f"<div style='font-size:0.78rem;font-weight:700;color:{color};min-width:36px'>{year}</div>"
+                f"<div style='font-size:{'0.85rem' if is_program else '0.8rem'};"
+                f"font-weight:{weight};color:{NAVY if not is_program else RED}'>{event}</div>"
+                f"</div>",
                 unsafe_allow_html=True
             )
 
-    callout(
-        "<strong>The IBM announcement is a signal, not the whole story.</strong> "
-        "The 500 apprenticeships are being designed with City Colleges of Chicago - "
-        "and Olive Harvey College is already the SMQ* host site. The pipeline from "
-        "South Side community → City Colleges → IQMP careers is being built right now."
-    )
+    st.markdown("---")
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB 2: SOUTH SIDE STRENGTHS & GAPS
-# ══════════════════════════════════════════════════════════════════════════════
+    # ── FOUR KEY QUESTIONS ────────────────────────────────────────────────────
+    section_header("Four Questions This Strategy Answers")
+    qs = [
+        ("Why these communities?",
+         "South Side community areas are within 12-38 minutes of IQMP by public transit, "
+         "have substantial existing STEM workforce presence, and face structural barriers "
+         "to credential attainment that a community navigation program can address.",
+         "South Side Strengths and Assets, Geographic Proximity, Community Opportunity Landscape",
+         TEAL),
+        ("What evidence suggests these communities contain potential participants?",
+         "ACS 2023 data shows 5,900+ existing STEM workers in study communities. "
+         "Chicago WHPC's Quantum Meets HPC event drew 200+ registrants with 76% wanting "
+         "to understand the HPC-quantum connection. Demonstrated demand exists.",
+         "South Side Strengths and Assets, Community Profiles",
+         NAVY),
+        ("How will you know if the pilot works?",
+         "Four pre-specified research questions with measurement approaches, "
+         "a six-period data collection plan, and outcome metrics tracked at 3, 6, and 12 months. "
+         "Equity disaggregation by race, gender, first-gen status, and neighborhood.",
+         "Evaluation Framework (Methodology section)",
+         GOLD),
+        ("How does this align with existing Illinois workforce efforts?",
+         "Quantum x HPC Pathways is the community implementation layer for CQE's Advancing Together "
+         "strategy, a community feeder for IBM/City Colleges apprenticeships, and "
+         "a data contributor to Illinois's quantum talent pipeline.",
+         "Illinois Alignment, Stakeholder Map Overview (Policy section)",
+         GREEN),
+    ]
+    for question, answer, pointer, color in qs:
+        st.markdown(
+            f"<div style='background:{LGRAY};border-radius:10px;padding:16px 20px;margin:10px 0;"
+            f"border-left:5px solid {color}'>"
+            f"<div style='font-weight:700;color:{NAVY};font-size:0.95rem;margin-bottom:6px'>{question}</div>"
+            f"<div style='font-size:0.85rem;color:{MGRAY};margin-bottom:6px'>{answer}</div>"
+            f"<div style='font-size:0.75rem;color:{color};font-style:italic'>See: {pointer}</div>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+
+
 if sub_choice == "South Side Strengths and Assets":
     section_header("South Side: Strengths and Assets",
                    "Start with what's there - not what's missing.")
