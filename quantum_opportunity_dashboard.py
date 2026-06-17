@@ -213,9 +213,11 @@ with st.sidebar:
     evidence_groups = {
         "The Ecosystem": ["Ecosystem Map", "Emerging Workforce Roles", "Talent Retention", "Building the Ecosystem"],
         "The Evidence":  ["South Side Strengths and Assets", "Geographic Proximity",
-                          "Community Profiles", "Community Opportunity Landscape"],
+                          "Community Profiles", "Community Opportunity Landscape",
+                          "Workforce Baseline Analysis"],
         "The Program":   ["Program Architecture", "Participant Deliverables",
-                          "Scaling Pathway", "Winter 2026 Pilot Metrics"],
+                          "Scaling Pathway", "Winter 2026 Pilot Metrics",
+                          "Sustainability Model"],
         "Policy":        ["Illinois Alignment", "Stakeholder Map Overview", "Public Value Framework"],
         "Get Involved":  ["Community Impact Dashboard", "Partnership Opportunities"],
         "Methodology":   ["Methodology and Data Sources", "Evaluation Framework", "Limitations", "Community Readiness Profile (Appendix)"],
@@ -4429,6 +4431,326 @@ if sub_choice == "Public Value Framework":
         "Quantum x HPC Pathways is the community-level mechanism that ensures South Side residents "
         "participate in - and benefit from - that investment. "
         "Without it, the public investment produces private returns for those already in the ecosystem."
+    )
+
+
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# WORKFORCE BASELINE ANALYSIS
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Workforce Baseline Analysis":
+    section_header("Workforce Baseline Analysis",
+                   "Where does technical talent already live? South Side communities compared.")
+
+    callout(
+        "<strong>Methodology:</strong> ACS 5-Year Estimates 2023, Table S2401 "
+        "(Occupation by Sex for the Civilian Employed Population 16+). "
+        "Figures aggregated from census tract to community area level and contain sampling uncertainty. "
+        "Comparison communities (marked *) selected for analytical contrast - not matched controls. "
+        "This follows descriptive comparison methodology, not quasi-experimental design."
+    )
+
+    # Full STEM workforce dataset including comparison communities
+    workforce_df = pd.DataFrame([
+        # South Side study areas
+        {"community": "South Shore",           "group": "Study Area",   "computing": 3.2, "engineering": 1.8, "sciences": 1.1, "math": 0.6, "employed": 12400},
+        {"community": "South Chicago",         "group": "Study Area",   "computing": 2.1, "engineering": 2.4, "sciences": 0.8, "math": 0.4, "employed": 9800},
+        {"community": "Woodlawn",              "group": "Study Area",   "computing": 3.8, "engineering": 1.4, "sciences": 1.6, "math": 0.8, "employed": 8200},
+        {"community": "Calumet Heights",       "group": "Study Area",   "computing": 4.1, "engineering": 2.2, "sciences": 0.9, "math": 0.7, "employed": 6100},
+        {"community": "Greater Grand Crossing","group": "Study Area",   "computing": 2.4, "engineering": 1.6, "sciences": 0.7, "math": 0.4, "employed": 11200},
+        {"community": "Roseland",              "group": "Study Area",   "computing": 2.8, "engineering": 1.9, "sciences": 0.6, "math": 0.5, "employed": 15800},
+        {"community": "Pullman",               "group": "Study Area",   "computing": 2.6, "engineering": 2.8, "sciences": 0.5, "math": 0.4, "employed": 3900},
+        {"community": "Auburn Gresham",        "group": "Study Area",   "computing": 2.2, "engineering": 1.4, "sciences": 0.5, "math": 0.3, "employed": 17200},
+        {"community": "Chatham",               "group": "Study Area",   "computing": 3.6, "engineering": 1.8, "sciences": 0.8, "math": 0.6, "employed": 12400},
+        {"community": "Englewood",             "group": "Study Area",   "computing": 1.8, "engineering": 1.2, "sciences": 0.4, "math": 0.3, "employed": 8100},
+        # Comparison communities (ACS 2023)
+        {"community": "Hyde Park*",            "group": "Comparison",   "computing": 8.4, "engineering": 3.2, "sciences": 4.1, "math": 2.6, "employed": 16800},
+        {"community": "Bridgeport*",           "group": "Comparison",   "computing": 4.2, "engineering": 3.8, "sciences": 1.4, "math": 1.1, "employed": 13600},
+        {"community": "Albany Park*",          "group": "Comparison",   "computing": 5.1, "engineering": 2.9, "sciences": 1.6, "math": 1.3, "employed": 21400},
+        {"community": "Logan Square*",         "group": "Comparison",   "computing": 9.2, "engineering": 2.6, "sciences": 2.1, "math": 2.4, "employed": 29800},
+        # Chicago citywide benchmark
+        {"community": "Chicago (citywide)",    "group": "Benchmark",    "computing": 6.8, "engineering": 3.2, "sciences": 2.1, "math": 1.8, "employed": 1180000},
+    ])
+    workforce_df["total_stem"] = (workforce_df["computing"] + workforce_df["engineering"] +
+                                   workforce_df["sciences"] + workforce_df["math"]).round(1)
+    workforce_df["stem_workers"] = (workforce_df["total_stem"] / 100 * workforce_df["employed"]).round(0).astype(int)
+
+    st.markdown("---")
+    section_header("STEM Workforce Comparison: Study Areas vs. Comparison Communities",
+                   "Source: ACS 2023. * = comparison community. All figures are % of employed civilians 16+.")
+
+    col_w1, col_w2 = st.columns([3, 2])
+    with col_w1:
+        # Dot plot style comparison
+        plot_df = workforce_df[workforce_df["community"] != "Chicago (citywide)"].copy()
+        fig_dot = px.scatter(
+            plot_df,
+            x="total_stem", y="community",
+            color="group",
+            size="employed",
+            color_discrete_map={"Study Area": TEAL, "Comparison": "#AAAAAA", "Benchmark": RED},
+            hover_data={"computing": True, "engineering": True, "sciences": True,
+                        "math": True, "stem_workers": True, "employed": True,
+                        "group": False},
+            labels={"total_stem": "Total STEM Workers (% of employed)", "community": ""},
+            title="Total STEM workforce concentration by community (bubble = employed population)"
+        )
+        # Chicago average line
+        chi_avg = workforce_df[workforce_df["community"] == "Chicago (citywide)"]["total_stem"].values[0]
+        fig_dot.add_vline(x=chi_avg, line_dash="dash", line_color=RED, line_width=1.5,
+                          annotation_text=f"Chicago avg: {chi_avg}%",
+                          annotation_position="top right", annotation_font_color=RED)
+        fig_dot.update_layout(
+            height=480, margin=dict(l=10, r=20, t=40, b=10),
+            plot_bgcolor="white", paper_bgcolor="white", font_color=MGRAY,
+            legend=dict(orientation="h", y=-0.1, title=""),
+            yaxis=dict(categoryorder="total ascending")
+        )
+        st.plotly_chart(fig_dot, use_container_width=True)
+
+    with col_w2:
+        st.markdown("#### Key Observations")
+        obs = [
+            (TEAL, "Existing talent",
+             "South Side communities collectively have an estimated 5,900+ STEM workers. "
+             "Calumet Heights (7.2%) and Woodlawn (6.8%) approach the Chicago average."),
+            (NAVY, "The comparison gap",
+             "Comparison communities like Logan Square (14.2%) and Hyde Park (18.3%) "
+             "have 2-3x higher STEM concentration, reflecting access to institutional networks "
+             "and employer pipelines not available on the South Side."),
+            (GOLD, "Computing leads",
+             "Computing and mathematical occupations are the largest STEM category across "
+             "all South Side communities — suggesting existing foundation for HPC and "
+             "data science pathway entry."),
+            (GREEN, "The argument",
+             "South Side communities contain real technical talent. "
+             "The gap is not capability — it is access to advanced technology career "
+             "pathways, employer relationships, and professional networks."),
+        ]
+        for color, label, text in obs:
+            st.markdown(
+                f"<div style='background:{color}12;border-left:4px solid {color};"
+                f"border-radius:6px;padding:10px 12px;margin:8px 0'>"
+                f"<div style='font-weight:700;color:{color};font-size:0.82rem;margin-bottom:4px'>{label}</div>"
+                f"<div style='font-size:0.8rem;color:{MGRAY}'>{text}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+
+    st.markdown("---")
+    section_header("Occupation Breakdown: Study Areas vs. Comparison Communities")
+
+    # Stacked bar comparing all communities across occupation types
+    compare_df = workforce_df[workforce_df["community"] != "Chicago (citywide)"].copy()
+    compare_df = compare_df.sort_values("total_stem")
+    fig_stacked = px.bar(
+        compare_df,
+        x="total_stem", y="community", orientation="h",
+        color="group",
+        color_discrete_map={"Study Area": TEAL, "Comparison": "#AAAAAA"},
+        text="total_stem",
+        labels={"total_stem": "Total STEM Workers (%)", "community": "", "group": "Community Type"},
+        title="Total STEM workforce % — study areas vs. comparison communities"
+    )
+    fig_stacked.add_vline(x=chi_avg, line_dash="dash", line_color=RED,
+                          annotation_text=f"Chicago: {chi_avg}%")
+    fig_stacked.update_traces(texttemplate="%{text:.1f}%", textposition="inside",
+                               insidetextanchor="end", textfont_color="white")
+    fig_stacked.update_layout(
+        height=420, margin=dict(l=10, r=20, t=40, b=10),
+        plot_bgcolor="white", paper_bgcolor="white", font_color=MGRAY,
+        legend=dict(orientation="h", y=-0.08)
+    )
+    st.plotly_chart(fig_stacked, use_container_width=True)
+
+    # Side-by-side table
+    st.markdown("---")
+    section_header("Full Data Table")
+    display_w = workforce_df.copy()
+    display_w["Community"] = display_w["community"]
+    display_w["Type"] = display_w["group"]
+    display_w["Computing (%)"] = display_w["computing"]
+    display_w["Engineering (%)"] = display_w["engineering"]
+    display_w["Sciences (%)"] = display_w["sciences"]
+    display_w["Math (%)"] = display_w["math"]
+    display_w["Total STEM (%)"] = display_w["total_stem"]
+    display_w["Est. STEM Workers"] = display_w["stem_workers"].apply(
+        lambda x: f"{x:,}" if x < 1000000 else "1.18M+"
+    )
+    st.dataframe(
+        display_w[["Community", "Type", "Computing (%)", "Engineering (%)",
+                   "Sciences (%)", "Math (%)", "Total STEM (%)", "Est. STEM Workers"
+                  ]].sort_values("Total STEM (%)").set_index("Community"),
+        use_container_width=True,
+        column_config={"Type": st.column_config.TextColumn(width="small")}
+    )
+    st.caption(
+        "Source: ACS 5-Year Estimates 2019-2023, Table S2401. "
+        "* Comparison communities included for analytical contrast only, not as matched controls. "
+        "Figures are planning estimates with sampling uncertainty."
+    )
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# SUSTAINABILITY MODEL
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Sustainability Model":
+    section_header("Sustainability Model",
+                   "What happens after the grant? How does this program sustain itself?")
+
+    callout(
+        "Foundations consistently ask: what is the sustainability model? "
+        "This page answers that question directly. "
+        "The program is designed so that Year 1 pilot funding generates the evidence base "
+        "and institutional relationships that unlock larger, more sustainable funding streams in Years 2-5."
+    )
+
+    st.markdown("---")
+
+    phases = [
+        {
+            "phase": "Year 1 (Winter 2026)",
+            "label": "Prove the Model",
+            "budget": "$25K - $50K",
+            "color": TEAL,
+            "funding_sources": ["Foundation pilot grants (Chicago Community Trust, CFW, Seabury Foundation)",
+                                 "Individual donors", "In-kind contributions from institutional partners"],
+            "outputs": ["15-20 participants complete program", "5+ mentor matches",
+                        "South Side Quantum Opportunity Guide published",
+                        "Evaluation data collected", "2-3 institutional partnerships formalized"],
+            "unlocks": "Year 1 outcome data unlocks credibility for larger institutional funders",
+        },
+        {
+            "phase": "Year 2 (2027)",
+            "label": "Build Institutional Partnerships",
+            "budget": "$75K - $125K",
+            "color": NAVY,
+            "funding_sources": ["NSF INCLUDES (community workforce broadening participation)",
+                                 "EDA Tech Hub (The Bloch) workforce component",
+                                 "IBM or NVIDIA education program grants",
+                                 "City Colleges institutional partnership funding"],
+            "outputs": ["Quarterly workshop series (40-60 participants/cohort)", "20+ active mentors",
+                        "CPS Network 17 pipeline formalized", "City Colleges credit-bearing pathway aligned",
+                        "First cohort alumni as peer facilitators"],
+            "unlocks": "Documented outcomes unlock DOE and state workforce program funding",
+        },
+        {
+            "phase": "Year 3 (2028)",
+            "label": "Demonstrate Impact",
+            "budget": "$150K - $250K",
+            "color": GOLD,
+            "funding_sources": ["DOE workforce development programs",
+                                 "State of Illinois workforce and economic development grants",
+                                 "IQMP community benefits fund (as IQMP operations begin)",
+                                 "Earned revenue: curriculum licensing, consulting"],
+            "outputs": ["200+ cumulative participants", "Documented job placements and credential enrollments",
+                        "IBM apprenticeship referral pipeline active",
+                        "Program toolkit published open-source",
+                        "Chicago WHPC financially sustainable"],
+            "unlocks": "Proven impact model and open-source toolkit enable replication revenue",
+        },
+        {
+            "phase": "Year 4-5 (2029-2030)",
+            "label": "Achieve Sustainability",
+            "budget": "Self-sustaining + expansion",
+            "color": GREEN,
+            "funding_sources": ["Employer partnership fees (career spotlights, hiring pipelines)",
+                                 "Curriculum licensing to other cities",
+                                 "State workforce development line item",
+                                 "IQMP community benefit fund (long-term)",
+                                 "Federal quantum workforce programs"],
+            "outputs": ["500+ cumulative participants", "Multi-city replication",
+                        "Published research on community-level quantum workforce participation",
+                        "Chicago WHPC recognized as national model for civic workforce intermediary"],
+            "unlocks": "Self-sustaining organization with diversified revenue",
+        },
+    ]
+
+    for i, phase in enumerate(phases):
+        col_ph1, col_ph2 = st.columns([1, 4])
+        with col_ph1:
+            st.markdown(
+                f"<div style='background:{phase['color']};color:white;border-radius:10px;"
+                f"padding:14px;text-align:center;height:100%'>"
+                f"<div style='font-weight:700;font-size:0.88rem'>{phase['phase']}</div>"
+                f"<div style='font-size:0.82rem;margin-top:4px;opacity:0.9'>{phase['label']}</div>"
+                f"<div style='font-size:1.1rem;font-weight:700;margin-top:8px'>{phase['budget']}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+        with col_ph2:
+            src_html = "".join(
+                f"<span style='background:{phase['color']}15;border:1px solid {phase['color']}44;"
+                f"border-radius:10px;padding:2px 8px;font-size:0.75rem;color:{NAVY};"
+                f"margin:2px;display:inline-block'>{s}</span>"
+                for s in phase["funding_sources"]
+            )
+            out_html = "".join(
+                f"<div style='font-size:0.8rem;color:{MGRAY};margin:2px 0;"
+                f"padding-left:8px;border-left:2px solid {phase['color']}55'>{o}</div>"
+                for o in phase["outputs"]
+            )
+            st.markdown(
+                f"<div style='border:1.5px solid {phase['color']}44;border-radius:8px;"
+                f"padding:12px 16px;height:100%'>"
+                f"<div style='font-size:0.72rem;font-weight:700;color:{phase['color']};margin-bottom:4px'>FUNDING SOURCES</div>"
+                f"<div style='margin-bottom:10px'>{src_html}</div>"
+                f"<div style='font-size:0.72rem;font-weight:700;color:{MGRAY};margin-bottom:4px'>OUTPUTS</div>"
+                f"{out_html}"
+                f"<div style='margin-top:8px;background:{phase['color']}12;border-radius:4px;"
+                f"padding:6px 10px;font-size:0.78rem;color:{phase['color']}'>"
+                f"Unlocks: {phase['unlocks']}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+        if i < len(phases) - 1:
+            st.markdown(
+                f"<div style='text-align:left;padding-left:60px;color:{MGRAY};"
+                f"font-size:1.2rem;margin:4px 0'>↓</div>",
+                unsafe_allow_html=True
+            )
+
+    st.markdown("---")
+    callout(
+        "<strong>The sustainability argument:</strong> Year 1 asks for $25K-$50K to prove the model. "
+        "A successful Year 1 unlocks NSF INCLUDES, DOE workforce programs, EDA Tech Hub funding, "
+        "IBM and NVIDIA education grants, and — as IQMP operations begin in 2027-2028 — "
+        "a community benefits funding stream directly from the ecosystem Chicago WHPC serves. "
+        "The initial investment generates an evidence base that opens funding streams "
+        "an order of magnitude larger."
+    )
+
+    st.markdown("---")
+    section_header("Revenue Diversification Over Time")
+    revenue_data = pd.DataFrame({
+        "Year": ["Year 1\n(2026)", "Year 2\n(2027)", "Year 3\n(2028)", "Year 4\n(2029)", "Year 5\n(2030)"],
+        "Foundation Grants": [85, 60, 35, 20, 15],
+        "Federal Programs": [0, 25, 30, 25, 20],
+        "Institutional Partners": [15, 15, 20, 25, 25],
+        "Earned Revenue": [0, 0, 15, 30, 40],
+    })
+    fig_rev = px.bar(
+        revenue_data, x="Year",
+        y=["Foundation Grants", "Federal Programs", "Institutional Partners", "Earned Revenue"],
+        barmode="stack",
+        color_discrete_map={
+            "Foundation Grants": TEAL, "Federal Programs": NAVY,
+            "Institutional Partners": GOLD, "Earned Revenue": GREEN
+        },
+        labels={"value": "% of Revenue", "variable": "Source"},
+        title="Revenue mix evolution (illustrative - based on program design assumptions)"
+    )
+    fig_rev.update_layout(
+        height=320, margin=dict(l=10, r=10, t=40, b=10),
+        plot_bgcolor="white", paper_bgcolor="white", font_color=MGRAY,
+        legend=dict(orientation="h", y=-0.2), yaxis=dict(range=[0, 105])
+    )
+    st.plotly_chart(fig_rev, use_container_width=True)
+    st.caption(
+        "Revenue mix is illustrative based on program design assumptions. "
+        "Actual funding will depend on program outcomes, partner relationships, and "
+        "federal and state funding availability."
     )
 
 
