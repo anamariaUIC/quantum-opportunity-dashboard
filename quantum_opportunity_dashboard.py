@@ -199,7 +199,7 @@ with st.sidebar:
     )
     sub_choice = st.radio(
         "nav",
-        ["Why Now?", "Workforce Bridge", "Why Chicago WHPC?"],
+        ["Why Now?", "Workforce Bridge", "Why Chicago WHPC?", "Theory of Change"],
         label_visibility="collapsed",
         key="nav_main",
         index=0
@@ -213,12 +213,13 @@ with st.sidebar:
     evidence_groups = {
         "The Ecosystem": ["Ecosystem Map", "Emerging Workforce Roles", "Talent Retention", "Building the Ecosystem"],
         "The Evidence":  ["South Side Strengths and Assets", "Geographic Proximity",
-                          "Community Profiles", "Community Opportunity and Vulnerability Analysis"],
+                          "Community Profiles", "Community Opportunity Landscape",
+                          "Community Opportunity Landscape"],
         "The Program":   ["Program Architecture", "Participant Deliverables",
-                          "Scaling Pathway", "Winter 2026 Pilot Metrics",
-                          "Theory of Change", "Illinois Alignment"],
+                          "Scaling Pathway", "Winter 2026 Pilot Metrics"],
+        "Policy":        ["Illinois Alignment", "Stakeholder Map Overview"],
         "Get Involved":  ["Community Impact Dashboard", "Partnership Opportunities"],
-        "Methodology":   ["Methodology and Data Sources"],
+        "Methodology":   ["Methodology and Data Sources", "Community Readiness Profile (Appendix)"],
     }
     for group_label, pages in evidence_groups.items():
         with st.expander(group_label, expanded=False):
@@ -1641,7 +1642,7 @@ if sub_choice == "Community Profiles":
     )
 
 
-if sub_choice == "Community Opportunity and Vulnerability Analysis":
+if sub_choice == "Community Opportunity Landscape":
     section_header("Priority Communities Analysis",
                    "Component indicators shown separately. Note: this page presents a planning heuristic, not a validated index. See Opportunity and Vulnerability Analysis for a non-scored approach.")
 
@@ -3380,9 +3381,9 @@ if sub_choice == "Winter 2026 Pilot Metrics":
 # ══════════════════════════════════════════════════════════════════════════════
 # PRIORITY COMMUNITIES ANALYSIS (replaces composite score page)
 # ══════════════════════════════════════════════════════════════════════════════
-if sub_choice == "Community Opportunity and Vulnerability Analysis":
-    section_header("Community Opportunity and Vulnerability Analysis",
-                   "Community comparison using established public datasets. No composite scores or custom indices.")
+if sub_choice == "Community Opportunity Landscape":
+    section_header("Community Opportunity Landscape",
+                   "Which communities have the greatest potential to participate in Illinois's advanced technology economy?")
 
     callout(
         "<strong>Methodology:</strong> This analysis uses established public datasets directly rather than "
@@ -3986,6 +3987,72 @@ if sub_choice == "Methodology and Data Sources":
         "vulnerability measure were informed by Statchen et al. (2026), 'The 2013 mass public school "
         "closure and firearm violence in Chicago,' Social Science and Medicine 403, which used SVI "
         "to balance treatment and control groups in neighborhood-level analysis."
+    )
+
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# COMMUNITY READINESS PROFILE - APPENDIX
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Community Readiness Profile (Appendix)":
+    section_header("Community Readiness Profile",
+                   "Planning heuristic only. Moved to appendix. For primary analysis see Community Opportunity Landscape.")
+
+    callout(
+        "<strong>Important methodological note:</strong> This page presents a weighted planning heuristic "
+        "that combines educational attainment gap (45%), HS graduation strength (25%), college enrollment "
+        "culture (20%), and youth population reach (10%). These weights reflect program design priorities "
+        "and are NOT empirically derived or validated. This page is retained for transparency and "
+        "internal planning purposes only. "
+        "The primary community analysis is the <strong>Community Opportunity Landscape</strong> page, "
+        "which uses observable indicators without weighting."
+    )
+
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# STAKEHOLDER MAP OVERVIEW
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Stakeholder Map Overview":
+    section_header("Stakeholder Map",
+                   "The quantum ecosystem in Illinois spans six sectors. Chicago WHPC connects the civic layer to all others.")
+
+    st.caption("See also: Illinois Alignment page for detailed alignment with each institutional partner.")
+
+    stakeholder_groups = {
+        "Government": (NAVY, ["State of Illinois (DCEO)", "City of Chicago", "Cook County BED", "Illinois General Assembly"]),
+        "Research": (TEAL, ["Argonne National Laboratory", "Fermilab", "National Quantum Algorithm Center"]),
+        "Universities": (GOLD, ["University of Chicago", "University of Illinois Chicago", "Northwestern University", "UIUC"]),
+        "Industry": (GREEN, ["IBM Quantum", "PsiQuantum", "Infleqtion", "EeroQ", "Quantum Machines"]),
+        "Education": ("#8E44AD", ["Chicago Public Schools", "City Colleges of Chicago", "Olive Harvey College"]),
+        "Civic Layer": (RED, ["Chicago WHPC", "South Side Libraries", "Community Organizations"]),
+    }
+
+    cols = st.columns(3)
+    for i, (group, (color, members)) in enumerate(stakeholder_groups.items()):
+        with cols[i % 3]:
+            is_civic = group == "Civic Layer"
+            items_html = "".join(
+                f"<div style='font-size:0.82rem;color:{NAVY};margin:4px 0;"
+                f"padding-left:6px;border-left:2px solid {color}55'>{m}</div>"
+                for m in members
+            )
+            st.markdown(
+                f"<div style='background:{color}{'25' if is_civic else '12'};"
+                f"border:{'2.5px' if is_civic else '1.5px'} solid {color};"
+                f"border-radius:8px;padding:14px;margin:6px 0;height:100%'>"
+                f"<div style='font-weight:700;color:{color};font-size:0.9rem;"
+                f"margin-bottom:10px'>{group}</div>"
+                f"{items_html}"
+                f"{'<div style="margin-top:10px;font-size:0.75rem;color:' + color + ';font-style:italic">Connects all other sectors to community</div>' if is_civic else ''}"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+
+    callout(
+        "Policy makers think in systems, not programs. This stakeholder map positions "
+        "Quantum x HPC Pathways as a connector in an existing ecosystem - not a standalone initiative. "
+        "Chicago WHPC's role is to create the civic navigation layer that no other organization currently provides."
     )
 
 
