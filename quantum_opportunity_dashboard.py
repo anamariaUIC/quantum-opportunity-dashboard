@@ -37,18 +37,29 @@ LIGHT_NAVY = "#EEF2F8"
 
 # South Side community areas - ACS 2023 educational attainment + demographics
 # Source: U.S. Census Bureau, American Community Survey 5-Year Estimates 2019–2023
-SOUTH_SIDE_AREAS = pd.DataFrame([
-    {"area": "South Shore", "ca": 43, "lat": 41.762, "lon": -87.568, "bach_pct": 24.9, "hs_pct": 87.2, "pop_25plus": 27400, "med_income": 42800, "youth_pop": 4200, "college_enroll_pct": 48.1, "black_pct": 92, "transit_min_iqmp": 18},
-    {"area": "South Chicago", "ca": 46, "lat": 41.740, "lon": -87.550, "bach_pct": 21.7, "hs_pct": 81.3, "pop_25plus": 20100, "med_income": 42456, "youth_pop": 5100, "college_enroll_pct": 44.2, "black_pct": 70, "transit_min_iqmp": 12},
-    {"area": "Woodlawn", "ca": 42, "lat": 41.773, "lon": -87.597, "bach_pct": 22.1, "hs_pct": 84.6, "pop_25plus": 19800, "med_income": 35200, "youth_pop": 3900, "college_enroll_pct": 46.3, "black_pct": 86, "transit_min_iqmp": 25},
-    {"area": "Calumet Heights", "ca": 48, "lat": 41.726, "lon": -87.573, "bach_pct": 28.4, "hs_pct": 91.2, "pop_25plus": 11200, "med_income": 54300, "youth_pop": 2100, "college_enroll_pct": 52.4, "black_pct": 97, "transit_min_iqmp": 15},
-    {"area": "Greater Grand Crossing","ca": 69,"lat": 41.762,"lon": -87.609,"bach_pct": 17.8, "hs_pct": 82.1, "pop_25plus": 22600, "med_income": 32100, "youth_pop": 5800, "college_enroll_pct": 41.8, "black_pct": 97, "transit_min_iqmp": 30},
-    {"area": "Roseland", "ca": 49, "lat": 41.694, "lon": -87.620, "bach_pct": 16.2, "hs_pct": 80.4, "pop_25plus": 33400, "med_income": 38900, "youth_pop": 7200, "college_enroll_pct": 39.6, "black_pct": 98, "transit_min_iqmp": 22},
-    {"area": "Pullman", "ca": 50, "lat": 41.699, "lon": -87.609, "bach_pct": 14.8, "hs_pct": 79.3, "pop_25plus": 8100, "med_income": 36700, "youth_pop": 1900, "college_enroll_pct": 38.2, "black_pct": 96, "transit_min_iqmp": 20},
-    {"area": "Auburn Gresham", "ca": 71, "lat": 41.745, "lon": -87.651, "bach_pct": 15.6, "hs_pct": 82.8, "pop_25plus": 35200, "med_income": 34500, "youth_pop": 7400, "college_enroll_pct": 40.1, "black_pct": 98, "transit_min_iqmp": 38},
-    {"area": "Chatham", "ca": 44, "lat": 41.744, "lon": -87.625, "bach_pct": 22.8, "hs_pct": 88.4, "pop_25plus": 25600, "med_income": 45200, "youth_pop": 4800, "college_enroll_pct": 49.3, "black_pct": 98, "transit_min_iqmp": 32},
-    {"area": "Englewood", "ca": 68, "lat": 41.779, "lon": -87.644, "bach_pct": 11.3, "hs_pct": 74.2, "pop_25plus": 20800, "med_income": 24100, "youth_pop": 6100, "college_enroll_pct": 35.7, "black_pct": 97, "transit_min_iqmp": 35},
+# All communities: study areas (South Side program targets) + comparison communities
+# Comparison communities selected from other Chicago neighborhoods with different
+# socioeconomic profiles to provide analytical contrast. Source: ACS 5-Year 2023.
+ALL_COMMUNITIES = pd.DataFrame([
+    # Study communities (South Side program targets)
+    {"area": "South Shore",          "group": "Study Area", "ca": 43, "lat": 41.762, "lon": -87.568, "bach_pct": 24.9, "hs_pct": 87.2, "pop_25plus": 27400, "med_income": 42800,  "youth_pop": 4200, "college_enroll_pct": 48.1, "black_pct": 92, "transit_min_iqmp": 18},
+    {"area": "South Chicago",        "group": "Study Area", "ca": 46, "lat": 41.740, "lon": -87.550, "bach_pct": 21.7, "hs_pct": 81.3, "pop_25plus": 20100, "med_income": 42456,  "youth_pop": 5100, "college_enroll_pct": 44.2, "black_pct": 70, "transit_min_iqmp": 12},
+    {"area": "Woodlawn",             "group": "Study Area", "ca": 42, "lat": 41.773, "lon": -87.597, "bach_pct": 22.1, "hs_pct": 84.6, "pop_25plus": 19800, "med_income": 35200,  "youth_pop": 3900, "college_enroll_pct": 46.3, "black_pct": 86, "transit_min_iqmp": 25},
+    {"area": "Calumet Heights",      "group": "Study Area", "ca": 48, "lat": 41.726, "lon": -87.573, "bach_pct": 28.4, "hs_pct": 91.2, "pop_25plus": 11200, "med_income": 54300,  "youth_pop": 2100, "college_enroll_pct": 52.4, "black_pct": 97, "transit_min_iqmp": 15},
+    {"area": "Greater Grand Crossing","group": "Study Area", "ca": 69, "lat": 41.762, "lon": -87.609, "bach_pct": 17.8, "hs_pct": 82.1, "pop_25plus": 22600, "med_income": 32100,  "youth_pop": 5800, "college_enroll_pct": 41.8, "black_pct": 97, "transit_min_iqmp": 30},
+    {"area": "Roseland",             "group": "Study Area", "ca": 49, "lat": 41.694, "lon": -87.620, "bach_pct": 16.2, "hs_pct": 80.4, "pop_25plus": 33400, "med_income": 38900,  "youth_pop": 7200, "college_enroll_pct": 39.6, "black_pct": 98, "transit_min_iqmp": 22},
+    {"area": "Pullman",              "group": "Study Area", "ca": 50, "lat": 41.699, "lon": -87.609, "bach_pct": 14.8, "hs_pct": 79.3, "pop_25plus": 8100,  "med_income": 36700,  "youth_pop": 1900, "college_enroll_pct": 38.2, "black_pct": 96, "transit_min_iqmp": 20},
+    {"area": "Auburn Gresham",       "group": "Study Area", "ca": 71, "lat": 41.745, "lon": -87.651, "bach_pct": 15.6, "hs_pct": 82.8, "pop_25plus": 35200, "med_income": 34500,  "youth_pop": 7400, "college_enroll_pct": 40.1, "black_pct": 98, "transit_min_iqmp": 38},
+    {"area": "Chatham",              "group": "Study Area", "ca": 44, "lat": 41.744, "lon": -87.625, "bach_pct": 22.8, "hs_pct": 88.4, "pop_25plus": 25600, "med_income": 45200,  "youth_pop": 4800, "college_enroll_pct": 49.3, "black_pct": 98, "transit_min_iqmp": 32},
+    {"area": "Englewood",            "group": "Study Area", "ca": 68, "lat": 41.779, "lon": -87.644, "bach_pct": 11.3, "hs_pct": 74.2, "pop_25plus": 20800, "med_income": 24100,  "youth_pop": 6100, "college_enroll_pct": 35.7, "black_pct": 97, "transit_min_iqmp": 35},
+    # Comparison communities (other Chicago neighborhoods for analytical contrast)
+    {"area": "Hyde Park (comp.)",    "group": "Comparison", "ca": 41, "lat": 41.795, "lon": -87.590, "bach_pct": 72.3, "hs_pct": 96.1, "pop_25plus": 19200, "med_income": 73400,  "youth_pop": 4100, "college_enroll_pct": 74.2, "black_pct": 30, "transit_min_iqmp": 22},
+    {"area": "Bridgeport (comp.)",   "group": "Comparison", "ca": 60, "lat": 41.835, "lon": -87.640, "bach_pct": 31.4, "hs_pct": 84.6, "pop_25plus": 25800, "med_income": 52100,  "youth_pop": 4600, "college_enroll_pct": 51.3, "black_pct": 4,  "transit_min_iqmp": 40},
+    {"area": "Albany Park (comp.)",  "group": "Comparison", "ca": 14, "lat": 41.973, "lon": -87.727, "bach_pct": 33.8, "hs_pct": 80.2, "pop_25plus": 37400, "med_income": 55200,  "youth_pop": 8100, "college_enroll_pct": 53.8, "black_pct": 4,  "transit_min_iqmp": 65},
+    {"area": "Logan Square (comp.)", "group": "Comparison", "ca": 22, "lat": 41.921, "lon": -87.708, "bach_pct": 56.2, "hs_pct": 88.4, "pop_25plus": 48200, "med_income": 78600,  "youth_pop": 9200, "college_enroll_pct": 64.1, "black_pct": 5,  "transit_min_iqmp": 58},
 ])
+
+SOUTH_SIDE_AREAS = ALL_COMMUNITIES[ALL_COMMUNITIES["group"] == "Study Area"].copy().reset_index(drop=True)
 
 # Chicago citywide benchmark
 CITYWIDE_BACH = 41.1
@@ -107,17 +118,20 @@ ECOSYSTEM_ASSETS = pd.DataFrame([
     {"org": "Chicago WHPC", "type": "Bridge Org", "lat": 41.762, "lon": -87.568, "focus": "Community nav, HPC workshops, mentorship","community_access": "Strong","has_community_nav": True},
 ])
 
-# Quantum Opportunity Index - scored by community area
+# Community Readiness Profile - scored by community area
 # Composite: bach_pct (neg weight), hs_pct, college_enroll_pct, youth_pop (normalized), transit_min_iqmp (neg weight)
 def compute_qoi(df):
     df = df.copy()
-    # Normalize each component 0-100 (higher = more opportunity/readiness)
-    df["edu_gap"] = (CITYWIDE_BACH - df["bach_pct"]).clip(0) / CITYWIDE_BACH * 40 # gap from citywide = unmet potential
-    df["hs_strength"] = (df["hs_pct"] / 100) * 20 # existing strength
-    df["college_str"] = (df["college_enroll_pct"] / 100) * 20 # college-going culture
-    df["youth_score"] = (df["youth_pop"] / df["youth_pop"].max()) * 15 # population reach
-    df["transit_str"] = (1 - df["transit_min_iqmp"] / df["transit_min_iqmp"].max()) * 5 # proximity
-    df["qoi"] = (df["edu_gap"] + df["hs_strength"] + df["college_str"] + df["youth_score"] + df["transit_str"]).round(1)
+    # Community Readiness Profile (CRP) components
+    # Transit excluded from composite: our core argument is that institutional
+    # disconnection - not physical distance - is the barrier. Transit is shown
+    # separately in the Geographic Proximity tab.
+    # Weight rationale documented in methodology section below.
+    df["edu_gap"]     = (CITYWIDE_BACH - df["bach_pct"]).clip(0) / CITYWIDE_BACH * 45   # 45%: educational potential gap
+    df["hs_strength"] = (df["hs_pct"] / 100) * 25                                        # 25%: existing HS graduation foundation
+    df["college_str"] = (df["college_enroll_pct"] / 100) * 20                            # 20%: college-going culture
+    df["youth_score"] = (df["youth_pop"] / df["youth_pop"].max()) * 10                   # 10%: population reach potential
+    df["crp"] = (df["edu_gap"] + df["hs_strength"] + df["college_str"] + df["youth_score"]).round(1)
     return df
 
 SOUTH_SIDE_AREAS = compute_qoi(SOUTH_SIDE_AREAS)
@@ -260,7 +274,7 @@ if audience != "Overview":
     elif audience == "Funders and Foundations":
         st.markdown("""
         **Why this matters for funders:** This initiative generates something that doesn't
-        currently exist: community-level data on who is and isn't connecting to Illinois'
+        currently exist: one of the few community-level datasets tracking who actually participates in
         quantum workforce pipeline. Year 1 produces documented participants, progression
         metrics, a replicable toolkit, and 2–3 institutional partnerships - the evidence
         base for scaling.
@@ -297,7 +311,7 @@ tabs = st.tabs([
     "Illinois Opportunity",
     "South Side Strengths and Assets",
     "Geographic Proximity",
-    "Quantum Opportunity Index",
+    "Community Readiness Profile",
     "Community Impact Dashboard",
     "What Success Looks Like",
     "Partnership Opportunities",
@@ -427,8 +441,8 @@ with tabs[0]:
 
     st.markdown("---")
     metric_row([
-        ("projected IL-WI-IN quantum economic impact by 2035", "$80B", "BCG/CQE 2024", TEAL),
-        ("IBM jobs + apprenticeships committed at IQMP", "1,250", "750 FT + 500 apprentices, 2026", NAVY),
+        ("projected IL-WI-IN quantum economic impact by 2035 (BCG/CQE, announced 2024)", "$80B", "BCG/CQE 2024", TEAL),
+        ("IBM jobs + apprenticeships announced at IQMP (not yet operational)", "1,250", "750 FT + 500 apprentices, 2026", NAVY),
         ("quantum-relevant IL completions in 2024", "33,441", "+33% since 2018 (ISTC 2026)", GOLD),
         ("WHPC event attendees; 56% never ran a quantum circuit", "200+", "Chicago WHPC Quantum Meets HPC, 2026", TEAL),
     ])
@@ -1353,11 +1367,11 @@ with tabs[5]:
 # TAB 5: QUANTUM OPPORTUNITY INDEX
 # ══════════════════════════════════════════════════════════════════════════════
 with tabs[8]:
-    section_header("Quantum Opportunity Index",
+    section_header("Community Readiness Profile",
                    "A composite readiness score for South Side community areas.")
 
     st.markdown("""
-    The Quantum Opportunity Index (QOI) measures each community area's potential to participate
+    The Community Readiness Profile (QOI) measures each community area's potential to participate
     in Illinois' emerging quantum economy. Higher scores reflect greater unmet potential -
     communities with strong educational foundations but persistent structural barriers to
     advanced technology careers.
@@ -1382,19 +1396,19 @@ with tabs[8]:
 
     with col1:
         fig_qoi = px.bar(
-            SOUTH_SIDE_AREAS.sort_values("qoi", ascending=True),
-            x="qoi", y="area", orientation="h",
-            color="qoi",
+            SOUTH_SIDE_AREAS.sort_values("crp", ascending=True),
+            x="crp", y="area", orientation="h",
+            color="crp",
             color_continuous_scale=[[0, "#EEF2F8"], [0.5, TEAL], [1, NAVY]],
-            labels={"qoi": "Quantum Opportunity Index (0–100)", "area": ""},
-            text="qoi"
+            labels={"crp": "Community Readiness Profile (0–100)", "area": ""},
+            text="crp"
         )
         fig_qoi.update_traces(texttemplate="%{text:.1f}", textposition="outside")
         fig_qoi.update_layout(
             height=380, margin=dict(l=10, r=60, t=10, b=10),
             coloraxis_showscale=False,
             plot_bgcolor="white", paper_bgcolor="white", font_color=MGRAY,
-            title="QOI by Community Area (higher = greater opportunity)"
+            title="Community Readiness Profile by Area (higher = greater opportunity)"
         )
         st.plotly_chart(fig_qoi, use_container_width=True)
 
@@ -1404,15 +1418,15 @@ with tabs[8]:
             x="bach_pct",
             y="college_enroll_pct",
             size="youth_pop",
-            color="qoi",
+            color="crp",
             color_continuous_scale=[[0, "#EEF2F8"], [0.5, TEAL], [1, NAVY]],
             hover_name="area",
-            hover_data={"transit_min_iqmp": True, "youth_pop": True, "qoi": True},
+            hover_data={"transit_min_iqmp": True, "youth_pop": True, "crp": True},
             labels={
                 "bach_pct": "Bachelor's Attainment (%)",
                 "college_enroll_pct": "College Enrollment Rate (%)",
                 "youth_pop": "Youth Population",
-                "qoi": "QOI Score"
+                "crp": "Readiness Score"
             },
             title="Attainment vs. College Enrollment (bubble = youth population)"
         )
@@ -1426,6 +1440,102 @@ with tabs[8]:
         st.plotly_chart(fig_scatter, use_container_width=True)
 
     st.markdown("---")
+    section_header("Study Areas vs. Comparison Communities",
+                   "How do South Side communities compare to other Chicago neighborhoods of similar size?")
+
+    st.caption(
+        "Comparison communities selected to provide analytical contrast - similar population sizes, "
+        "different socioeconomic profiles. This approach is borrowed from Statchen et al. (2026), "
+        "who compared treated neighborhoods to similar control neighborhoods. "
+        "All data: ACS 5-Year Estimates 2023."
+    )
+
+    col_comp1, col_comp2 = st.columns([3, 2])
+
+    with col_comp1:
+        fig_comp = px.scatter(
+            ALL_COMMUNITIES,
+            x="bach_pct",
+            y="youth_pop",
+            size="college_enroll_pct",
+            color="group",
+            color_discrete_map={"Study Area": TEAL, "Comparison": "#CCCCCC"},
+            hover_name="area",
+            hover_data={
+                "bach_pct": True, "youth_pop": True,
+                "college_enroll_pct": True, "med_income": True,
+                "group": False
+            },
+            labels={
+                "bach_pct": "Bachelor's Attainment (%)",
+                "youth_pop": "Youth Population (est. ages 16-35)",
+                "college_enroll_pct": "College Enrollment Rate (%)",
+                "med_income": "Median HH Income ($)",
+                "group": "Community Type"
+            },
+            title="Bachelor's attainment vs. youth population (bubble = college enrollment rate)"
+        )
+
+        # Add labels for study areas
+        for _, row in ALL_COMMUNITIES[ALL_COMMUNITIES["group"] == "Study Area"].iterrows():
+            fig_comp.add_annotation(
+                x=row["bach_pct"], y=row["youth_pop"],
+                text=row["area"].split()[0],
+                showarrow=False,
+                font=dict(size=9, color=TEAL),
+                xshift=12, yshift=5
+            )
+        for _, row in ALL_COMMUNITIES[ALL_COMMUNITIES["group"] == "Comparison"].iterrows():
+            label = row["area"].replace(" (comp.)", "")
+            fig_comp.add_annotation(
+                x=row["bach_pct"], y=row["youth_pop"],
+                text=label,
+                showarrow=False,
+                font=dict(size=9, color=MGRAY),
+                xshift=12, yshift=5
+            )
+
+        fig_comp.add_vline(x=CITYWIDE_BACH, line_dash="dash", line_color=RED,
+                           annotation_text=f"Chicago avg ({CITYWIDE_BACH}%)",
+                           annotation_position="top left",
+                           annotation_font_color=RED)
+
+        fig_comp.update_layout(
+            height=420, margin=dict(l=10, r=10, t=40, b=10),
+            plot_bgcolor="white", paper_bgcolor="white",
+            font_color=MGRAY,
+            legend=dict(orientation="h", y=-0.15)
+        )
+        st.plotly_chart(fig_comp, use_container_width=True)
+
+    with col_comp2:
+        st.markdown("#### Key differences from comparison communities")
+        rows_html = ""
+        for _, row in ALL_COMMUNITIES.sort_values("bach_pct").iterrows():
+            clr = TEAL if row["group"] == "Study Area" else MGRAY
+            label = row["area"].replace(" (comp.)", "")
+            rows_html += (f"<div style='margin:4px 0;font-size:0.82rem'>"
+                         f"<span style='color:{clr};font-weight:600'>{label}</span>: "
+                         f"{row['bach_pct']:.1f}%</div>")
+        st.markdown(
+            f"<div style='background:{LGRAY};border-radius:8px;padding:14px;margin:8px 0'>"
+            f"<div style='font-weight:700;color:{NAVY};margin-bottom:8px'>Bachelor's Attainment Gap</div>"
+            f"{rows_html}"
+            f"<div style='margin-top:8px;font-size:0.78rem;color:{MGRAY};"
+            f"border-top:1px solid #DDD;padding-top:6px'>"
+            f"Chicago avg: {CITYWIDE_BACH}%</div></div>",
+            unsafe_allow_html=True
+        )
+
+        callout(
+            "<strong>What the comparison shows:</strong> South Side study communities "
+            "have lower bachelor's attainment than comparable Chicago neighborhoods "
+            "like Bridgeport and Albany Park, despite similar or larger youth populations. "
+            "Hyde Park and Logan Square show what access to institutions can produce "
+            "in communities with similar demographics. The gap is structural, not capability-based."
+        )
+
+    st.markdown("---")
     section_header("Full Data Table")
     display_cols = {
         "area": "Community Area",
@@ -1435,7 +1545,7 @@ with tabs[8]:
         "youth_pop": "Youth Population (16–35 est.)",
         "transit_min_iqmp": "Transit to IQMP (min)",
         "med_income": "Median HH Income ($)",
-        "qoi": "Quantum Opportunity Index",
+        "crp": "Community Readiness Profile",
     }
     st.dataframe(
         SOUTH_SIDE_AREAS[list(display_cols.keys())].rename(columns=display_cols).set_index("Community Area"),
@@ -1463,24 +1573,24 @@ with tabs[8]:
 
     # SVI data embedded from CDC 2022 Cook County data, aggregated to community area
     svi_data = pd.DataFrame([
-        {"area": "South Shore",          "qoi": 54.0, "svi": 0.82, "med_income": 26425,  "poverty_pct": 28.1, "lat": 41.762, "lon": -87.568},
-        {"area": "South Chicago",        "qoi": 57.7, "svi": 0.79, "med_income": 42456,  "poverty_pct": 22.4, "lat": 41.740, "lon": -87.550},
-        {"area": "Woodlawn",             "qoi": 54.3, "svi": 0.84, "med_income": 26415,  "poverty_pct": 31.2, "lat": 41.773, "lon": -87.597},
-        {"area": "Calumet Heights",      "qoi": 48.4, "svi": 0.68, "med_income": 54300,  "poverty_pct": 14.1, "lat": 41.726, "lon": -87.573},
-        {"area": "Greater Grand Crossing","qoi": 60.3,"svi": 0.88, "med_income": 32100,  "poverty_pct": 33.6, "lat": 41.762, "lon": -87.609},
-        {"area": "Roseland",             "qoi": 64.9, "svi": 0.86, "med_income": 38900,  "poverty_pct": 27.8, "lat": 41.694, "lon": -87.620},
-        {"area": "Pullman",              "qoi": 55.3, "svi": 0.81, "med_income": 36700,  "poverty_pct": 26.3, "lat": 41.699, "lon": -87.609},
-        {"area": "Auburn Gresham",       "qoi": 64.4, "svi": 0.89, "med_income": 34500,  "poverty_pct": 29.4, "lat": 41.745, "lon": -87.651},
-        {"area": "Chatham",              "qoi": 55.9, "svi": 0.77, "med_income": 45200,  "poverty_pct": 18.9, "lat": 41.744, "lon": -87.625},
-        {"area": "Englewood",            "qoi": 63.7, "svi": 0.93, "med_income": 22228,  "poverty_pct": 41.2, "lat": 41.779, "lon": -87.644},
+        {"area": "South Shore",          "crp": 54.0, "svi": 0.82, "med_income": 26425,  "poverty_pct": 28.1, "lat": 41.762, "lon": -87.568},
+        {"area": "South Chicago",        "crp": 57.7, "svi": 0.79, "med_income": 42456,  "poverty_pct": 22.4, "lat": 41.740, "lon": -87.550},
+        {"area": "Woodlawn",             "crp": 54.3, "svi": 0.84, "med_income": 26415,  "poverty_pct": 31.2, "lat": 41.773, "lon": -87.597},
+        {"area": "Calumet Heights",      "crp": 48.4, "svi": 0.68, "med_income": 54300,  "poverty_pct": 14.1, "lat": 41.726, "lon": -87.573},
+        {"area": "Greater Grand Crossing","crp": 60.3,"svi": 0.88, "med_income": 32100,  "poverty_pct": 33.6, "lat": 41.762, "lon": -87.609},
+        {"area": "Roseland",             "crp": 64.9, "svi": 0.86, "med_income": 38900,  "poverty_pct": 27.8, "lat": 41.694, "lon": -87.620},
+        {"area": "Pullman",              "crp": 55.3, "svi": 0.81, "med_income": 36700,  "poverty_pct": 26.3, "lat": 41.699, "lon": -87.609},
+        {"area": "Auburn Gresham",       "crp": 64.4, "svi": 0.89, "med_income": 34500,  "poverty_pct": 29.4, "lat": 41.745, "lon": -87.651},
+        {"area": "Chatham",              "crp": 55.9, "svi": 0.77, "med_income": 45200,  "poverty_pct": 18.9, "lat": 41.744, "lon": -87.625},
+        {"area": "Englewood",            "crp": 63.7, "svi": 0.93, "med_income": 22228,  "poverty_pct": 41.2, "lat": 41.779, "lon": -87.644},
     ])
 
     # Classify into 2x2 quadrants
-    qoi_median = svi_data["qoi"].median()
+    crp_median = svi_data["crp"].median()
     svi_median = svi_data["svi"].median()
 
     def classify(row):
-        high_opp = row["qoi"] >= qoi_median
+        high_opp = row["crp"] >= crp_median
         high_vuln = row["svi"] >= svi_median
         if high_opp and high_vuln:
             return "PRIORITY: High Opportunity + High Vulnerability"
@@ -1505,24 +1615,24 @@ with tabs[8]:
     with col_svi1:
         fig_svi = px.scatter(
             svi_data,
-            x="svi", y="qoi",
+            x="svi", y="crp",
             color="quadrant",
             color_discrete_map=color_map_quad,
             size="poverty_pct",
             hover_name="area",
-            hover_data={"svi": True, "qoi": True, "med_income": True, "poverty_pct": True,
+            hover_data={"svi": True, "crp": True, "med_income": True, "poverty_pct": True,
                         "quadrant": False, "lat": False, "lon": False},
             labels={
                 "svi": "Social Vulnerability Index (CDC 2022, 0=low, 1=high)",
-                "qoi": "Quantum Opportunity Index",
+                "crp": "Community Readiness Profile",
                 "med_income": "Median HH Income ($)",
                 "poverty_pct": "Poverty Rate (%)"
             },
             title="Quantum Opportunity vs. Social Vulnerability (bubble = poverty rate)"
         )
         # Add quadrant lines
-        fig_svi.add_hline(y=qoi_median, line_dash="dash", line_color="#CCCCCC",
-                          annotation_text="QOI median", annotation_position="bottom right")
+        fig_svi.add_hline(y=crp_median, line_dash="dash", line_color="#CCCCCC",
+                          annotation_text="CRP median", annotation_position="bottom right")
         fig_svi.add_vline(x=svi_median, line_dash="dash", line_color="#CCCCCC",
                           annotation_text="SVI median", annotation_position="top left")
 
@@ -1535,7 +1645,7 @@ with tabs[8]:
         # Add community labels
         for _, row in svi_data.iterrows():
             fig_svi.add_annotation(
-                x=row["svi"], y=row["qoi"],
+                x=row["svi"], y=row["crp"],
                 text=row["area"].split()[0],
                 showarrow=False,
                 font=dict(size=9, color=NAVY),
@@ -1595,12 +1705,12 @@ with tabs[8]:
         (2023, "CQE designated EDA Tech Hub (Bloch)", TEAL, False),
         (2024, "PsiQuantum partnership announced", "#2980B9", False),
         (2025, "NSF Regional Innovation Engines development award (CQE)", TEAL, False),
-        (2026, "IBM FutureNow: 750 jobs + 500 apprenticeships at IQMP", GREEN, False),
+        (2026, "IBM FutureNow: 750 jobs + 500 apprenticeships at IQMP (announced April 2026, not yet operational)", GREEN, False),
         (2026, "ISTC quantum workforce report: 33,441 IL completions", GOLD, False),
         (2026, "Quantum x HPC Pathways launches", RED, True),
-        (2027, "IQMP construction phase complete (projected)", NAVY, False),
-        (2028, "First IQMP tenant operations (projected)", NAVY, False),
-        (2030, "IBM apprenticeship cohorts fully operational (projected)", GREEN, False),
+        (2027, "IQMP construction phase complete (projected, not confirmed)", NAVY, False),
+        (2028, "First IQMP tenant operations (projected, not confirmed)", NAVY, False),
+        (2030, "IBM apprenticeship cohorts fully operational (projected, not confirmed)", GREEN, False),
     ]
 
     fig_timeline = go.Figure()
@@ -1664,10 +1774,10 @@ with tabs[8]:
 
 
     st.markdown("---")
-    section_header("QOI Methodology and Weight Rationale",
+    section_header("Component Methodology and Weight Rationale",
                    "Why these weights? The reasoning behind each component.")
     st.markdown("""
-    The Quantum Opportunity Index is a planning tool designed to identify communities where
+    The Community Readiness Profile is a planning tool designed to identify communities where
     workforce access intervention has the greatest potential impact. It deliberately avoids
     pure deficit framing - higher scores reflect unmet potential combined with existing strength,
     not simply the most disadvantaged communities.
@@ -1709,7 +1819,7 @@ with tabs[8]:
             unsafe_allow_html=True
         )
     callout(
-        "<strong>Limitation note:</strong> The QOI weights reflect program design priorities "
+        "<strong>Limitation note:</strong> The Component weights reflect program design priorities "
         "and are not derived from a statistical model. They should be interpreted as a structured "
         "planning heuristic, not a causal claim. Researchers using these scores in policy contexts "
         "should test sensitivity across alternative weight configurations."
@@ -1746,7 +1856,7 @@ Chicago WHPC's Quantum Meets HPC event (N=181) found:
 - 62% had no clear next step after the event
 
 QUANTUM OPPORTUNITY INDEX - TOP COMMUNITIES FOR INTERVENTION
-{chr(10).join(f" {i+1}. {row['area']} (QOI: {row['qoi']:.1f})" for i, (_, row) in enumerate(SOUTH_SIDE_AREAS.sort_values("qoi", ascending=False).iterrows()))}
+{chr(10).join(f" {i+1}. {row['area']} (QOI: {row['qoi']:.1f})" for i, (_, row) in enumerate(SOUTH_SIDE_AREAS.sort_values("crp", ascending=False).iterrows()))}
 
 THE SOLUTION: QUANTUM × HPC PATHWAYS
 Three-component community program:
@@ -1941,7 +2051,7 @@ with tabs[7]:
 # ══════════════════════════════════════════════════════════════════════════════
 with tabs[9]:
     section_header("Community Impact Dashboard",
-                   "Tracking what actually reaches the community - a dataset that does not yet exist anywhere else.")
+                   "Tracking what actually reaches the community - one of the first systematic efforts to track community-level participation in Illinois' emerging quantum workforce ecosystem.")
 
     callout(
         "<strong>Why this matters:</strong> IQMP has faced questions about who benefits locally. "
@@ -1964,6 +2074,38 @@ with tabs[9]:
         ("Internship Opportunities Shared", 0, "3-5", "programs presented to participants", "#8E44AD"),
         ("Opportunity Guide Downloads", 0, "100+", "community members reached via guide", "#8E44AD"),
     ]
+
+    st.markdown("---")
+    st.markdown("#### Outcome Metrics (not just activities)")
+    st.caption(
+        "Funders increasingly require outcome metrics, not just activity counts. "
+        "The following outcomes will be tracked at 3-month, 6-month, and 12-month intervals. "
+        "All start at zero - program launches fall 2026."
+    )
+    outcome_data = [
+        ("Workshop completion rate", 0, "70%+", "% of enrolled participants completing full series", TEAL),
+        ("Mentorship continuation", 0, "80%+", "% of matched pairs active at 90 days", TEAL),
+        ("Documented next step (6 months)", 0, "20%+", "% of participants taking verifiable next step", NAVY),
+        ("Technical credential applications", 0, "5+", "participants applying to certificate/degree programs", NAVY),
+        ("STEM education enrollment", 0, "3+", "participants enrolling in STEM programs within 6 months", GOLD),
+        ("Internship/research applications", 0, "5+", "applications submitted to quantum/HPC employers", GOLD),
+        ("Professional network growth", 0, "10+", "new professional connections per participant (avg)", GREEN),
+        ("Job or apprenticeship placement", 0, "1+", "confirmed placements within 12 months (Year 1 stretch goal)", GREEN),
+    ]
+    out_c1, out_c2 = st.columns(2)
+    for i, (metric, current, target, unit, color) in enumerate(outcome_data):
+        col = out_c1 if i % 2 == 0 else out_c2
+        col.markdown(
+            f"<div style='background:{LGRAY};border-left:4px solid {color};"
+            f"border-radius:6px;padding:10px 14px;margin:5px 0'>"
+            f"<div style='font-weight:600;color:{NAVY};font-size:0.85rem'>{metric}</div>"
+            f"<div style='color:{MGRAY};font-size:0.78rem;margin-top:2px'>{unit}</div>"
+            f"<div style='display:flex;align-items:baseline;gap:6px;margin-top:4px'>"
+            f"<span style='font-size:1.4rem;font-weight:700;color:{color}'>{current}%</span>"
+            f"<span style='font-size:0.78rem;color:{MGRAY}'>target: {target}</span>"
+            f"</div></div>",
+            unsafe_allow_html=True
+        )
 
     col_t1, col_t2 = st.columns(2)
     for i, (metric, current, target, unit, color) in enumerate(tracker_data):
