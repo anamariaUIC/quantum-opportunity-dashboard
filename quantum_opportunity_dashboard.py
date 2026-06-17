@@ -213,8 +213,7 @@ with st.sidebar:
     evidence_groups = {
         "The Ecosystem": ["Ecosystem Map", "Emerging Workforce Roles", "Talent Retention", "Building the Ecosystem"],
         "The Evidence":  ["South Side Strengths and Assets", "Geographic Proximity",
-                          "Community Profiles", "Community Opportunity Landscape",
-                          "Community Opportunity Landscape"],
+                          "Community Profiles", "Community Opportunity Landscape"],
         "The Program":   ["Program Architecture", "Participant Deliverables",
                           "Scaling Pathway", "Winter 2026 Pilot Metrics"],
         "Policy":        ["Illinois Alignment", "Stakeholder Map Overview"],
@@ -1642,12 +1641,12 @@ if sub_choice == "Community Profiles":
     )
 
 
-if sub_choice == "Community Opportunity Landscape":
-    section_header("Priority Communities Analysis",
-                   "Component indicators shown separately. Note: this page presents a planning heuristic, not a validated index. See Opportunity and Vulnerability Analysis for a non-scored approach.")
+if sub_choice == "Community Readiness Profile (Appendix)":
+    section_header("Community Readiness Profile",
+                   "Component indicators shown separately. Note: this page presents a planning heuristic, not a validated index. See Community Opportunity Landscape for a non-scored framework.")
 
     st.markdown("""
-    The Community Readiness Profile presents component indicators for each community area. Higher scores reflect greater unmet potential combined with existing strengths. Note: weight rationale is disclosed in the methodology section below. For a non-scored comparison, see the Opportunity and Vulnerability Analysis page.
+    <strong>Note:</strong> This is a planning heuristic only, not a validated index. See Community Opportunity Landscape for a non-scored framework. Component weights (45% educational gap, 25% HS graduation, 20% college enrollment, 10% youth population) reflect program design priorities and have not been empirically validated.
     in Illinois' emerging quantum economy. Higher scores reflect greater unmet potential -
     communities with strong educational foundations but persistent structural barriers to
     advanced technology careers.
@@ -3839,6 +3838,19 @@ if sub_choice == "Building the Ecosystem":
 if sub_choice == "Methodology and Data Sources":
     section_header("Methodology and Data Sources",
                    "How this dashboard was built, what data it uses, and what it cannot claim.")
+
+    st.markdown(
+        f"<div style='background:{NAVY};color:white;border-radius:10px;padding:20px 24px;margin-bottom:20px'>"
+        f"<div style='font-weight:700;font-size:1rem;margin-bottom:8px'>Methodology Position Statement</div>"
+        f"<div style='font-size:0.88rem;line-height:1.6;opacity:0.95'>"
+        f"This strategy uses descriptive statistics and publicly available data to identify communities "
+        f"where advanced technology workforce initiatives may have the greatest potential impact. "
+        f"The analysis is intended for planning and ecosystem development purposes and should not be "
+        f"interpreted as causal evidence or predictive modeling. All figures are planning estimates "
+        f"derived from public datasets with known sampling uncertainty."
+        f"</div></div>",
+        unsafe_allow_html=True
+    )
 
     callout(
         "This dashboard is a planning and advocacy tool, not a research instrument. "
