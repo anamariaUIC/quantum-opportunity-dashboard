@@ -604,7 +604,7 @@ if sub_choice == "South Side Strengths and Assets":
         fig_hs.add_vline(x=CITYWIDE_HS, line_dash="dash", line_color=NAVY,
                          annotation_text=f"Chicago avg: {CITYWIDE_HS}%",
                          annotation_position="top right")
-        fig_hs.update_traces(texttemplate="%{text:.1f}%", textposition="outside")
+        fig_hs.update_traces(texttemplate="%{text:.1f}%", textposition="inside", insidetextanchor="end")
         fig_hs.update_layout(height=360, margin=dict(l=10, r=60, t=10, b=10),
                              coloraxis_showscale=False,
                              plot_bgcolor="white", paper_bgcolor="white", font_color=MGRAY)
@@ -655,8 +655,8 @@ if sub_choice == "South Side Strengths and Assets":
         fig_coll.add_vline(x=66, line_dash="dash", line_color=GREEN,
                           annotation_text="CPS district avg: 66%",
                           annotation_position="top right")
-        fig_coll.update_traces(texttemplate="%{text:.1f}%", textposition="outside")
-        fig_coll.update_layout(height=360, margin=dict(l=10, r=80, t=10, b=10),
+        fig_coll.update_traces(texttemplate="%{text:.1f}%", textposition="inside", insidetextanchor="end")
+        fig_coll.update_layout(height=360, margin=dict(l=10, r=20, t=10, b=10),
                                coloraxis_showscale=False,
                                plot_bgcolor="white", paper_bgcolor="white", font_color=MGRAY)
         st.plotly_chart(fig_coll, use_container_width=True)
@@ -1581,9 +1581,9 @@ if sub_choice == "Opportunity + Vulnerability Matrix":
             labels={"crp": "Community Readiness Profile (0–100)", "area": ""},
             text="crp"
         )
-        fig_qoi.update_traces(texttemplate="%{text:.1f}", textposition="outside")
+        fig_qoi.update_traces(texttemplate="%{text:.1f}", textposition="inside", insidetextanchor="end", textfont_color="white")
         fig_qoi.update_layout(
-            height=380, margin=dict(l=10, r=60, t=10, b=10),
+            height=380, margin=dict(l=10, r=20, t=40, b=10),
             coloraxis_showscale=False,
             plot_bgcolor="white", paper_bgcolor="white", font_color=MGRAY,
             title="Community Readiness Profile by Area (higher = greater opportunity)"
@@ -1666,7 +1666,7 @@ if sub_choice == "Opportunity + Vulnerability Matrix":
         for _, row in ALL_COMMUNITIES[ALL_COMMUNITIES["group"] == "Study Area"].iterrows():
             fig_comp.add_annotation(
                 x=row["bach_pct"], y=row["youth_pop"],
-                text=row["area"].split()[0],
+                text=" ".join(row["area"].split()[:2]).replace(" (comp.)", ""),
                 showarrow=False,
                 font=dict(size=9, color=TEAL),
                 xshift=12, yshift=5
@@ -1832,7 +1832,7 @@ if sub_choice == "Opportunity + Vulnerability Matrix":
         for _, row in svi_data.iterrows():
             fig_svi.add_annotation(
                 x=row["svi"], y=row["crp"],
-                text=row["area"].split()[0],
+                text=" ".join(row["area"].split()[:2]).replace(" (comp.)", ""),
                 showarrow=False,
                 font=dict(size=9, color=NAVY),
                 xshift=12, yshift=8
