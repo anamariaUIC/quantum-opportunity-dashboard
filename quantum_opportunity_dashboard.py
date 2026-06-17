@@ -289,24 +289,26 @@ if audience != "Overview":
         ], GOLD)
 
 tabs = st.tabs([
-    "The Missing Middle",
-    "The Opportunity",
-    "South Side Strengths and Gaps",
+    "Workforce Bridge",
+    "Why Chicago WHPC?",
     "Ecosystem Map",
     "Pathway Ladder",
-    "Quantum Skills Map",
-    "Quantum Opportunity Index",
+    "Why HPC?",
+    "Illinois Opportunity",
+    "South Side Strengths and Assets",
     "Geographic Proximity",
-    "Community Benefits Tracker",
+    "Quantum Opportunity Index",
+    "Community Impact Dashboard",
     "What Success Looks Like",
+    "Partnership Opportunities",
 ])
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 0: THE MISSING MIDDLE
+# TAB 0: WORKFORCE BRIDGE
 # ══════════════════════════════════════════════════════════════════════════════
 with tabs[0]:
-    section_header("The Missing Middle",
-                   "Awareness programs exist. Universities exist. Employers are coming. What doesn't exist is the navigation layer.")
+    section_header("Workforce Bridge",
+                   "Awareness programs exist. Educational pathways exist. Employers are coming. What is missing is a workforce bridge connecting residents to opportunity.")
 
     col1, col2 = st.columns([3, 2])
     with col1:
@@ -433,10 +435,10 @@ with tabs[0]:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 1: THE OPPORTUNITY
+# TAB 5: ILLINOIS OPPORTUNITY
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[1]:
-    section_header("Illinois' Quantum Opportunity",
+with tabs[5]:
+    section_header("Illinois Opportunity",
                    "The jobs are coming. The question is who will be ready.")
 
     col1, col2 = st.columns(2)
@@ -537,8 +539,8 @@ with tabs[1]:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 2: SOUTH SIDE STRENGTHS & GAPS
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[2]:
-    section_header("South Side: Strengths and Gaps",
+with tabs[6]:
+    section_header("South Side: Strengths and Assets",
                    "Start with what's there - not what's missing.")
 
     callout(
@@ -670,9 +672,9 @@ with tabs[2]:
     st.plotly_chart(fig_survey, use_container_width=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 3: ECOSYSTEM MAP
+# TAB 2: ECOSYSTEM MAP
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[3]:
+with tabs[2]:
     section_header("The Quantum Ecosystem Map",
                    "What exists - and where the navigation layer is missing.")
 
@@ -745,9 +747,9 @@ with tabs[3]:
         st.markdown("#### Ecosystem Assets")
         for _, row in ECOSYSTEM_ASSETS.iterrows():
             nav_badge = (
-                f"<span style='background:{GREEN};color:white;padding:1px 6px;border-radius:8px;font-size:0.7rem'>HAS NAV LAYER</span>"
+                f"<span style='background:{GREEN};color:white;padding:1px 6px;border-radius:8px;font-size:0.7rem'>Active Community Navigation</span>"
                 if row["has_community_nav"]
-                else f"<span style='background:{RED}33;color:{RED};padding:1px 6px;border-radius:8px;font-size:0.7rem'>NO COMMUNITY NAV</span>"
+                else f"<span style='background:{RED}33;color:{RED};padding:1px 6px;border-radius:8px;font-size:0.7rem'>Community Engagement Opportunity</span>"
             )
             access_color = GREEN if row["community_access"] == "Strong" else (GOLD if row["community_access"] in ["Some", "Limited"] else RED)
             st.markdown(
@@ -858,9 +860,9 @@ with tabs[3]:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 4: PATHWAY LADDER
+# TAB 3: PATHWAY LADDER
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[4]:
+with tabs[3]:
     section_header("The Pathway Ladder",
                    "From awareness to employment - every rung has a name.")
 
@@ -950,7 +952,7 @@ with tabs[4]:
             )
 
     callout(
-        " Steps 1–3 (marked ️) are the missing middle. Everything above and below them exists. "
+        " Steps 1–3 (marked ️) are the workforce bridge. Everything above and below them exists. "
         "Quantum × HPC Pathways is the connective tissue."
     )
 
@@ -1350,7 +1352,7 @@ with tabs[5]:
 
 # TAB 5: QUANTUM OPPORTUNITY INDEX
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[6]:
+with tabs[8]:
     section_header("Quantum Opportunity Index",
                    "A composite readiness score for South Side community areas.")
 
@@ -1719,10 +1721,10 @@ with tabs[7]:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 8: COMMUNITY BENEFITS TRACKER
+# TAB 9: COMMUNITY IMPACT DASHBOARD TRACKER
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[8]:
-    section_header("Community Benefits Tracker",
+with tabs[9]:
+    section_header("Community Impact Dashboard",
                    "Tracking what actually reaches the community - a dataset that does not yet exist anywhere else.")
 
     callout(
@@ -1809,9 +1811,9 @@ with tabs[8]:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 9: WHAT SUCCESS LOOKS LIKE
+# TAB 10: WHAT SUCCESS LOOKS LIKE LOOKS LIKE
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[9]:
+with tabs[10]:
     section_header("What Success Looks Like",
                    "A concrete, time-phased picture of what this program builds toward.")
 
@@ -1917,6 +1919,318 @@ with tabs[9]:
         "A successful Year 1 unlocks NSF INCLUDES, DOE workforce programs, EDA Tech Hub funding, "
         "and corporate education partnerships with IBM, NVIDIA, and AWS. "
         "The initial investment generates an evidence base that opens significantly larger funding streams."
+    )
+
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB 1: WHY CHICAGO WHPC?
+# ══════════════════════════════════════════════════════════════════════════════
+with tabs[1]:
+    section_header("Why Chicago WHPC?",
+                   "Chicago WHPC does not replace existing programs. It connects them.")
+
+    callout(
+        "Every asset in Illinois' quantum ecosystem exists. "
+        "What is missing is the community-level navigation layer. "
+        "Chicago WHPC is that layer."
+    )
+
+    # Visual flow diagram
+    flow_items = [
+        ("Awareness Programs", "Chi-Craft, DPI teacher training,\nFermilab Saturday Morning Quantum", TEAL, True),
+        ("Chicago WHPC", "HPC workshops, mentorship,\npathway navigation, community education", GOLD, True),
+        ("Educational Institutions", "City Colleges, university partners,\ncertificate programs", TEAL, True),
+        ("Employers", "IBM, IQMP tenants, Argonne,\ninternships and careers", NAVY, True),
+        ("Quantum Careers", "South Side residents in\nIllinois quantum workforce", GREEN, False),
+    ]
+
+    for i, (label, sub, color, has_arrow) in enumerate(flow_items):
+        is_whpc = label == "Chicago WHPC"
+        border = f"3px solid {color}" if not is_whpc else f"4px solid {GOLD}"
+        bg = f"{GOLD}20" if is_whpc else f"{color}10"
+        size = "1.1rem" if is_whpc else "0.95rem"
+        st.markdown(
+            f"<div style='background:{bg};border:{border};border-radius:10px;"
+            f"padding:16px 24px;margin:4px auto;max-width:500px;text-align:center'>"
+            f"<div style='font-weight:700;color:{NAVY};font-size:{size}'>{label}</div>"
+            f"<div style='color:{MGRAY};font-size:0.8rem;margin-top:4px;white-space:pre-line'>{sub}</div>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+        if has_arrow:
+            st.markdown(
+                f"<div style='text-align:center;font-size:1.5rem;color:{MGRAY};margin:2px 0'>↓</div>",
+                unsafe_allow_html=True
+            )
+
+    st.markdown("---")
+    col_w1, col_w2, col_w3 = st.columns(3)
+    for col, (title, items, color) in zip(
+        [col_w1, col_w2, col_w3],
+        [
+            ("What makes Chicago WHPC unique", [
+                "Founded by and for the South Side community",
+                "501(c)(3) nonprofit - not a university program",
+                "Led by someone with 14+ years of HPC expertise",
+                "300+ member professional network",
+                "Already delivered quantum computing events",
+                "Demonstrated demand: 200+ registrants, 56% awareness gap",
+            ], TEAL),
+            ("What Chicago WHPC provides", [
+                "Plain-language community education on quantum and HPC",
+                "Hands-on HPC workshops (Linux, GPU, quantum simulation)",
+                "Structured mentorship program",
+                "South Side Quantum Opportunity Guide",
+                "Professional introductions to ecosystem partners",
+                "Community-level participation data",
+            ], NAVY),
+            ("What Chicago WHPC does NOT do", [
+                "Replace CPS, DPI, or Fermilab programming",
+                "Compete with City Colleges certificate programs",
+                "Claim to train the entire quantum workforce",
+                "Promise job placements (Year 1)",
+                "Build new infrastructure from scratch",
+                "Operate without institutional partners",
+            ], GOLD),
+        ]
+    ):
+        col.markdown(
+            f"<div style='background:{color}12;border:2px solid {color}33;"
+            f"border-radius:8px;padding:16px;height:100%'>"
+            f"<div style='font-weight:700;color:{color};font-size:0.9rem;margin-bottom:12px'>{title}</div>"
+            + "".join(
+                f"<div style='font-size:0.82rem;color:{NAVY};margin:5px 0;"
+                f"padding-left:8px;border-left:2px solid {color}55'>{item}</div>"
+                for item in items
+            )
+            + "</div>",
+            unsafe_allow_html=True
+        )
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB 4: WHY HPC?
+# ══════════════════════════════════════════════════════════════════════════════
+with tabs[4]:
+    section_header("Why HPC?",
+                   "HPC provides employable skills today while preparing participants for future quantum careers.")
+
+    callout(
+        "High-performance computing is the infrastructure that makes quantum computing practical. "
+        "Every quantum workflow runs on classical HPC systems for data preparation, error correction, "
+        "and post-processing. HPC skills are not a detour from quantum - they are the foundation."
+    )
+
+    st.markdown("---")
+
+    # Technology stack visual
+    stack_items = [
+        ("Artificial Intelligence", "Machine learning, neural networks, data science - runs on HPC clusters", "#2980B9", False),
+        ("High-Performance Computing", "The infrastructure layer: Linux, GPU clusters, job scheduling, data pipelines", TEAL, True),
+        ("Scientific Computing", "Simulations, modeling, research workflows - all HPC-dependent", "#8E44AD", False),
+        ("Quantum Simulation", "Simulating quantum circuits classically - requires significant HPC resources", GOLD, False),
+        ("Quantum Computing", "QPU execution - requires HPC for pre/post-processing in every real workflow", NAVY, False),
+    ]
+
+    col_stack, col_why = st.columns([2, 3])
+    with col_stack:
+        st.markdown("#### The Computing Stack")
+        for label, sub, color, is_focus in stack_items:
+            border = f"4px solid {color}" if is_focus else f"1px solid {color}66"
+            bg = f"{color}25" if is_focus else f"{color}10"
+            weight = "700" if is_focus else "500"
+            st.markdown(
+                f"<div style='background:{bg};border-left:{border};padding:10px 14px;"
+                f"margin:4px 0;border-radius:4px'>"
+                f"<div style='font-weight:{weight};color:{NAVY};font-size:0.88rem'>{label}</div>"
+                f"<div style='color:{MGRAY};font-size:0.75rem;margin-top:2px'>{sub}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+        st.caption("Bold border = Chicago WHPC entry point")
+
+    with col_why:
+        st.markdown("#### Why start with HPC, not quantum directly?")
+        reasons = [
+            ("Jobs exist today", "HPC roles - systems administrators, research computing staff, "
+             "data engineers - are actively hiring now. Quantum-specific roles are still emerging. "
+             "HPC skills provide immediate employment potential."),
+            ("Credentials are accessible", "HPC skills can be built from a community college certificate "
+             "or a focused training program. Quantum hardware roles typically require graduate degrees. "
+             "HPC is the accessible on-ramp."),
+            ("Every quantum workflow needs HPC", "In practice, quantum computers run as hybrid systems. "
+             "Classical HPC handles data prep, error correction, and results analysis. "
+             "HPC skills are required for any real quantum computing job."),
+            ("Tools are transferable", "Linux, Python, GPU computing, data pipelines, cloud APIs - "
+             "these skills are valuable across AI, scientific computing, data science, "
+             "and quantum computing. Participants gain career flexibility."),
+            ("Infrastructure is available now", "Chicago WHPC has access to H100 NVL GPU clusters "
+             "and national HPC allocations through institutional partners. "
+             "Participants can use real systems from day one."),
+        ]
+        for title, desc in reasons:
+            st.markdown(
+                f"<div style='background:{LGRAY};border-radius:8px;padding:12px 16px;margin:8px 0'>"
+                f"<div style='font-weight:700;color:{TEAL};font-size:0.88rem'>{title}</div>"
+                f"<div style='color:{MGRAY};font-size:0.82rem;margin-top:4px'>{desc}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+
+    st.markdown("---")
+    section_header("HPC Skills Taught - and Where They Lead")
+    skills_path = [
+        ("Linux command line", "Foundation for all HPC and cloud work", "Systems admin, DevOps, research computing"),
+        ("Job scheduling (Slurm)", "Running jobs on HPC clusters", "Research computing staff, HPC operations"),
+        ("GPU computing (CUDA, CuPy)", "Accelerated computing workflows", "AI/ML engineer, scientific computing"),
+        ("Data pipelines", "Moving and processing large datasets", "Data engineer, research scientist"),
+        ("Quantum simulation (Qiskit, PennyLane)", "Simulating quantum circuits on HPC", "Quantum software developer, researcher"),
+        ("Hybrid quantum-classical workflows", "Connecting HPC and quantum processors", "Quantum computing engineer"),
+        ("Cloud APIs (AWS Braket)", "Accessing quantum hardware remotely", "Cloud computing, quantum operations"),
+    ]
+    hdr1, hdr2, hdr3 = st.columns([2, 2, 3])
+    hdr1.markdown(f"**Skill**")
+    hdr2.markdown(f"**What it enables**")
+    hdr3.markdown(f"**Career paths**")
+    for skill, enables, careers in skills_path:
+        c1, c2, c3 = st.columns([2, 2, 3])
+        c1.markdown(
+            f"<div style='background:{TEAL}15;padding:6px 10px;border-radius:4px;"
+            f"font-size:0.82rem;font-weight:600;color:{NAVY}'>{skill}</div>",
+            unsafe_allow_html=True
+        )
+        c2.markdown(f"<div style='font-size:0.82rem;color:{MGRAY};padding:8px 4px'>{enables}</div>", unsafe_allow_html=True)
+        c3.markdown(f"<div style='font-size:0.82rem;color:{TEAL};padding:8px 4px'>{careers}</div>", unsafe_allow_html=True)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB 11: PARTNERSHIP OPPORTUNITIES
+# ══════════════════════════════════════════════════════════════════════════════
+with tabs[11]:
+    section_header("Partnership Opportunities",
+                   "Specific, low-burden ways to participate in Quantum x HPC Pathways.")
+
+    callout(
+        "Chicago WHPC handles all coordination, logistics, and participant preparation. "
+        "Partners choose the engagement level that works for them. "
+        "Every contribution, large or small, directly serves South Side residents."
+    )
+
+    partner_types = [
+        {
+            "type": "Universities and Research Institutions",
+            "color": TEAL,
+            "opportunities": [
+                ("Guest lecture", "60-minute talk on your research or career path at a community session. No prep required beyond a brief bio."),
+                ("Student volunteer support", "Connect graduate students or postdocs with Chicago WHPC as volunteer facilitators or mentors."),
+                ("Facility tours", "Host 10-15 participants for a visit to your lab or computing center."),
+                ("Curriculum collaboration", "Share syllabus materials or co-develop workshop content for community audiences."),
+                ("Grant co-application", "Join as a named partner on NSF INCLUDES, DOE workforce, or EDA Tech Hub applications."),
+            ]
+        },
+        {
+            "type": "National Laboratories",
+            "color": NAVY,
+            "opportunities": [
+                ("Mentor participation", "Provide one scientist or engineer for a semester-long mentorship match. Chicago WHPC coordinates everything."),
+                ("Facility tours", "Host a community group at your facility. Seeing a national lab is often the most transformative experience for participants."),
+                ("Career panels", "Participate in a panel discussion about careers in quantum, HPC, or scientific computing. Conversational format."),
+                ("Internship visibility", "Present your student programs to workshop participants. No hiring commitment required."),
+                ("Computing resource access", "Support community participants with allocation access on national HPC systems."),
+            ]
+        },
+        {
+            "type": "Industry Partners",
+            "color": GOLD,
+            "opportunities": [
+                ("Career spotlight", "Provide 2-3 entry-level role descriptions for the South Side Quantum Opportunity Guide. One page, one-time."),
+                ("Mentor participation", "One professional, one semester. Chicago WHPC provides structure, check-ins, and coordination."),
+                ("Internship information session", "Present your early-career or apprenticeship programs directly to motivated participants."),
+                ("Workforce guidance", "Join an advisory conversation about what skills and credentials you are actively seeking."),
+                ("Workshop sponsorship", "$5K-$15K sponsors one full workshop cohort. Recognition at all sessions and in published materials."),
+            ]
+        },
+        {
+            "type": "Community Organizations",
+            "color": GREEN,
+            "opportunities": [
+                ("Venue hosting", "Provide space for community education sessions. Libraries, park district facilities, schools, community centers."),
+                ("Participant recruitment", "Help spread the word through your existing community networks and mailing lists."),
+                ("Trusted messenger", "Introduce Chicago WHPC to your community members as a known, vouched-for resource."),
+                ("Co-hosting events", "Partner on a joint public event combining your programming with quantum and HPC education."),
+            ]
+        },
+        {
+            "type": "Foundations and Funders",
+            "color": "#8E44AD",
+            "opportunities": [
+                ("Pilot support ($25K-$50K)", "Funds Year 1 programming: instructional coordination, stipends, curriculum development, and evaluation."),
+                ("Mentorship support", "Dedicated funding for mentor training, matching coordination, and 6-month outcome tracking."),
+                ("Transportation support", "Remove a real barrier: fund participant transit or childcare for workshop attendance."),
+                ("Evaluation support", "Fund independent program evaluation to build the evidence base for scaling."),
+                ("Multi-year commitment", "Year 2-3 funding unlocks toolkit development, replication in other cities, and long-term impact measurement."),
+            ]
+        },
+    ]
+
+    for partner in partner_types:
+        color = partner["color"]
+        st.markdown(
+            f"<div style='background:{color};color:white;padding:10px 18px;"
+            f"border-radius:8px;font-weight:700;font-size:1rem;margin:20px 0 8px 0'>"
+            f"{partner['type']}</div>",
+            unsafe_allow_html=True
+        )
+        cols = st.columns(len(partner["opportunities"]) if len(partner["opportunities"]) <= 3 else 3)
+        for i, (opp_title, opp_desc) in enumerate(partner["opportunities"]):
+            col = cols[i % len(cols)]
+            col.markdown(
+                f"<div style='background:{color}12;border:1.5px solid {color}44;"
+                f"border-radius:8px;padding:12px;margin:4px 0;height:100%'>"
+                f"<div style='font-weight:600;color:{NAVY};font-size:0.85rem;margin-bottom:6px'>{opp_title}</div>"
+                f"<div style='color:{MGRAY};font-size:0.78rem'>{opp_desc}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+
+    st.markdown("---")
+    st.markdown(
+        f"<div style='background:{TEAL}15;border:2px solid {TEAL};border-radius:10px;"
+        f"padding:24px;text-align:center;margin-top:16px'>"
+        f"<div style='font-size:1.2rem;font-weight:700;color:{NAVY};margin-bottom:8px'>"
+        f"Ready to participate?</div>"
+        f"<div style='color:{MGRAY};margin-bottom:12px'>"
+        f"Contact Ana Marija Sokovic, PhD - Founder and Chair, Chicago WHPC</div>"
+        f"<div style='font-size:1.1rem;font-weight:600;color:{TEAL}'>chicagowhpc@gmail.com</div>"
+        f"<div style='margin-top:8px'>"
+        f"<a href='https://www.chicagowhpc.org' style='color:{TEAL}'>chicagowhpc.org</a>"
+        f" &nbsp;|&nbsp; "
+        f"<a href='https://www.chicagowhpc.org/mentorship' style='color:{TEAL}'>Mentorship Program</a>"
+        f"</div></div>",
+        unsafe_allow_html=True
+    )
+
+
+
+    # Universal partner CTA footer on every tab
+    st.markdown("---")
+    st.markdown(
+        f"<div style='background:{LGRAY};border-radius:8px;padding:16px 20px;margin-top:24px'>"
+        f"<div style='font-weight:700;color:{NAVY};margin-bottom:10px'>How You Can Help</div>"
+        f"<div style='display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px'>"
+        + "".join(
+            f"<span style='background:white;border:1.5px solid {TEAL};border-radius:20px;"
+            f"padding:4px 14px;font-size:0.78rem;color:{NAVY}'>&#9744; {item}</span>"
+            for item in ["Guest speaker", "Facility tour", "Mentor", "Career spotlight",
+                         "Internship information", "Community venue partner", "Funder"]
+        )
+        + f"</div>"
+        f"<div style='font-size:0.82rem;color:{MGRAY}'>"
+        f"Contact: <strong>chicagowhpc@gmail.com</strong> | "
+        f"<a href='https://www.chicagowhpc.org' style='color:{TEAL}'>chicagowhpc.org</a>"
+        f"</div></div>",
+        unsafe_allow_html=True
     )
 
 
