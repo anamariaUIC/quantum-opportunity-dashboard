@@ -199,8 +199,7 @@ with st.sidebar:
     )
     sub_choice = st.radio(
         "nav",
-        ["Workforce Bridge", "Why Chicago WHPC?", "Ecosystem Map",
-         "Pathway Ladder", "Partnership Opportunities"],
+        ["Why Now?", "Workforce Bridge", "Why Chicago WHPC?"],
         label_visibility="collapsed",
         key="nav_main"
     )
@@ -211,10 +210,12 @@ with st.sidebar:
         unsafe_allow_html=True
     )
     evidence_groups = {
-        "The Ecosystem": ["Why HPC?"],
-        "The Evidence":  ["Illinois Opportunity", "South Side Strengths and Assets",
-                          "Geographic Proximity", "Community Profiles", "Community Readiness Profile"],
-        "The Plan":      ["What Success Looks Like", "Community Impact Dashboard"],
+        "The Ecosystem": ["Ecosystem Map", "Emerging Workforce Roles", "Talent Retention"],
+        "The Evidence":  ["South Side Strengths and Assets", "Geographic Proximity",
+                          "Community Profiles", "Opportunity + Vulnerability Matrix"],
+        "The Program":   ["Program Architecture", "Participant Deliverables",
+                          "Scaling Pathway", "Winter 2026 Pilot Metrics"],
+        "Get Involved":  ["Community Impact Dashboard", "Partnership Opportunities"],
     }
     for group_label, pages in evidence_groups.items():
         with st.expander(group_label, expanded=False):
@@ -345,7 +346,7 @@ if audience != "Overview":
 # ══════════════════════════════════════════════════════════════════════════════
 if sub_choice == "Workforce Bridge":
     section_header("Workforce Bridge",
-                   "Awareness programs exist. Educational pathways exist. Employers are coming. What is missing is a workforce bridge connecting residents to opportunity.")
+                   "Illinois has built a world-class quantum ecosystem. The challenge now is connecting residents to it.")
 
     col1, col2 = st.columns([3, 2])
     with col1:
@@ -474,8 +475,8 @@ if sub_choice == "Workforce Bridge":
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 5: ILLINOIS OPPORTUNITY
 # ══════════════════════════════════════════════════════════════════════════════
-if sub_choice == "Illinois Opportunity":
-    section_header("Illinois Opportunity",
+if sub_choice == "Why Now?":
+    section_header("Why Now?",
                    "The jobs are coming. The question is who will be ready.")
 
     col1, col2 = st.columns(2)
@@ -1557,8 +1558,8 @@ if sub_choice == "Community Profiles":
     )
 
 
-if sub_choice == "Community Readiness Profile":
-    section_header("Community Readiness Profile",
+if sub_choice == "Opportunity + Vulnerability Matrix":
+    section_header("Opportunity + Vulnerability Matrix",
                    "A composite readiness score for South Side community areas.")
 
     st.markdown("""
@@ -1730,7 +1731,7 @@ if sub_choice == "Community Readiness Profile":
         "youth_pop": "Youth Population (16–35 est.)",
         "transit_min_iqmp": "Transit to IQMP (min)",
         "med_income": "Median HH Income ($)",
-        "crp": "Community Readiness Profile",
+        "crp": "Opportunity + Vulnerability Matrix",
     }
     st.dataframe(
         SOUTH_SIDE_AREAS[list(display_cols.keys())].rename(columns=display_cols).set_index("Community Area"),
@@ -1809,7 +1810,7 @@ if sub_choice == "Community Readiness Profile":
                         "quadrant": False, "lat": False, "lon": False},
             labels={
                 "svi": "Social Vulnerability Index (CDC 2022, 0=low, 1=high)",
-                "crp": "Community Readiness Profile",
+                "crp": "Opportunity + Vulnerability Matrix",
                 "med_income": "Median HH Income ($)",
                 "poverty_pct": "Poverty Rate (%)"
             },
@@ -2270,7 +2271,7 @@ if sub_choice == "Geographic Proximity":
 # ══════════════════════════════════════════════════════════════════════════════
 if sub_choice == "Community Impact Dashboard":
     section_header("Community Impact Dashboard",
-                   "Tracking what actually reaches the community - one of the first systematic efforts to track community-level participation in Illinois' emerging quantum workforce ecosystem.")
+                   "Tracking what actually reaches the community - community-level metrics tracking participation in Illinois's emerging advanced technology ecosystem.")
 
     callout(
         "<strong>Why this matters:</strong> IQMP has faced questions about who benefits locally. "
@@ -2512,6 +2513,37 @@ if sub_choice == "Why Chicago WHPC?":
         "What is missing is the community-level navigation layer. "
         "Chicago WHPC is that layer."
     )
+
+    # What we are / what we are not
+    col_wn1, col_wn2 = st.columns(2)
+    with col_wn1:
+        st.markdown(
+            f"<div style='background:#F5F5F5;border:2px solid #CCCCCC;border-radius:8px;padding:16px;height:100%'>"
+            f"<div style='font-weight:700;color:{MGRAY};font-size:0.95rem;margin-bottom:12px'>What Chicago WHPC Is Not</div>"
+            + "".join(f"<div style='font-size:0.85rem;color:{MGRAY};margin:6px 0;padding-left:8px;border-left:2px solid #CCC'>Not {item}</div>"
+                      for item in ["a university", "a workforce board", "an employer",
+                                   "a research laboratory", "a government agency"])
+            + "</div>",
+            unsafe_allow_html=True
+        )
+    with col_wn2:
+        st.markdown(
+            f"<div style='background:{TEAL}12;border:2px solid {TEAL};border-radius:8px;padding:16px;height:100%'>"
+            f"<div style='font-weight:700;color:{TEAL};font-size:0.95rem;margin-bottom:12px'>What Chicago WHPC Is</div>"
+            f"<div style='font-size:1.1rem;font-weight:700;color:{NAVY};margin-bottom:10px'>"
+            f"A civic workforce intermediary.</div>"
+            + "".join(f"<div style='font-size:0.85rem;color:{MGRAY};margin:6px 0;padding-left:8px;border-left:2px solid {TEAL}'>{item}</div>"
+                      for item in [
+                          "Connects community residents to existing ecosystem assets",
+                          "Translates technical content into accessible language",
+                          "Builds the mentorship and navigation layer that institutions lack",
+                          "Generates community-level participation data",
+                          "Owned by and accountable to the South Side community",
+                      ])
+            + "</div>",
+            unsafe_allow_html=True
+        )
+    st.markdown("")
 
     # Visual flow diagram
     flow_items = [
@@ -2809,6 +2841,455 @@ if sub_choice == "Partnership Opportunities":
         f"</div></div>",
         unsafe_allow_html=True
     )
+
+
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# EMERGING WORKFORCE ROLES
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Emerging Workforce Roles":
+    section_header("Emerging Workforce Roles",
+                   "The quantum ecosystem needs people at every education level — not just PhDs.")
+
+    st.caption("Sources: IBM FutureNow Chicago (2026), IQMP workforce projections, CQE employer analysis 2024, BLS Standard Occupational Classifications.")
+
+    roles = {
+        "Computing and Data": {
+            "color": TEAL,
+            "roles": [
+                ("HPC Analyst", "Associate's / BS", "Manage and optimize workloads on high-performance computing clusters. Entry point via certificate or associate's degree.", "City Colleges, research university training"),
+                ("AI / ML Engineer", "BS", "Develop and deploy machine learning models using GPU-accelerated infrastructure.", "City Colleges CS pathway, university programs"),
+                ("Data Scientist", "BS / MS", "Analyze large datasets for research institutions, tech companies, and national labs.", "University programs, bootcamp + certificate"),
+                ("Systems Administrator", "Certificate / AS", "Manage Linux servers, HPC systems, and cloud infrastructure. High demand at national labs.", "Olive Harvey, Kennedy-King, City Colleges"),
+                ("Research Computing Staff", "BS / Certificate", "Support researchers using HPC and scientific software. Gateway role at universities and national labs.", "HPC training programs, campus champions"),
+            ]
+        },
+        "Quantum Technology": {
+            "color": NAVY,
+            "roles": [
+                ("Quantum Software Developer", "BS / MS", "Write and optimize quantum circuits using Qiskit, PennyLane, CUDA-Q. Increasingly accessible from BS level.", "University + industry training"),
+                ("Quantum Technician", "AS / BS", "Support quantum hardware operation, calibration, and testing. Emerging role as IQMP scales up.", "Technical training, growing at IQMP"),
+                ("Quantum Applications Researcher", "MS / PhD", "Develop quantum algorithms for specific industry applications.", "University research programs"),
+            ]
+        },
+        "Semiconductor and Hardware": {
+            "color": GOLD,
+            "roles": [
+                ("Fabrication Technician", "Certificate / AS", "Operate semiconductor manufacturing equipment. High demand as IQMP attracts fabrication tenants.", "City Colleges manufacturing programs"),
+                ("Photonics Engineer", "BS", "Design and test optical components for quantum and telecom systems.", "University engineering programs"),
+                ("Precision Manufacturing Specialist", "Certificate", "High-accuracy manufacturing for quantum hardware components.", "CTE programs, City Colleges"),
+            ]
+        },
+        "Business and Operations": {
+            "color": GREEN,
+            "roles": [
+                ("Program Manager", "BS", "Coordinate complex research and technology projects across institutions.", "MBA programs, PMP certification"),
+                ("Workforce Coordinator", "BS / Certificate", "Connect communities to technology career pathways. Chicago WHPC trains this role directly.", "Chicago WHPC program"),
+                ("Technical Sales / Customer Success", "BS", "Bridge technical products and customer needs for quantum and HPC companies.", "Business + technical background"),
+            ]
+        },
+    }
+
+    for category, data in roles.items():
+        color = data["color"]
+        st.markdown(
+            f"<div style='background:{color};color:white;padding:8px 16px;"
+            f"border-radius:8px;font-weight:700;margin:20px 0 8px 0'>{category}</div>",
+            unsafe_allow_html=True
+        )
+        role_cols = st.columns(3)
+        for i, (title, cred, desc, pathway) in enumerate(data["roles"]):
+            with role_cols[i % 3]:
+                st.markdown(
+                    f"<div style='background:{color}10;border:1.5px solid {color}44;"
+                    f"border-radius:8px;padding:12px;margin:4px 0;height:100%'>"
+                    f"<div style='font-weight:700;color:{NAVY};font-size:0.88rem'>{title}</div>"
+                    f"<div style='background:{color};color:white;display:inline-block;"
+                    f"padding:1px 8px;border-radius:10px;font-size:0.72rem;margin:4px 0'>{cred}</div>"
+                    f"<div style='font-size:0.8rem;color:{MGRAY};margin-top:4px'>{desc}</div>"
+                    f"<div style='font-size:0.75rem;color:{color};margin-top:6px;"
+                    f"font-style:italic'>Pathway: {pathway}</div>"
+                    f"</div>",
+                    unsafe_allow_html=True
+                )
+
+    callout(
+        "<strong>Key finding (CQE 2024):</strong> An increasing share of quantum industry positions "
+        "require a bachelor's degree rather than a graduate degree - expanding opportunities well "
+        "beyond PhD-level research. Certificate and associate's degree holders can enter the "
+        "ecosystem through HPC operations, fabrication, and technical support roles."
+    )
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TALENT RETENTION
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Talent Retention":
+    section_header("Talent Retention",
+                   "Illinois educates talent. The challenge is keeping it - and ensuring local residents are part of it.")
+
+    col_ret1, col_ret2 = st.columns(2)
+    with col_ret1:
+        st.markdown("#### The Current Pattern")
+        for stage, desc, color in [
+            ("Illinois educates talent", "World-class universities, national labs, and research institutions produce quantum-relevant graduates", TEAL),
+            ("Talent leaves", "Without local industry density, graduates relocate to established tech hubs - California, New York, Massachusetts", RED),
+            ("Economic benefit exits", "Research investment and talent development costs are borne by Illinois; economic returns flow elsewhere", RED),
+        ]:
+            st.markdown(
+                f"<div style='background:{color}12;border-left:4px solid {color};"
+                f"padding:10px 14px;margin:6px 0;border-radius:4px'>"
+                f"<div style='font-weight:600;color:{NAVY}'>{stage}</div>"
+                f"<div style='font-size:0.82rem;color:{MGRAY};margin-top:4px'>{desc}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+            st.markdown(f"<div style='text-align:center;color:{MGRAY};font-size:1.2rem'>↓</div>", unsafe_allow_html=True)
+
+    with col_ret2:
+        st.markdown("#### The IQMP + Chicago WHPC Model")
+        for stage, desc, color in [
+            ("Illinois educates talent", "Universities, City Colleges, and community programs build quantum-relevant skills at every level", TEAL),
+            ("IQMP creates local demand", "750+ jobs announced. Tenant companies need local talent pipelines. Community trust matters for hiring.", GREEN),
+            ("Talent stays", "Career opportunities in Chicago match or exceed those in coastal hubs. South Side residents enter the ecosystem.", GREEN),
+            ("Economic growth", "Tax base expands, community investment follows, quantum economy distributes benefits locally.", GREEN),
+        ]:
+            st.markdown(
+                f"<div style='background:{color}12;border-left:4px solid {color};"
+                f"padding:10px 14px;margin:6px 0;border-radius:4px'>"
+                f"<div style='font-weight:600;color:{NAVY}'>{stage}</div>"
+                f"<div style='font-size:0.82rem;color:{MGRAY};margin-top:4px'>{desc}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+            if stage != "Economic growth":
+                st.markdown(f"<div style='text-align:center;color:{MGRAY};font-size:1.2rem'>↓</div>", unsafe_allow_html=True)
+
+    st.markdown("---")
+    section_header("Workforce Challenges This Program Addresses",
+                   "Borrowed from workforce intermediary frameworks.")
+
+    challenges = [
+        ("Limited awareness of advanced technology careers",
+         "Most South Side residents have never encountered a clear explanation of what quantum computing is, what HPC does, or what jobs exist in these fields.",
+         "Community education sessions deliver plain-language career context to 40-60 residents per cohort."),
+        ("Fragmented ecosystem navigation",
+         "The Illinois quantum ecosystem spans 15+ institutions. No single resource maps pathways from community to career across all of them.",
+         "The South Side Quantum Opportunity Guide maps certificates, degrees, programs, and employers in one accessible document."),
+        ("Lack of community-level workforce intermediaries",
+         "Workforce development in quantum has focused on universities and industry. No organization systematically bridges South Side communities to this ecosystem.",
+         "Chicago WHPC is designed specifically to fill this intermediary role."),
+        ("Limited mentor access",
+         "Mentorship in advanced technology fields typically flows through institutional networks. Community members outside those networks have no equivalent access.",
+         "Chicago WHPC's mentorship program creates structured, supported connections between community members and professionals."),
+        ("Uneven access to technical training infrastructure",
+         "HPC training requires computing resources that most community members cannot access independently.",
+         "Chicago WHPC provides access to GPU-accelerated HPC infrastructure through institutional partnerships."),
+        ("Talent retention and local pipeline gaps",
+         "IQMP employers will need community trust, diverse talent pipelines, and visible local hiring to succeed long-term.",
+         "Chicago WHPC builds the community relationships and talent awareness that support long-term IQMP success."),
+    ]
+
+    for title, problem, solution in challenges:
+        st.markdown(
+            f"<div style='background:{LGRAY};border-radius:8px;padding:14px 16px;margin:8px 0'>"
+            f"<div style='font-weight:700;color:{NAVY};margin-bottom:8px'>{title}</div>"
+            f"<div style='display:grid;grid-template-columns:1fr 1fr;gap:12px'>"
+            f"<div style='background:white;padding:10px;border-radius:6px;border-left:3px solid {RED}'>"
+            f"<div style='font-size:0.72rem;font-weight:700;color:{RED};margin-bottom:4px'>CHALLENGE</div>"
+            f"<div style='font-size:0.82rem;color:{MGRAY}'>{problem}</div></div>"
+            f"<div style='background:white;padding:10px;border-radius:6px;border-left:3px solid {TEAL}'>"
+            f"<div style='font-size:0.72rem;font-weight:700;color:{TEAL};margin-bottom:4px'>OUR RESPONSE</div>"
+            f"<div style='font-size:0.82rem;color:{MGRAY}'>{solution}</div></div>"
+            f"</div></div>",
+            unsafe_allow_html=True
+        )
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# PROGRAM ARCHITECTURE
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Program Architecture":
+    section_header("Program Architecture",
+                   "A structured, deliverable-based learning pathway for Winter 2026 pilot.")
+
+    callout(
+        "Program design is inspired by the Penn State workforce intermediary framework: "
+        "each stage has a concrete deliverable, not just a learning outcome. "
+        "Participants leave with tangible artifacts that support career navigation."
+    )
+
+    stages = [
+        {
+            "num": "01", "name": "Awareness", "color": TEAL,
+            "what": ["Quantum 101 - plain language introduction", "Illinois quantum ecosystem overview",
+                     "Career pathways and employer landscape", "Why HPC connects to quantum"],
+            "deliverable": "South Side Quantum Ecosystem Guide",
+            "deliverable_desc": "A personal copy of the publicly available guide mapping certificates, degrees, employers, and pathways."
+        },
+        {
+            "num": "02", "name": "Preparation", "color": NAVY,
+            "what": ["Linux command line fundamentals", "HPC system navigation and job submission",
+                     "AI and GPU computing foundations", "Introduction to scientific workflows"],
+            "deliverable": "Active HPC Account",
+            "deliverable_desc": "Participants receive a working account on institutional HPC infrastructure with documented first job submission."
+        },
+        {
+            "num": "03", "name": "Practice", "color": GOLD,
+            "what": ["Hands-on cluster usage projects", "GPU-accelerated workflow exercises",
+                     "Introductory quantum simulation (Qiskit or PennyLane)", "Portfolio artifact development"],
+            "deliverable": "Portfolio Project",
+            "deliverable_desc": "A documented technical project demonstrating HPC skills - shareable with employers and programs."
+        },
+        {
+            "num": "04", "name": "Navigation", "color": GREEN,
+            "what": ["Mentorship match and first meeting", "Career pathway mapping to participant goals",
+                     "Professional skills (LinkedIn, resume, networking)", "Certificate and degree program review"],
+            "deliverable": "Personal Career Roadmap",
+            "deliverable_desc": "A documented, named pathway: next program, next credential, next employer contact - specific to each participant."
+        },
+        {
+            "num": "05", "name": "Exposure", "color": "#8E44AD",
+            "what": ["Facility tour at Argonne, Fermilab, or IQMP site", "Guest speaker from quantum/HPC employer",
+                     "Employer career panel", "Professional network introductions"],
+            "deliverable": "Professional Network",
+            "deliverable_desc": "At least one documented professional introduction to a person working in the quantum/HPC ecosystem."
+        },
+        {
+            "num": "06", "name": "Outcomes", "color": RED,
+            "what": ["Internship or research experience application", "Certificate or degree program enrollment",
+                     "Continued mentorship", "Peer facilitation opportunity (returning participants)"],
+            "deliverable": "Career Transition",
+            "deliverable_desc": "Documented next step: application submitted, program enrolled, interview scheduled, or position obtained."
+        },
+    ]
+
+    for i, stage in enumerate(stages):
+        col_l, col_r = st.columns([1, 4])
+        with col_l:
+            st.markdown(
+                f"<div style='background:{stage['color']};color:white;border-radius:10px;"
+                f"padding:16px 8px;text-align:center;height:100%'>"
+                f"<div style='font-size:1.6rem;font-weight:700'>{stage['num']}</div>"
+                f"<div style='font-size:0.9rem;font-weight:600;margin-top:4px'>{stage['name']}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+        with col_r:
+            items_html = "".join(f"<div style='font-size:0.82rem;color:{MGRAY};margin:3px 0;padding-left:8px;border-left:2px solid {stage['color']}44'>{w}</div>" for w in stage["what"])
+            st.markdown(
+                f"<div style='border:1.5px solid {stage['color']}44;border-radius:8px;padding:12px 16px;height:100%'>"
+                f"<div style='font-weight:600;color:{NAVY};margin-bottom:6px'>What participants do:</div>"
+                f"{items_html}"
+                f"<div style='margin-top:10px;background:{stage['color']}12;border-radius:6px;padding:8px 10px'>"
+                f"<span style='font-weight:700;color:{stage['color']};font-size:0.78rem'>DELIVERABLE: </span>"
+                f"<span style='font-weight:600;color:{NAVY};font-size:0.85rem'>{stage['deliverable']}</span>"
+                f"<div style='font-size:0.78rem;color:{MGRAY};margin-top:2px'>{stage['deliverable_desc']}</div>"
+                f"</div></div>",
+                unsafe_allow_html=True
+            )
+        if i < len(stages) - 1:
+            st.markdown(f"<div style='text-align:left;padding-left:60px;color:{MGRAY};font-size:1.2rem;margin:4px 0'>↓</div>", unsafe_allow_html=True)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# PARTICIPANT DELIVERABLES
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Participant Deliverables":
+    section_header("Participant Deliverables",
+                   "Every participant leaves with tangible artifacts - not just awareness.")
+
+    callout(
+        "Funders and employers respond to deliverables because they are concrete, verifiable, and portable. "
+        "Unlike awareness metrics, deliverables signal readiness and can be presented to employers, "
+        "programs, and mentors. This design is borrowed directly from Penn State's workforce intermediary model."
+    )
+
+    deliverables = [
+        ("South Side Quantum Ecosystem Guide", TEAL,
+         "A plain-language map of quantum-relevant certificates, degrees, employers, and programs accessible from the South Side. Published publicly and updated annually.",
+         ["Know what opportunities exist", "Have a reference document to share with family and advisors", "Understand the ecosystem before applying anywhere"]),
+        ("Active HPC Account", NAVY,
+         "A working account on institutional GPU-accelerated HPC infrastructure, with documentation of first successful job submission.",
+         ["Demonstrate technical access", "Build on this account in future training", "Provide evidence of hands-on computing experience"]),
+        ("Portfolio Project", GOLD,
+         "A documented technical artifact from the workshop series - a completed HPC workflow, a quantum simulation notebook, or a GPU-accelerated data analysis.",
+         ["Show employers concrete work product", "Submit to certificate or degree programs as evidence", "Build on for future projects"]),
+        ("Mentor Connection", GREEN,
+         "A documented, structured relationship with a professional in HPC, quantum computing, or a related field through the Chicago WHPC mentorship program.",
+         ["Navigate career decisions with experienced guidance", "Access professional networks otherwise unavailable", "Receive ongoing support beyond the program"]),
+        ("Personal Career Roadmap", "#8E44AD",
+         "A written, specific plan: the next certificate or degree program, the next employer to contact, the next professional event to attend - personalized to each participant.",
+         ["Avoid the 'now what?' problem after completing the program", "Have a concrete document to discuss with mentors", "Track progress toward specific goals"]),
+    ]
+
+    for title, color, desc, benefits in deliverables:
+        col_d1, col_d2 = st.columns([2, 3])
+        with col_d1:
+            st.markdown(
+                f"<div style='background:{color};color:white;border-radius:8px;"
+                f"padding:20px;height:100%;display:flex;align-items:center;justify-content:center;text-align:center'>"
+                f"<div style='font-weight:700;font-size:1rem'>{title}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+        with col_d2:
+            benefits_html = "".join(f"<div style='font-size:0.82rem;color:{MGRAY};margin:4px 0;padding-left:8px;border-left:2px solid {color}'>{b}</div>" for b in benefits)
+            st.markdown(
+                f"<div style='border:1.5px solid {color}33;border-radius:8px;padding:14px;height:100%'>"
+                f"<div style='font-size:0.85rem;color:{MGRAY};margin-bottom:10px'>{desc}</div>"
+                f"<div style='font-size:0.72rem;font-weight:700;color:{color};margin-bottom:4px'>PARTICIPANTS CAN USE THIS TO:</div>"
+                f"{benefits_html}</div>",
+                unsafe_allow_html=True
+            )
+        st.markdown("")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# SCALING PATHWAY
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Scaling Pathway":
+    section_header("Scaling Pathway",
+                   "From Winter 2026 pilot to Chicago model to regional replication.")
+
+    callout(
+        "The program is designed to scale from a focused pilot to a replicable model. "
+        "Each stage produces documented outcomes that justify the next stage of investment. "
+        "Inspired by the Penn State workforce intermediary scaling framework."
+    )
+
+    scaling_stages = [
+        ("Winter 2026 Pilot", "15-20 participants", TEAL, [
+            "4 HPC workshops", "5 mentor matches", "2 facility tours", "1 cohort showcase",
+            "South Side Quantum Opportunity Guide published",
+            "Program toolkit documented for replication",
+        ], "Proof of concept: does the model work?"),
+        ("South Shore Cohorts (2027)", "40-60 participants/cohort", NAVY, [
+            "Quarterly workshop series", "20+ active mentor relationships",
+            "CPS Network 17 pipeline formalized", "First cohort alumni as peer facilitators",
+            "2-3 employer partners confirmed", "First grant application with outcome data",
+        ], "Proof of scale: can we run this consistently?"),
+        ("South Side Network (2027-2028)", "200+ cumulative participants", GOLD, [
+            "Multi-neighborhood programming", "City Colleges credit-bearing pathway aligned",
+            "IBM apprenticeship referral pipeline", "Documented job placements or enrollments",
+            "Chicago WHPC financially sustainable", "Model published and open-sourced",
+        ], "Proof of impact: are participants getting outcomes?"),
+        ("Chicago Model (2028-2029)", "500+ participants", GREEN, [
+            "Multi-site programming across Chicago", "Formal CPS and City Colleges partnership",
+            "IQMP community benefits reporting includes WHPC data",
+            "State workforce development funding secured",
+            "Advisory role in IQMP community engagement strategy",
+        ], "Proof of system change: is the ecosystem different?"),
+        ("Regional Model (2030+)", "Replication in 3+ cities", "#8E44AD", [
+            "Toolkit licensed to partner organizations in other cities",
+            "National quantum workforce equity framework contributed",
+            "Published research on community-level participation metrics",
+            "Federal workforce development program model",
+        ], "Proof of replicability: can others do this?"),
+    ]
+
+    for i, (stage, scale, color, items, question) in enumerate(scaling_stages):
+        col_s1, col_s2 = st.columns([1, 4])
+        with col_s1:
+            st.markdown(
+                f"<div style='background:{color};color:white;border-radius:8px;"
+                f"padding:12px 8px;text-align:center'>"
+                f"<div style='font-weight:700;font-size:0.88rem'>{stage}</div>"
+                f"<div style='font-size:1.2rem;font-weight:700;margin-top:6px'>{scale}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+        with col_s2:
+            items_html = "".join(f"<span style='background:{color}15;border:1px solid {color}44;border-radius:12px;padding:2px 10px;font-size:0.78rem;color:{NAVY};margin:2px;display:inline-block'>{it}</span>" for it in items)
+            st.markdown(
+                f"<div style='border:1.5px solid {color}33;border-radius:8px;padding:12px 16px'>"
+                f"<div style='font-size:0.78rem;color:{color};font-weight:700;margin-bottom:6px'>EVALUATION QUESTION: {question}</div>"
+                f"<div>{items_html}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+        if i < len(scaling_stages) - 1:
+            st.markdown(f"<div style='text-align:left;padding-left:30px;color:{MGRAY};font-size:1.2rem;margin:4px 0'>↓</div>", unsafe_allow_html=True)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# WINTER 2026 PILOT METRICS
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Winter 2026 Pilot Metrics":
+    section_header("Winter 2026 Pilot Metrics",
+                   "Cohort 1 targets, deliverables, and outcome tracking framework.")
+
+    metric_row([
+        ("target participants", "15-20", "Cohort 1, Winter 2026", TEAL),
+        ("HPC workshops", "4", "Linux, GPU, HPC systems, quantum simulation", NAVY),
+        ("mentor matches", "5", "Structured, semester-long", GOLD),
+        ("facility tours", "2", "Argonne, Fermilab, or IQMP site", GREEN),
+    ])
+
+    st.markdown("---")
+
+    col_pilot1, col_pilot2 = st.columns(2)
+    with col_pilot1:
+        section_header("Cohort Deliverables", "What every participant receives")
+        for item, desc in [
+            ("South Side Quantum Ecosystem Guide", "Plain-language pathway map"),
+            ("Active HPC Account", "Documented first job submission"),
+            ("Portfolio Project", "Shareable technical artifact"),
+            ("Mentor Connection", "Structured professional relationship"),
+            ("Personal Career Roadmap", "Named next steps, specific to each participant"),
+        ]:
+            st.markdown(
+                f"<div style='background:{TEAL}12;border-left:4px solid {TEAL};"
+                f"padding:8px 12px;margin:5px 0;border-radius:4px'>"
+                f"<div style='font-weight:600;color:{NAVY};font-size:0.85rem'>{item}</div>"
+                f"<div style='font-size:0.78rem;color:{MGRAY}'>{desc}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+
+    with col_pilot2:
+        section_header("Outcome Tracking", "Measured at 3, 6, and 12 months")
+        metrics = [
+            ("Workshop completion rate", "70%+", TEAL),
+            ("Mentorship active at 90 days", "80%+", TEAL),
+            ("Documented next step (6 months)", "20%+", NAVY),
+            ("Certificate/degree applications", "5+", NAVY),
+            ("Internship applications submitted", "5+", GOLD),
+            ("Professional network growth", "10+ connections/participant", GOLD),
+            ("Job or apprenticeship placement (12 months)", "1+ (stretch)", GREEN),
+        ]
+        for metric, target, color in metrics:
+            st.markdown(
+                f"<div style='background:{LGRAY};border-radius:6px;padding:8px 12px;margin:5px 0;"
+                f"display:flex;justify-content:space-between;align-items:center'>"
+                f"<div style='font-size:0.82rem;color:{MGRAY}'>{metric}</div>"
+                f"<div style='font-weight:700;color:{color};font-size:0.9rem;margin-left:8px;white-space:nowrap'>{target}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+
+    st.markdown("---")
+    section_header("Program Schedule", "Winter 2026 cohort")
+    schedule = [
+        ("Week 1-2", "Awareness", "Community sessions, ecosystem guide distribution, cohort orientation"),
+        ("Week 3-4", "Preparation", "Linux fundamentals, HPC account setup, first job submission"),
+        ("Week 5-6", "Practice", "GPU workflows, quantum simulation intro, portfolio project start"),
+        ("Week 7", "Navigation", "Mentor matching, career roadmap development, professional skills"),
+        ("Week 8", "Exposure", "Facility tour, employer panel, network introductions"),
+        ("Week 9-10", "Outcomes", "Portfolio completion, next step commitments, cohort showcase"),
+    ]
+    for week, stage, content_desc in schedule:
+        st.markdown(
+            f"<div style='display:flex;gap:12px;margin:6px 0;align-items:flex-start'>"
+            f"<div style='background:{TEAL};color:white;padding:4px 10px;border-radius:12px;"
+            f"font-size:0.78rem;font-weight:700;white-space:nowrap;min-width:70px;text-align:center'>{week}</div>"
+            f"<div style='background:{LGRAY};border-radius:6px;padding:6px 12px;flex:1'>"
+            f"<span style='font-weight:700;color:{NAVY};font-size:0.85rem'>{stage}: </span>"
+            f"<span style='font-size:0.82rem;color:{MGRAY}'>{content_desc}</span>"
+            f"</div></div>",
+            unsafe_allow_html=True
+        )
 
 
 # ─── FOOTER ───────────────────────────────────────────────────────────────────
