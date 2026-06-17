@@ -210,11 +210,12 @@ with st.sidebar:
         unsafe_allow_html=True
     )
     evidence_groups = {
-        "The Ecosystem": ["Ecosystem Map", "Emerging Workforce Roles", "Talent Retention"],
+        "The Ecosystem": ["Ecosystem Map", "Emerging Workforce Roles", "Talent Retention", "Building the Ecosystem"],
         "The Evidence":  ["South Side Strengths and Assets", "Geographic Proximity",
-                          "Community Profiles", "Opportunity + Vulnerability Matrix"],
+                          "Community Profiles", "Priority Communities Analysis"],
         "The Program":   ["Program Architecture", "Participant Deliverables",
-                          "Scaling Pathway", "Winter 2026 Pilot Metrics"],
+                          "Scaling Pathway", "Winter 2026 Pilot Metrics",
+                          "Theory of Change", "Illinois Alignment"],
         "Get Involved":  ["Community Impact Dashboard", "Partnership Opportunities"],
     }
     for group_label, pages in evidence_groups.items():
@@ -1558,8 +1559,8 @@ if sub_choice == "Community Profiles":
     )
 
 
-if sub_choice == "Opportunity + Vulnerability Matrix":
-    section_header("Opportunity + Vulnerability Matrix",
+if sub_choice == "Priority Communities Analysis":
+    section_header("Priority Communities Analysis",
                    "A composite readiness score for South Side community areas.")
 
     st.markdown("""
@@ -3290,6 +3291,461 @@ if sub_choice == "Winter 2026 Pilot Metrics":
             f"</div></div>",
             unsafe_allow_html=True
         )
+
+
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# PRIORITY COMMUNITIES ANALYSIS (replaces composite score page)
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Priority Communities Analysis":
+    section_header("Priority Communities Analysis",
+                   "Communities compared across established indicators. No composite scores.")
+
+    callout(
+        "<strong>Methodology:</strong> This analysis uses established public datasets directly rather than "
+        "constructing a composite index. The two-axis framework (Opportunity x Vulnerability) is grounded "
+        "in CDC SVI methodology and urban policy research practice. Readers are invited to interpret the data. "
+        "Sources: ACS 2023, CDC/ATSDR SVI 2022, CPS To&Through 2024. "
+        "All figures are planning estimates, not causal measures."
+    )
+
+    st.markdown("---")
+    section_header("Community Data Table",
+                   "Raw indicators for South Side study areas and comparison communities. No weighting applied.")
+
+    # Full comparison table - no scoring
+    table_df = ALL_COMMUNITIES.copy()
+    table_df["Community"] = table_df["area"].str.replace(" (comp.)", "*", regex=False)
+    table_df["Type"] = table_df["group"]
+    table_df["Bachelor's (%)"] = table_df["bach_pct"].round(1)
+    table_df["HS Grad (%)"] = table_df["hs_pct"].round(1)
+    table_df["College Enroll (%)"] = table_df["college_enroll_pct"].round(1)
+    table_df["Youth Pop"] = table_df["youth_pop"].apply(lambda x: f"{x:,}")
+    table_df["Median Income"] = table_df["med_income"].apply(lambda x: f"${x:,}")
+
+    # Add SVI from embedded data
+    svi_lookup = {
+        "South Shore": 0.82, "South Chicago": 0.79, "Woodlawn": 0.84,
+        "Calumet Heights": 0.68, "Greater Grand Crossing": 0.88, "Roseland": 0.86,
+        "Pullman": 0.81, "Auburn Gresham": 0.89, "Chatham": 0.77, "Englewood": 0.93,
+        "Hyde Park (comp.)": 0.42, "Bridgeport (comp.)": 0.58,
+        "Albany Park (comp.)": 0.65, "Logan Square (comp.)": 0.41,
+    }
+    table_df["SVI (CDC 2022)"] = table_df["area"].map(svi_lookup)
+
+    show = ["Community", "Type", "Bachelor's (%)", "HS Grad (%)",
+            "College Enroll (%)", "Youth Pop", "Median Income", "SVI (CDC 2022)"]
+
+    st.dataframe(
+        table_df[show].sort_values("Bachelor's (%)").set_index("Community"),
+        use_container_width=True,
+        column_config={
+            "Type": st.column_config.TextColumn(width="small"),
+            "SVI (CDC 2022)": st.column_config.NumberColumn(format="%.2f"),
+        }
+    )
+    st.caption("* = comparison community. SVI: 0 = low vulnerability, 1 = high vulnerability (CDC/ATSDR 2022).")
+
+    st.markdown("---")
+    section_header("Two-Axis Priority Framework",
+                   "Opportunity (education) vs. Vulnerability (CDC SVI). Priority = upper right.")
+
+    st.caption(
+        "X-axis: CDC Social Vulnerability Index (established federal measure combining poverty, housing, "
+        "transportation, disability, and household characteristics). "
+        "Y-axis: Educational attainment gap from citywide average (higher = greater unmet potential). "
+        "Bubble size = youth population. This approach avoids arbitrary composite weights."
+    )
+
+    # Build the matrix
+    svi_df = table_df[table_df["Type"] == "Study Area"].copy()
+    svi_df["svi"] = svi_df["area"].map(svi_lookup)
+    svi_df["opp_gap"] = CITYWIDE_BACH - svi_df["Bachelor's (%)"]
+    svi_df["youth_n"] = ALL_COMMUNITIES[ALL_COMMUNITIES["group"] == "Study Area"]["youth_pop"].values
+
+    # Quadrant classification
+    svi_med = svi_df["svi"].median()
+    opp_med = svi_df["opp_gap"].median()
+    def classify(row):
+        if row["opp_gap"] >= opp_med and row["svi"] >= svi_med:
+            return "Priority: High Opportunity Gap + High Vulnerability"
+        elif row["opp_gap"] >= opp_med:
+            return "Secondary: High Opportunity Gap"
+        elif row["svi"] >= svi_med:
+            return "Secondary: High Vulnerability"
+        else:
+            return "Monitor"
+
+    svi_df["quadrant"] = svi_df.apply(classify, axis=1)
+    qcolor = {
+        "Priority: High Opportunity Gap + High Vulnerability": RED,
+        "Secondary: High Opportunity Gap": GOLD,
+        "Secondary: High Vulnerability": "#8E44AD",
+        "Monitor": "#AAAAAA",
+    }
+    svi_df["color"] = svi_df["quadrant"].map(qcolor)
+
+    col_m1, col_m2 = st.columns([3, 2])
+    with col_m1:
+        fig_priority = px.scatter(
+            svi_df, x="svi", y="opp_gap",
+            size="youth_n", color="quadrant",
+            color_discrete_map=qcolor,
+            hover_name="Community",
+            hover_data={"svi": True, "opp_gap": True, "youth_n": True,
+                        "Bachelor's (%)": True, "quadrant": False},
+            labels={
+                "svi": "Social Vulnerability Index (CDC 2022, 0=low, 1=high)",
+                "opp_gap": "Educational Attainment Gap from Chicago Average (pp)",
+                "youth_n": "Youth Population",
+            },
+            title="Opportunity Gap vs. Social Vulnerability (bubble = youth population)"
+        )
+        # Add community labels
+        for _, row in svi_df.iterrows():
+            fig_priority.add_annotation(
+                x=row["svi"], y=row["opp_gap"],
+                text=row["Community"].replace(" (comp.)", ""),
+                showarrow=False,
+                font=dict(size=9, color=NAVY, family="Arial"),
+                xshift=12, yshift=6,
+                bgcolor="rgba(255,255,255,0.8)", borderpad=1,
+            )
+        # Quadrant lines
+        fig_priority.add_hline(y=opp_med, line_dash="dash", line_color="#CCCCCC",
+                               annotation_text="Median gap", annotation_position="right")
+        fig_priority.add_vline(x=svi_med, line_dash="dash", line_color="#CCCCCC",
+                               annotation_text="Median SVI", annotation_position="top")
+        # Priority label
+        fig_priority.add_annotation(
+            x=0.915, y=svi_df["opp_gap"].max()-1,
+            text="PRIORITY", font=dict(color=RED, size=12, family="Arial", weight="bold"),
+            showarrow=False, bgcolor="white", bordercolor=RED, borderwidth=1.5,
+        )
+        fig_priority.update_layout(
+            height=440, margin=dict(l=10, r=10, t=40, b=10),
+            plot_bgcolor="white", paper_bgcolor="white",
+            font_color=MGRAY, showlegend=False
+        )
+        st.plotly_chart(fig_priority, use_container_width=True)
+
+    with col_m2:
+        st.markdown("#### Community Classification")
+        st.caption("Based on CDC SVI median and educational attainment gap median for this study area group.")
+        for quad, color in qcolor.items():
+            areas = svi_df[svi_df["quadrant"] == quad]["Community"].tolist()
+            if not areas:
+                continue
+            is_priority = "Priority" in quad
+            st.markdown(
+                f"<div style='background:{color}{'22' if is_priority else '12'};"
+                f"border:{'2px' if is_priority else '1px'} solid {color};"
+                f"border-radius:8px;padding:10px;margin:6px 0'>"
+                f"<div style='font-weight:{'700' if is_priority else '600'};"
+                f"color:{color};font-size:0.82rem;margin-bottom:6px'>{quad}</div>"
+                + "".join(f"<div style='font-size:0.85rem;color:{NAVY};margin:2px 0'>- {a}</div>" for a in areas)
+                + "</div>",
+                unsafe_allow_html=True
+            )
+        callout(
+            "<strong>Why not a composite score?</strong> The school closure research (Statchen et al. 2026) "
+            "and standard urban policy practice compare communities using observable indicators rather than "
+            "constructing weighted indices. This approach is more transparent, more defensible, and more "
+            "useful for planning decisions."
+        )
+
+    st.markdown("---")
+    section_header("Data Limitations")
+    limitations = [
+        ("ACS Sampling Error", "American Community Survey estimates contain sampling error, especially for smaller community areas. Figures should be treated as estimates with uncertainty, not precise measurements."),
+        ("Geographic Boundaries", "Community area boundaries do not align with CPS school networks, zip codes, or transit catchment areas. Cross-boundary analysis requires caution."),
+        ("SVI Aggregation", "CDC SVI is calculated at census tract level. Aggregating to community areas introduces smoothing that may obscure within-area variation."),
+        ("Workforce Projections", "IQMP job projections are announced targets, not confirmed hiring plans. Actual workforce demand may differ."),
+        ("Planning Tool Only", "This dashboard is intended for community planning and program design. It does not support causal claims about neighborhood outcomes."),
+    ]
+    for title, desc in limitations:
+        st.markdown(
+            f"<div style='background:{LGRAY};border-left:3px solid {MGRAY};"
+            f"padding:8px 12px;margin:5px 0;border-radius:4px'>"
+            f"<span style='font-weight:600;color:{NAVY}'>{title}: </span>"
+            f"<span style='font-size:0.85rem;color:{MGRAY}'>{desc}</span></div>",
+            unsafe_allow_html=True
+        )
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# THEORY OF CHANGE
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Theory of Change":
+    section_header("Theory of Change",
+                   "How and why Quantum x HPC Pathways is expected to produce its outcomes.")
+
+    callout(
+        "A theory of change makes explicit the assumptions linking program activities to outcomes. "
+        "This framework is designed for NSF, DOE, and foundation reviewers who evaluate program logic "
+        "before funding. Each arrow represents a testable assumption."
+    )
+
+    toc_stages = [
+        ("Problem", RED,
+         "South Side residents are geographically proximate to one of the nation's largest quantum investments "
+         "but institutionally disconnected from its workforce pipeline. No community-level intermediary "
+         "systematically connects residents to quantum and HPC pathways.",
+         []),
+        ("Intervention", TEAL,
+         "Quantum x HPC Pathways provides community education, HPC technical training, mentorship, "
+         "and pathway navigation through Chicago WHPC - a trusted civic workforce intermediary.",
+         ["IF: residents lack information about quantum/HPC careers",
+          "IF: HPC skills are the accessible entry point to the quantum ecosystem",
+          "IF: mentorship increases navigation capacity",
+          "IF: institutional access (HPC accounts, facility tours) builds confidence"]),
+        ("Outputs", NAVY,
+         "Participants complete workshops, receive deliverables, and make professional connections.",
+         ["15-20 participants per cohort",
+          "4-6 hands-on HPC workshops",
+          "5+ mentor matches per cohort",
+          "South Side Quantum Opportunity Guide published",
+          "2+ facility tours delivered"]),
+        ("Short-Term Outcomes", GOLD,
+         "Participants demonstrate increased awareness, technical skills, and professional network growth.",
+         ["Increased understanding of quantum/HPC careers (pre/post surveys)",
+          "Demonstrated HPC competency (portfolio artifacts)",
+          "Active mentorship relationships at 90 days",
+          "Documented next step identified within 6 months"]),
+        ("Long-Term Outcomes", GREEN,
+         "Participants enter educational programs, internships, or employment in the advanced technology ecosystem.",
+         ["Certificate or degree program enrollment",
+          "Internship or research experience placement",
+          "Professional network connections sustained",
+          "Peer facilitation (alumni as mentors)"]),
+        ("Impact", "#8E44AD",
+         "South Side residents participate in Illinois's quantum and advanced technology economy at higher rates. "
+         "IQMP and ecosystem employers have a community-connected talent pipeline.",
+         ["Measurable South Side participation in quantum workforce",
+          "Community-level data informing IQMP equity commitments",
+          "Replicable model for other cities"]),
+    ]
+
+    for i, (stage, color, desc, assumptions) in enumerate(toc_stages):
+        col_s, col_c = st.columns([1, 5])
+        with col_s:
+            st.markdown(
+                f"<div style='background:{color};color:white;border-radius:8px;"
+                f"padding:12px;text-align:center;height:100%'>"
+                f"<div style='font-weight:700;font-size:0.9rem'>{stage}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+        with col_c:
+            assumptions_html = "".join(
+                f"<div style='font-size:0.78rem;color:{color};margin:2px 0;"
+                f"padding-left:8px;border-left:2px solid {color}55'>"
+                f"<em>{a}</em></div>" for a in assumptions
+            ) if assumptions else ""
+            st.markdown(
+                f"<div style='border:1.5px solid {color}33;border-radius:8px;"
+                f"padding:10px 14px;height:100%'>"
+                f"<div style='font-size:0.85rem;color:{MGRAY}'>{desc}</div>"
+                f"{('<div style=\"margin-top:8px;font-size:0.75rem;font-weight:700;color:' + color + '\">KEY ASSUMPTIONS:</div>' + assumptions_html) if assumptions else ''}"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+        if i < len(toc_stages) - 1:
+            st.markdown(f"<div style='text-align:left;padding-left:30px;color:{MGRAY};font-size:1.2rem;margin:4px 0'>↓</div>", unsafe_allow_html=True)
+
+    st.markdown("---")
+    section_header("Research and Evaluation Questions")
+    eval_qs = [
+        ("RQ1", "Can community-based pathway navigation increase awareness of quantum and HPC careers among underrepresented South Side residents?",
+         "Pre/post survey measuring career awareness and knowledge of pathways",
+         "TEAL"),
+        ("RQ2", "Can structured HPC workshops build foundational technical skills accessible to participants without prior computing experience?",
+         "Skills assessment: portfolio artifact completion, HPC account usage, self-reported competency",
+         "NAVY"),
+        ("RQ3", "Can mentorship increase participants' capacity to navigate the quantum ecosystem?",
+         "90-day mentorship continuation rate, documented next steps, professional network growth",
+         "GOLD"),
+        ("RQ4", "Can community-based programs generate participation in internships, credentials, and employment in quantum-relevant fields?",
+         "6-month and 12-month tracking of internship applications, credential enrollment, employment",
+         "GREEN"),
+    ]
+    for rq, question, measure, color_name in eval_qs:
+        color = {"TEAL": TEAL, "NAVY": NAVY, "GOLD": GOLD, "GREEN": GREEN}[color_name]
+        st.markdown(
+            f"<div style='background:{LGRAY};border-radius:8px;padding:14px;margin:8px 0'>"
+            f"<div style='display:flex;gap:12px;align-items:flex-start'>"
+            f"<div style='background:{color};color:white;padding:4px 10px;border-radius:12px;"
+            f"font-weight:700;font-size:0.85rem;white-space:nowrap'>{rq}</div>"
+            f"<div style='flex:1'>"
+            f"<div style='font-weight:600;color:{NAVY};margin-bottom:4px'>{question}</div>"
+            f"<div style='font-size:0.8rem;color:{MGRAY}'><strong>Measure:</strong> {measure}</div>"
+            f"</div></div></div>",
+            unsafe_allow_html=True
+        )
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ILLINOIS ALIGNMENT
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Illinois Alignment":
+    section_header("Alignment with Illinois Priorities",
+                   "How Quantum x HPC Pathways connects to state, federal, and institutional workforce goals.")
+
+    alignment_items = [
+        ("Illinois Quantum and Microelectronics Park (IQMP)", NAVY,
+         "IQMP is the nation's first campus purpose-built for quantum commercialization, "
+         "built on the former US Steel South Works site on Chicago's South Side. "
+         "The state has invested $500M+ in IQMP infrastructure.",
+         "Quantum x HPC Pathways builds community awareness and workforce readiness for IQMP's eventual hiring needs. "
+         "Program participants are geographically proximate to IQMP and targeted for early pipeline development.",
+         ["Community trust building for IQMP", "Local talent pipeline development", "Equity metrics for IQMP community benefits reporting"]),
+        ("Chicago Quantum Exchange (CQE) Workforce Mission", TEAL,
+         "CQE leads two federal designations: an EDA Tech Hub (The Bloch) and an NSF Regional Innovation Engines development award. "
+         "CQE's 2026 unified strategy explicitly calls for community-level workforce access programs.",
+         "Quantum x HPC Pathways is the community-level implementation of what CQE's Advancing Together strategy calls for. "
+         "Program data on South Side participation fills a gap CQE has identified in workforce research.",
+         ["Direct implementation of CQE community strategy", "Data partner for CQE workforce research", "EDA Tech Hub workforce component"]),
+        ("IBM FutureNow Chicago", GREEN,
+         "IBM announced 750 full-time jobs and 500 apprenticeships at IQMP, designed with City Colleges of Chicago. "
+         "Olive Harvey College is the designated anchor for this program.",
+         "Chicago WHPC can serve as a community feeder into the IBM/City Colleges pipeline. "
+         "Program participants who complete HPC workshops are better positioned for IBM apprenticeship applications.",
+         ["Community feeder for IBM apprenticeships", "Awareness pipeline for IBM job announcements", "South Side participant preparation"]),
+        ("National Quantum Algorithm Center (NQAC)", GOLD,
+         "NQAC is a partnership between IBM and Illinois institutions designed to accelerate quantum algorithm development. "
+         "It represents Illinois's position at the national frontier of quantum research.",
+         "Chicago WHPC communicates NQAC's existence and significance to community audiences who would otherwise not encounter it.",
+         ["Public awareness of NQAC", "Career visibility for NQAC-adjacent roles"]),
+        ("Illinois STEM Workforce Strategy", "#8E44AD",
+         "Illinois has articulated goals around STEM workforce development, talent retention, and equitable access to technology careers. "
+         "The ISTC 2026 report documents 33,441 quantum-relevant completions and calls for equity-focused pipeline development.",
+         "Quantum x HPC Pathways directly implements the ISTC's call for community-level workforce access and navigation. "
+         "Program data contributes to Illinois's capacity to measure community participation in the quantum pipeline.",
+         ["ISTC workforce data contribution", "Equity-focused pipeline development", "Talent retention through local opportunity"]),
+    ]
+
+    for org, color, context, alignment, bullets in alignment_items:
+        st.markdown(
+            f"<div style='background:{color}10;border:2px solid {color}44;border-radius:10px;"
+            f"padding:16px 20px;margin:12px 0'>"
+            f"<div style='font-weight:700;color:{color};font-size:1rem;margin-bottom:8px'>{org}</div>"
+            f"<div style='display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:10px'>"
+            f"<div><div style='font-size:0.72rem;font-weight:700;color:{MGRAY};margin-bottom:4px'>CONTEXT</div>"
+            f"<div style='font-size:0.82rem;color:{MGRAY}'>{context}</div></div>"
+            f"<div><div style='font-size:0.72rem;font-weight:700;color:{color};margin-bottom:4px'>OUR ALIGNMENT</div>"
+            f"<div style='font-size:0.82rem;color:{MGRAY}'>{alignment}</div></div>"
+            f"</div>"
+            f"<div style='display:flex;flex-wrap:wrap;gap:6px'>"
+            + "".join(f"<span style='background:{color}22;border:1px solid {color}44;border-radius:12px;"
+                      f"padding:2px 10px;font-size:0.75rem;color:{NAVY}'>{b}</span>" for b in bullets)
+            + "</div></div>",
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+    section_header("Stakeholder Map")
+    st.caption("Key stakeholders across five sectors, with Chicago WHPC positioned as the civic workforce intermediary.")
+
+    stakeholder_groups = {
+        "Government": (NAVY, ["State of Illinois (DCEO)", "City of Chicago", "Cook County BED", "Illinois General Assembly"]),
+        "Research": (TEAL, ["Argonne National Laboratory", "Fermilab", "National Quantum Algorithm Center"]),
+        "Universities": (GOLD, ["University of Chicago", "University of Illinois Chicago", "Northwestern University", "UIUC"]),
+        "Industry": (GREEN, ["IBM Quantum", "PsiQuantum", "Infleqtion", "EeroQ", "Quantum Machines", "Diraq"]),
+        "Education": ("#8E44AD", ["Chicago Public Schools", "City Colleges of Chicago", "Olive Harvey College", "Chicago State University"]),
+        "Civic Layer": (RED, ["Chicago WHPC", "South Side Libraries", "Community Organizations", "Park District"]),
+    }
+
+    cols = st.columns(3)
+    for i, (group, (color, members)) in enumerate(stakeholder_groups.items()):
+        with cols[i % 3]:
+            is_civic = group == "Civic Layer"
+            st.markdown(
+                f"<div style='background:{color}{'25' if is_civic else '12'};"
+                f"border:{'2.5px' if is_civic else '1.5px'} solid {color};"
+                f"border-radius:8px;padding:12px;margin:6px 0'>"
+                f"<div style='font-weight:700;color:{color};font-size:0.85rem;margin-bottom:8px'>{group}</div>"
+                + "".join(f"<div style='font-size:0.8rem;color:{NAVY};margin:3px 0;padding-left:6px;border-left:2px solid {color}55'>{m}</div>" for m in members)
+                + ("</div><div style='font-size:0.75rem;color:white;background:' + color + ';padding:4px 8px;margin-top:8px;border-radius:4px;text-align:center'>Chicago WHPC connects all sectors</div>" if is_civic else "</div>"),
+                unsafe_allow_html=True
+            )
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# BUILDING THE ECOSYSTEM
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Building the Ecosystem":
+    section_header("Building the Ecosystem",
+                   "From research to commercialization to workforce. Chicago WHPC operates at the community layer.")
+
+    callout(
+        "The quantum ecosystem in Illinois is not a single institution. It is a layered system "
+        "spanning fundamental research, technology commercialization, industry deployment, "
+        "and community workforce development. Chicago WHPC operates at the community layer - "
+        "connecting residents to the layers above."
+    )
+
+    layers = [
+        ("Research Layer", NAVY, [
+            ("Argonne National Laboratory", "DOE national lab, quantum research and computing"),
+            ("Fermilab", "Particle physics and quantum science, SMQ* program"),
+            ("University of Chicago", "#1 US quantum physics (Nature Index 2025)"),
+            ("Northwestern University", "Quantum materials and photonics research"),
+            ("University of Illinois Chicago", "1,401 quantum-relevant completions in 2024"),
+            ("UIUC Grainger College", "#5 US engineering, Chicago School of Engineering pipeline"),
+        ], "Produces fundamental knowledge and trains graduate-level talent"),
+        ("Commercialization Layer", TEAL, [
+            ("IQMP", "Nation's first quantum commercialization campus, South Side lakefront"),
+            ("Chicago Quantum Exchange (CQE)", "Ecosystem coordinator, EDA Tech Hub, NSF Engines"),
+            ("Duality", "World's first quantum startup accelerator"),
+            ("National Quantum Algorithm Center", "IBM + Illinois quantum algorithm development"),
+        ], "Translates research into products, companies, and economic activity"),
+        ("Industry Layer", GOLD, [
+            ("IBM Quantum", "750 jobs + 500 apprenticeships at IQMP, FutureNow Chicago"),
+            ("PsiQuantum", "Large-scale quantum computing, IQMP tenant"),
+            ("Infleqtion", "Quantum sensing and computing, Chicago-based"),
+            ("EeroQ", "Helium-3 quantum computing, Chicago startup"),
+            ("Quantum Machines", "Quantum control systems"),
+        ], "Creates jobs, demand for talent, and employer relationships"),
+        ("Education Layer", GREEN, [
+            ("City Colleges of Chicago", "1,000+ quantum-relevant completions, IBM pipeline, Chicago School of Engineering"),
+            ("Chicago Public Schools", "Chi-Craft competition, DPI quantum teacher training"),
+            ("Olive Harvey College", "SMQ* host site, IBM apprenticeship anchor"),
+        ], "Prepares students through formal credentials and structured programs"),
+        ("Community Layer", RED, [
+            ("Chicago WHPC", "Civic workforce intermediary - community education, HPC training, mentorship, navigation"),
+            ("South Side Libraries", "Trusted community venue partners"),
+            ("Community Organizations", "Participant recruitment, community trust"),
+        ], "Chicago WHPC bridges community residents to all layers above"),
+    ]
+
+    for i, (layer, color, orgs, role) in enumerate(layers):
+        is_whpc = layer == "Community Layer"
+        st.markdown(
+            f"<div style='background:{color}{'20' if is_whpc else '10'};"
+            f"border:{'3px' if is_whpc else '1.5px'} solid {color};"
+            f"border-radius:10px;padding:14px 18px;margin:6px 0'>"
+            f"<div style='display:flex;justify-content:space-between;align-items:flex-start'>"
+            f"<div style='font-weight:700;color:{color};font-size:1rem'>{layer}</div>"
+            f"<div style='font-size:0.78rem;color:{MGRAY};font-style:italic;max-width:40%'>{role}</div>"
+            f"</div>"
+            f"<div style='display:flex;flex-wrap:wrap;gap:8px;margin-top:10px'>"
+            + "".join(
+                f"<div style='background:white;border:1px solid {color}44;border-radius:6px;"
+                f"padding:5px 10px;font-size:0.78rem'>"
+                f"<div style='font-weight:600;color:{NAVY}'>{org}</div>"
+                f"<div style='color:{MGRAY}'>{desc}</div></div>"
+                for org, desc in orgs
+            )
+            + "</div></div>",
+            unsafe_allow_html=True
+        )
+        if i < len(layers) - 1:
+            st.markdown(
+                f"<div style='text-align:center;font-size:1.2rem;color:{MGRAY};"
+                f"margin:2px 0'>v</div>",
+                unsafe_allow_html=True
+            )
 
 
 # ─── FOOTER ───────────────────────────────────────────────────────────────────
