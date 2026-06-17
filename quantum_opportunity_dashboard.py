@@ -216,7 +216,7 @@ with st.sidebar:
                           "Community Profiles", "Community Opportunity Landscape"],
         "The Program":   ["Program Architecture", "Participant Deliverables",
                           "Scaling Pathway", "Winter 2026 Pilot Metrics"],
-        "Policy":        ["Illinois Alignment", "Stakeholder Map Overview"],
+        "Policy":        ["Illinois Alignment", "Stakeholder Map Overview", "Public Value Framework"],
         "Get Involved":  ["Community Impact Dashboard", "Partnership Opportunities"],
         "Methodology":   ["Methodology and Data Sources", "Evaluation Framework", "Limitations", "Community Readiness Profile (Appendix)"],
     }
@@ -3382,7 +3382,7 @@ if sub_choice == "Winter 2026 Pilot Metrics":
 # ══════════════════════════════════════════════════════════════════════════════
 if sub_choice == "Community Opportunity Landscape":
     section_header("Community Opportunity Landscape",
-                   "Exploring community characteristics associated with participation in Illinois's emerging advanced technology ecosystem.")
+                   "Exploring community characteristics relevant to participation in Illinois's emerging advanced technology ecosystem.")
 
     callout(
         "<strong>Methodology:</strong> This analysis uses established public datasets directly rather than "
@@ -4288,6 +4288,121 @@ if sub_choice == "Limitations":
         "<em>Quantum x HPC Pathways: South Side Advanced Technology Workforce Strategy.</em> "
         "Chicago Women in High Performance Computing. chicagowhpc.org. "
         "Data sources: ACS 2023, CDC SVI 2022, CPS To&Through 2024, ISTC 2026."
+    )
+
+
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# PUBLIC VALUE FRAMEWORK
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Public Value Framework":
+    section_header("Public Value Framework",
+                   "Why this program matters beyond individual participants.")
+
+    callout(
+        "Workforce programs that survive and scale articulate public value - "
+        "what the community, region, and state gain, not just individual participants. "
+        "This framework positions Quantum x HPC Pathways as a public investment, "
+        "not a charitable program."
+    )
+
+    # Top-level flow
+    flow_items = [
+        ("Illinois Quantum Investment",
+         "$500M+ in IQMP infrastructure. $80B projected economic impact.",
+         NAVY, False),
+        ("Talent Gap",
+         "Without community connection, economic benefits flow to those already in the ecosystem.",
+         RED, False),
+        ("Quantum x HPC Pathways",
+         "Community education, HPC training, mentorship, and pathway navigation for South Side residents.",
+         TEAL, True),
+        ("Workforce Participation",
+         "South Side residents enter quantum-relevant jobs, apprenticeships, and certificate programs.",
+         GREEN, False),
+        ("Talent Retention",
+         "Illinois-trained talent stays in Illinois. Economic returns stay local.",
+         GREEN, False),
+        ("Community Benefit",
+         "South Side communities participate in the economic gains from public quantum investment.",
+         GOLD, False),
+    ]
+
+    st.markdown("")
+    for i, (label, desc, color, is_program) in enumerate(flow_items):
+        st.markdown(
+            f"<div style='background:{color}{'25' if is_program else '10'};"
+            f"border:{'3px' if is_program else '1.5px'} solid {color};"
+            f"border-radius:10px;padding:14px 20px;max-width:600px;margin:4px auto'>"
+            f"<div style='font-weight:700;color:{NAVY};font-size:0.95rem'>{label}</div>"
+            f"<div style='font-size:0.82rem;color:{MGRAY};margin-top:3px'>{desc}</div>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+        if i < len(flow_items) - 1:
+            st.markdown("<div style='text-align:center;font-size:1.3rem;color:#AAAAAA;margin:2px 0'>↓</div>",
+                        unsafe_allow_html=True)
+
+    st.markdown("---")
+    section_header("Five Public Benefits")
+
+    benefits = [
+        ("Economic Development", NAVY,
+         "IQMP's success depends on a functional local talent pipeline. "
+         "Without community-level workforce development, IQMP employers will recruit from outside Illinois, "
+         "limiting local economic multiplier effects.",
+         ["Tax base expansion through new employment",
+          "Reduced reliance on out-of-state talent recruitment",
+          "Small business and supplier development in IQMP corridor"]),
+        ("Talent Retention", TEAL,
+         "Illinois consistently produces quantum-relevant graduates who relocate to coastal technology hubs. "
+         "Local advanced technology employment opportunities are the structural solution to retention.",
+         ["Graduate retention through local career opportunity",
+          "South Side residents who build careers in Illinois",
+          "Community professionals who become mentors and connectors"]),
+        ("Workforce Equity", GOLD,
+         "IQMP's South Side location creates a moral and political obligation to ensure "
+         "surrounding communities benefit from the investment. "
+         "Chicago WHPC provides the mechanism for equitable participation.",
+         ["Documented South Side participation in quantum economy",
+          "Community-level data for IQMP equity reporting",
+          "Replicable model for equitable technology workforce development"]),
+        ("Community Engagement", GREEN,
+         "IQMP will require sustained community trust to operate successfully on Chicago's South Side. "
+         "Community workforce programs build the relationships and goodwill that institutional projects need.",
+         ["Community trust and social license for IQMP operations",
+          "Neighborhood-level relationships with IQMP employers",
+          "Visible community benefit supporting political sustainability"]),
+        ("Research and Evidence", "#8E44AD",
+         "No organization currently collects systematic data on community-level participation "
+         "in Illinois's quantum workforce pipeline. "
+         "Chicago WHPC generates this evidence base as a public good.",
+         ["Community-level participation metrics (rare in quantum workforce research)",
+          "Evaluation data informing replication in other cities",
+          "Evidence base for state and federal workforce policy"]),
+    ]
+
+    for title, color, desc, bullets in benefits:
+        st.markdown(
+            f"<div style='background:{LGRAY};border-radius:10px;padding:16px 20px;margin:10px 0'>"
+            f"<div style='display:grid;grid-template-columns:1fr 2fr;gap:16px;align-items:start'>"
+            f"<div style='background:{color};color:white;border-radius:8px;padding:14px;text-align:center'>"
+            f"<div style='font-weight:700;font-size:0.95rem'>{title}</div></div>"
+            f"<div>"
+            f"<div style='font-size:0.85rem;color:{MGRAY};margin-bottom:8px'>{desc}</div>"
+            f"{''.join(f'<div style=\"font-size:0.8rem;color:{NAVY};margin:3px 0;padding-left:8px;border-left:2px solid {color}55\">{b}</div>' for b in bullets)}"
+            f"</div></div></div>",
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+    callout(
+        "<strong>The policy argument in one sentence:</strong> "
+        "Illinois has made a historic public investment in quantum technology on Chicago's South Side. "
+        "Quantum x HPC Pathways is the community-level mechanism that ensures South Side residents "
+        "participate in - and benefit from - that investment. "
+        "Without it, the public investment produces private returns for those already in the ecosystem."
     )
 
 
