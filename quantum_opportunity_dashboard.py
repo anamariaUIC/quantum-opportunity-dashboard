@@ -1856,7 +1856,7 @@ Chicago WHPC's Quantum Meets HPC event (N=181) found:
 - 62% had no clear next step after the event
 
 QUANTUM OPPORTUNITY INDEX - TOP COMMUNITIES FOR INTERVENTION
-{chr(10).join(f" {i+1}. {row['area']} (QOI: {row['qoi']:.1f})" for i, (_, row) in enumerate(SOUTH_SIDE_AREAS.sort_values("crp", ascending=False).iterrows()))}
+{chr(10).join(f" {i+1}. {row['area']} (CRP: {row['crp']:.1f})" for i, (_, row) in enumerate(SOUTH_SIDE_AREAS.sort_values("crp", ascending=False).iterrows()))}
 
 THE SOLUTION: QUANTUM × HPC PATHWAYS
 Three-component community program:
