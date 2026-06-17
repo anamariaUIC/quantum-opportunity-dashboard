@@ -213,11 +213,12 @@ with st.sidebar:
     evidence_groups = {
         "The Ecosystem": ["Ecosystem Map", "Emerging Workforce Roles", "Talent Retention", "Building the Ecosystem"],
         "The Evidence":  ["South Side Strengths and Assets", "Geographic Proximity",
-                          "Community Profiles", "Opportunity and Vulnerability Analysis"],
+                          "Community Profiles", "Community Opportunity and Vulnerability Analysis"],
         "The Program":   ["Program Architecture", "Participant Deliverables",
                           "Scaling Pathway", "Winter 2026 Pilot Metrics",
                           "Theory of Change", "Illinois Alignment"],
         "Get Involved":  ["Community Impact Dashboard", "Partnership Opportunities"],
+        "Methodology":   ["Methodology and Data Sources"],
     }
     for group_label, pages in evidence_groups.items():
         with st.expander(group_label, expanded=False):
@@ -1640,7 +1641,7 @@ if sub_choice == "Community Profiles":
     )
 
 
-if sub_choice == "Opportunity and Vulnerability Analysis":
+if sub_choice == "Community Opportunity and Vulnerability Analysis":
     section_header("Priority Communities Analysis",
                    "Component indicators shown separately. Note: this page presents a planning heuristic, not a validated index. See Opportunity and Vulnerability Analysis for a non-scored approach.")
 
@@ -3379,8 +3380,8 @@ if sub_choice == "Winter 2026 Pilot Metrics":
 # ══════════════════════════════════════════════════════════════════════════════
 # PRIORITY COMMUNITIES ANALYSIS (replaces composite score page)
 # ══════════════════════════════════════════════════════════════════════════════
-if sub_choice == "Opportunity and Vulnerability Analysis":
-    section_header("Opportunity and Vulnerability Analysis",
+if sub_choice == "Community Opportunity and Vulnerability Analysis":
+    section_header("Community Opportunity and Vulnerability Analysis",
                    "Community comparison using established public datasets. No composite scores or custom indices.")
 
     callout(
@@ -3827,6 +3828,165 @@ if sub_choice == "Building the Ecosystem":
                 f"margin:2px 0'>v</div>",
                 unsafe_allow_html=True
             )
+
+
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# METHODOLOGY AND DATA SOURCES
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Methodology and Data Sources":
+    section_header("Methodology and Data Sources",
+                   "How this dashboard was built, what data it uses, and what it cannot claim.")
+
+    callout(
+        "This dashboard is a planning and advocacy tool, not a research instrument. "
+        "It is designed to inform program design, partner conversations, and grant applications. "
+        "It does not support causal inference about neighborhood outcomes. "
+        "All figures should be treated as planning estimates."
+    )
+
+    st.markdown("---")
+    section_header("Data Sources")
+
+    sources = [
+        ("U.S. Census Bureau, American Community Survey (ACS) 5-Year Estimates 2019-2023",
+         "Primary source for educational attainment (bachelor's, HS diploma), income, age distribution, and STEM occupation data.",
+         ["Table B15003 (Educational Attainment)", "Table S2401 (Occupation by Sex)",
+          "Table B19013 (Median Household Income)", "Table B01001 (Age and Sex)"],
+         "https://data.census.gov", TEAL),
+        ("CDC/ATSDR Social Vulnerability Index (SVI) 2022, Cook County Illinois",
+         "Federal measure combining 16 Census variables across four themes: socioeconomic status, "
+         "household characteristics, racial/ethnic minority status, and housing/transportation. "
+         "Used as the vulnerability axis in the Community Opportunity and Vulnerability Analysis.",
+         ["SVI scores aggregated from census tract to community area level",
+          "Tract-to-community aggregation introduces smoothing"],
+         "https://www.atsdr.cdc.gov/placeandhealth/svi/", NAVY),
+        ("CPS To&Through Project, University of Chicago",
+         "Tracks Chicago Public Schools student outcomes from high school through college completion. "
+         "Used for college enrollment rates by community area.",
+         ["College enrollment within one year of HS graduation", "Community-level disaggregation"],
+         "https://toandthrough.uchicago.edu", GOLD),
+        ("Illinois Science and Technology Coalition (ISTC), May 2026",
+         "Quantum workforce completions framework. First systematic mapping of quantum-relevant "
+         "postsecondary completions in Illinois using CIP code analysis.",
+         ["33,441 quantum-relevant completions in 2024", "171 CIP codes reviewed",
+          "Data developed with CQE, IQMP, and Illinois EDC Economic Research Center"],
+         "https://www.istcoalition.org", GREEN),
+        ("Boston Consulting Group / Chicago Quantum Exchange, 2024",
+         "Economic impact projection for Illinois-Wisconsin-Indiana quantum ecosystem.",
+         ["$80B projected regional economic impact by 2035", "Announced figure, not confirmed outcome"],
+         "https://chicagoquantum.org/economicimpactdata", TEAL),
+        ("IBM FutureNow Chicago, 2026",
+         "IBM's public announcement of workforce commitments at IQMP.",
+         ["750 full-time jobs announced", "500 apprenticeships with City Colleges",
+          "Announced targets, not confirmed hiring plans"],
+         "https://research.ibm.com/blog/ibm-futurenow-chicago", NAVY),
+        ("Chicago WHPC Quantum Meets HPC Survey, 2026",
+         "Internal survey of 181 respondents at Chicago WHPC's Quantum Meets HPC public event. "
+         "Self-selected sample - not representative of South Side residents generally.",
+         ["N=181", "Self-selected, quantum-interested audience",
+          "56% never used a quantum tool", "76% wanted to understand HPC-quantum connection"],
+         "https://www.chicagowhpc.org", GOLD),
+    ]
+
+    for title, desc, notes, url, color in sources:
+        st.markdown(
+            f"<div style='background:{LGRAY};border-left:4px solid {color};"
+            f"border-radius:6px;padding:12px 16px;margin:8px 0'>"
+            f"<div style='font-weight:700;color:{NAVY};font-size:0.9rem;margin-bottom:4px'>{title}</div>"
+            f"<div style='font-size:0.82rem;color:{MGRAY};margin-bottom:6px'>{desc}</div>"
+            f"<div style='display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px'>"
+            + "".join(f"<span style='background:{color}15;border:1px solid {color}44;border-radius:10px;"
+                      f"padding:1px 8px;font-size:0.75rem;color:{NAVY}'>{n}</span>" for n in notes)
+            + f"</div><a href='{url}' style='font-size:0.75rem;color:{color}'>{url}</a>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+    section_header("Analytical Approach")
+
+    approaches = [
+        ("Community Area Geography",
+         "This dashboard uses Chicago's 77 community areas as the unit of analysis, consistent with "
+         "City of Chicago administrative data. Community areas do not align with CPS school networks, "
+         "zip codes, or transit catchment areas. Cross-boundary comparisons require caution.",
+         "Planning use", MGRAY),
+        ("Educational Attainment Gap",
+         "The primary measure of 'opportunity' is the gap between each community area's bachelor's "
+         "degree attainment rate and the Chicago citywide average (41.1%). This is not a causal "
+         "measure. It reflects structural barriers to credential attainment, not individual capability.",
+         "Descriptive, not causal", MGRAY),
+        ("Social Vulnerability Index",
+         "CDC SVI is an established federal measure used in emergency planning, public health, and "
+         "workforce research. Scores range from 0 (least vulnerable) to 1 (most vulnerable). "
+         "Used here as the vulnerability axis in the two-axis priority framework.",
+         "Validated federal measure", TEAL),
+        ("Community Readiness Profile",
+         "A weighted planning heuristic combining educational potential gap (45%), HS graduation "
+         "strength (25%), college enrollment culture (20%), and youth population reach (10%). "
+         "Transit excluded after conceptual review. NOT a validated index. Weights are judgment calls "
+         "based on program design priorities. Use the Community Opportunity and Vulnerability Analysis "
+         "(two-axis, no weighting) for more defensible comparisons.",
+         "Planning heuristic only", RED),
+        ("Comparison Communities",
+         "Hyde Park, Bridgeport, Albany Park, and Logan Square are included for analytical contrast "
+         "only. They were selected to represent different socioeconomic profiles, not as matched "
+         "controls. This is descriptive comparison, not the matched-comparison methodology used "
+         "in Statchen et al. (2026).",
+         "Descriptive comparison", MGRAY),
+        ("STEM Occupation Data",
+         "ACS S2401 occupation data aggregated from census tract to community area level. "
+         "This involves spatial averaging that may obscure within-area variation. "
+         "Figures are estimates with sampling uncertainty, particularly for smaller community areas.",
+         "Aggregate estimates", MGRAY),
+    ]
+
+    for title, desc, label, color in approaches:
+        is_caution = color == RED
+        st.markdown(
+            f"<div style='background:{'#FFF5F5' if is_caution else LGRAY};"
+            f"border-left:4px solid {color};border-radius:6px;padding:12px 16px;margin:8px 0'>"
+            f"<div style='display:flex;justify-content:space-between;align-items:flex-start'>"
+            f"<div style='font-weight:700;color:{NAVY};font-size:0.88rem'>{title}</div>"
+            f"<span style='background:{color}22;border:1px solid {color}44;border-radius:10px;"
+            f"padding:1px 8px;font-size:0.72rem;color:{color};white-space:nowrap;margin-left:8px'>{label}</span>"
+            f"</div>"
+            f"<div style='font-size:0.82rem;color:{MGRAY};margin-top:4px'>{desc}</div>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+    section_header("Intended Use and Limitations")
+
+    st.markdown("""
+    **This dashboard is appropriate for:**
+    - Community program design and targeting
+    - Partner and funder conversations
+    - Grant application supporting evidence
+    - Public communication about workforce access gaps
+    - Identifying communities for program outreach
+
+    **This dashboard is NOT appropriate for:**
+    - Causal claims about neighborhood outcomes
+    - Ranking communities by "need" or "deficit"
+    - Policy decisions without additional primary research
+    - Claims about individual residents' capability or potential
+    - Comparison to validated workforce research instruments
+
+    **Recommended citation:**
+    Sokovic, A.M. (2026). *Quantum x HPC Pathways: South Side Advanced Technology Workforce Strategy.*
+    Chicago Women in High Performance Computing. chicagowhpc.org
+    """)
+
+    callout(
+        "<strong>Acknowledgment:</strong> The two-axis priority framework and use of CDC SVI as a "
+        "vulnerability measure were informed by Statchen et al. (2026), 'The 2013 mass public school "
+        "closure and firearm violence in Chicago,' Social Science and Medicine 403, which used SVI "
+        "to balance treatment and control groups in neighborhood-level analysis."
+    )
 
 
 # ─── FOOTER ───────────────────────────────────────────────────────────────────
