@@ -218,7 +218,7 @@ with st.sidebar:
                           "Scaling Pathway", "Winter 2026 Pilot Metrics"],
         "Policy":        ["Illinois Alignment", "Stakeholder Map Overview"],
         "Get Involved":  ["Community Impact Dashboard", "Partnership Opportunities"],
-        "Methodology":   ["Methodology and Data Sources", "Community Readiness Profile (Appendix)"],
+        "Methodology":   ["Methodology and Data Sources", "Evaluation Framework", "Limitations", "Community Readiness Profile (Appendix)"],
     }
     for group_label, pages in evidence_groups.items():
         with st.expander(group_label, expanded=False):
@@ -3382,7 +3382,7 @@ if sub_choice == "Winter 2026 Pilot Metrics":
 # ══════════════════════════════════════════════════════════════════════════════
 if sub_choice == "Community Opportunity Landscape":
     section_header("Community Opportunity Landscape",
-                   "Which communities have the greatest potential to participate in Illinois's advanced technology economy?")
+                   "Exploring community characteristics associated with participation in Illinois's emerging advanced technology ecosystem.")
 
     callout(
         "<strong>Methodology:</strong> This analysis uses established public datasets directly rather than "
@@ -4065,6 +4065,229 @@ if sub_choice == "Stakeholder Map Overview":
         "Policy makers think in systems, not programs. This stakeholder map positions "
         "Quantum x HPC Pathways as a connector in an existing ecosystem - not a standalone initiative. "
         "Chicago WHPC's role is to create the civic navigation layer that no other organization currently provides."
+    )
+
+
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# EVALUATION FRAMEWORK
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Evaluation Framework":
+    section_header("Evaluation Framework",
+                   "Research questions, data sources, and measurement approach for Quantum x HPC Pathways.")
+
+    callout(
+        "A rigorous evaluation framework distinguishes this initiative from typical workforce programs. "
+        "By pre-specifying research questions and measurement approaches before program launch, "
+        "we generate evidence that can inform replication, scaling, and policy decisions. "
+        "Framework design informed by NSF INCLUDES and DOE workforce program evaluation standards."
+    )
+
+    st.markdown("---")
+    section_header("Research Questions")
+
+    rqs = [
+        ("RQ1", TEAL,
+         "Does participation in community-based pathway navigation increase awareness of quantum and HPC careers among underrepresented South Side residents?",
+         "Pre/post survey at each community education session measuring: knowledge of IQMP, awareness of HPC career roles, ability to name one quantum-relevant certificate or degree program.",
+         "Increase of 20+ percentage points in career awareness scores from pre to post session.",
+         "Community education sessions (3-5 per cohort)"),
+        ("RQ2", NAVY,
+         "Do structured HPC workshops build foundational technical skills accessible to participants without prior computing experience?",
+         "Portfolio artifact completion rate; HPC account activation and documented first job submission; self-reported competency survey at workshop completion.",
+         "70%+ of enrolled participants complete the full workshop series and submit a portfolio artifact.",
+         "HPC workshop series (4-6 sessions)"),
+        ("RQ3", GOLD,
+         "Does structured mentorship increase participants' capacity to navigate the advanced technology ecosystem?",
+         "90-day mentorship continuation rate; documented next steps (application submitted, program enrolled, interview scheduled); professional network size at 6 months vs. baseline.",
+         "80%+ of matched pairs active at 90 days; 20%+ of participants document a verifiable next step within 6 months.",
+         "Chicago WHPC mentorship program (semester-long)"),
+        ("RQ4", GREEN,
+         "Does participation in Quantum x HPC Pathways lead to entry into internships, credentials, or employment in advanced technology fields?",
+         "6-month and 12-month follow-up tracking: credential/degree program applications, internship applications submitted, internship offers received, employment in tech-adjacent roles.",
+         "At least 5 participants apply to a credential program or internship within 6 months; at least 1 confirmed placement within 12 months (Year 1 stretch goal).",
+         "Follow-up surveys and participant check-ins at 3, 6, 12 months"),
+    ]
+
+    for rq_id, color, question, measure, target, source in rqs:
+        st.markdown(
+            f"<div style='background:{LGRAY};border-radius:10px;padding:16px;margin:12px 0'>"
+            f"<div style='display:flex;gap:12px;align-items:flex-start'>"
+            f"<div style='background:{color};color:white;padding:6px 12px;border-radius:20px;"
+            f"font-weight:700;font-size:0.88rem;white-space:nowrap;align-self:flex-start'>{rq_id}</div>"
+            f"<div style='flex:1'>"
+            f"<div style='font-weight:600;color:{NAVY};font-size:0.92rem;margin-bottom:10px'>{question}</div>"
+            f"<div style='display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px'>"
+            f"<div style='background:white;border-radius:6px;padding:10px;border-top:3px solid {color}'>"
+            f"<div style='font-size:0.7rem;font-weight:700;color:{color};margin-bottom:4px'>MEASUREMENT</div>"
+            f"<div style='font-size:0.8rem;color:{MGRAY}'>{measure}</div></div>"
+            f"<div style='background:white;border-radius:6px;padding:10px;border-top:3px solid {GOLD}'>"
+            f"<div style='font-size:0.7rem;font-weight:700;color:{GOLD};margin-bottom:4px'>SUCCESS TARGET</div>"
+            f"<div style='font-size:0.8rem;color:{MGRAY}'>{target}</div></div>"
+            f"<div style='background:white;border-radius:6px;padding:10px;border-top:3px solid {MGRAY}'>"
+            f"<div style='font-size:0.7rem;font-weight:700;color:{MGRAY};margin-bottom:4px'>DATA SOURCE</div>"
+            f"<div style='font-size:0.8rem;color:{MGRAY}'>{source}</div></div>"
+            f"</div></div></div></div>",
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+    section_header("Data Collection Plan")
+
+    timeline_data = [
+        ("Baseline (Week 1)", [
+            "Demographic survey (race/ethnicity, gender, first-gen status, neighborhood)",
+            "Career awareness pre-survey",
+            "Prior computing experience assessment",
+            "Professional network size baseline",
+        ]),
+        ("During Program (Weeks 2-10)", [
+            "Workshop attendance tracking",
+            "HPC account activation confirmation",
+            "Portfolio artifact submission",
+            "Mentor match confirmation and 30-day check-in",
+        ]),
+        ("Program Completion (Week 10)", [
+            "Career awareness post-survey (vs. baseline)",
+            "Skills self-assessment",
+            "Deliverables checklist verification",
+            "Next step documentation",
+        ]),
+        ("3-Month Follow-Up", [
+            "Mentorship continuation status",
+            "Applications submitted (credential programs, internships)",
+            "Professional network growth",
+            "Participant qualitative feedback",
+        ]),
+        ("6-Month Follow-Up", [
+            "Documented next step verification",
+            "Program or internship enrollment confirmation",
+            "Ongoing mentorship status",
+        ]),
+        ("12-Month Follow-Up", [
+            "Employment or credential status",
+            "Career trajectory documentation",
+            "Alumni mentor interest survey",
+        ]),
+    ]
+
+    cols = st.columns(3)
+    for i, (period, items) in enumerate(timeline_data):
+        with cols[i % 3]:
+            st.markdown(
+                f"<div style='background:{LGRAY};border-top:3px solid {TEAL};"
+                f"border-radius:6px;padding:12px;margin:4px 0;height:100%'>"
+                f"<div style='font-weight:700;color:{TEAL};font-size:0.82rem;margin-bottom:8px'>{period}</div>"
+                + "".join(f"<div style='font-size:0.78rem;color:{MGRAY};margin:3px 0;"
+                           f"padding-left:6px;border-left:2px solid {TEAL}44'>{item}</div>" for item in items)
+                + "</div>",
+                unsafe_allow_html=True
+            )
+
+    callout(
+        "<strong>Equity tracking:</strong> All outcome metrics will be disaggregated by race/ethnicity, "
+        "gender, first-generation college student status, and home community area. "
+        "This is not required - it is the right thing to do, and it produces data that IQMP, "
+        "CQE, and Illinois state agencies need for equity reporting."
+    )
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# LIMITATIONS
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Limitations":
+    section_header("Limitations",
+                   "What this analysis can and cannot claim.")
+
+    callout(
+        "Researchers and policy reviewers trust projects that acknowledge uncertainty. "
+        "The following limitations are documented openly as part of this strategy's commitment "
+        "to analytical transparency. None of these limitations prevent the dashboard from "
+        "serving its intended purpose as a planning and advocacy tool."
+    )
+
+    limitations = [
+        ("Data Limitations", NAVY, [
+            ("ACS Sampling Error",
+             "American Community Survey 5-year estimates are based on samples, not complete counts. "
+             "Figures for smaller community areas (Pullman, Calumet Heights) have wider confidence intervals "
+             "than larger areas. All ACS figures should be treated as estimates."),
+            ("Census Tract to Community Area Aggregation",
+             "CDC SVI and ACS occupation data are published at census tract level. "
+             "Aggregation to community areas involves spatial averaging that may obscure "
+             "within-area variation. A community area average does not represent every resident."),
+            ("Data Currency",
+             "ACS 5-Year Estimates (2019-2023) reflect conditions before 2023. "
+             "Neighborhood conditions change. Some figures may not reflect current conditions, "
+             "particularly in rapidly changing areas like Woodlawn."),
+        ]),
+        ("Geographic Limitations", TEAL, [
+            ("Community Area vs. School Boundaries",
+             "Chicago community area boundaries do not align with CPS school networks, "
+             "zip codes, or transit catchment areas. Any analysis crossing these boundaries "
+             "requires caution and explicit methodology notes."),
+            ("Comparison Community Selection",
+             "Hyde Park, Bridgeport, Albany Park, and Logan Square are included for descriptive "
+             "contrast only - not as matched controls in a quasi-experimental design. "
+             "This is a different methodology than Statchen et al. (2026), which used "
+             "propensity score weighting to create comparable groups."),
+        ]),
+        ("Workforce Projection Limitations", GOLD, [
+            ("IQMP Job Projections",
+             "IBM's announcement of 750 jobs and 500 apprenticeships represents announced targets, "
+             "not confirmed hiring plans. Actual workforce demand may differ based on technology "
+             "development timelines, funding, and economic conditions."),
+            ("Economic Impact Projections",
+             "The $80B regional economic impact projection (BCG/CQE 2024) is a modeling output, "
+             "not an observed outcome. Economic projections for emerging technology sectors "
+             "carry substantial uncertainty."),
+            ("STEM Occupation Data",
+             "ACS S2401 occupation figures are aggregated estimates. "
+             "They reflect where people live, not necessarily where they work. "
+             "South Side residents may commute to STEM jobs outside the study area."),
+        ]),
+        ("Analytical Limitations", RED, [
+            ("No Causal Claims",
+             "This dashboard does not support causal inference. Observed correlations between "
+             "community characteristics and outcomes do not imply that changing one variable "
+             "will change another. The analysis is descriptive and planning-oriented."),
+            ("Community Readiness Profile",
+             "The weighted planning heuristic in the Methodology appendix uses researcher-assigned "
+             "weights that have not been empirically validated. Different weight choices would "
+             "produce different scores. This is why it is presented as a planning heuristic, "
+             "not a finding."),
+            ("Selection Bias in Survey Data",
+             "The Chicago WHPC survey (N=181) was conducted at a quantum computing public event. "
+             "Respondents self-selected into attending - they are not representative of South Side "
+             "residents generally. Survey findings describe awareness gaps among people already "
+             "interested in quantum computing, not the general population."),
+        ]),
+    ]
+
+    for section_title, color, items in limitations:
+        st.markdown(
+            f"<div style='background:{color}10;border-left:4px solid {color};"
+            f"border-radius:6px;padding:2px 0 2px 0;margin:16px 0'>"
+            f"<div style='font-weight:700;color:{color};font-size:0.9rem;"
+            f"padding:10px 16px;border-bottom:1px solid {color}22'>{section_title}</div>",
+            unsafe_allow_html=True
+        )
+        for title, desc in items:
+            st.markdown(
+                f"<div style='padding:10px 16px;border-bottom:1px solid {color}15'>"
+                f"<div style='font-weight:600;color:{NAVY};font-size:0.85rem;margin-bottom:3px'>{title}</div>"
+                f"<div style='font-size:0.82rem;color:{MGRAY}'>{desc}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    callout(
+        "<strong>Recommended citation:</strong> Sokovic, A.M. (2026). "
+        "<em>Quantum x HPC Pathways: South Side Advanced Technology Workforce Strategy.</em> "
+        "Chicago Women in High Performance Computing. chicagowhpc.org. "
+        "Data sources: ACS 2023, CDC SVI 2022, CPS To&Through 2024, ISTC 2026."
     )
 
 
