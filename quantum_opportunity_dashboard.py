@@ -518,6 +518,53 @@ if sub_choice == "Why Now?":
 
     st.markdown("---")
 
+    # ── INVESTMENT FLOW VISUAL ────────────────────────────────────────────────
+    section_header("The Story in Six Steps")
+    flow_steps = [
+        ("Illinois Quantum Investment",
+         "$500M+ in IQMP. CQE as EDA Tech Hub. IBM FutureNow. National Quantum Algorithm Center.",
+         NAVY),
+        ("IQMP: A New Economic Hub",
+         "The nation's first quantum commercialization campus, located on Chicago's South Side lakefront.",
+         TEAL),
+        ("Jobs and Demand for Talent",
+         "750 IBM jobs announced. 500 apprenticeships with City Colleges. Tenant companies arriving 2027-2028.",
+         TEAL),
+        ("The Gap: Who Participates?",
+         "Without a community bridge, surrounding neighborhoods observe economic activity without participating. "
+         "South Side residents are 12-38 minutes from IQMP but institutionally disconnected.",
+         RED),
+        ("Quantum x HPC Pathways",
+         "Community education, HPC technical training, mentorship, and pathway navigation — "
+         "the civic workforce bridge that connects South Side residents to the ecosystem.",
+         GOLD),
+        ("Community Participation",
+         "South Side residents enter quantum-relevant apprenticeships, certificates, and careers. "
+         "Talent stays in Illinois. Public investment produces community benefit.",
+         GREEN),
+    ]
+    cols_flow = st.columns(len(flow_steps))
+    for col, (label, desc, color) in zip(cols_flow, flow_steps):
+        is_gap = "Gap" in label
+        is_program = "Pathways" in label
+        col.markdown(
+            f"<div style='background:{color}{'30' if is_program else '12' if not is_gap else '18'};"
+            f"border:{'3px' if is_program else '1.5px'} solid {color};"
+            f"border-radius:8px;padding:12px;text-align:center;height:100%'>"
+            f"<div style='font-weight:700;color:{color};font-size:0.82rem;margin-bottom:6px'>{label}</div>"
+            f"<div style='font-size:0.75rem;color:{MGRAY}'>{desc}</div>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+    st.markdown("")
+    # Add arrows between columns
+    arrow_html = "".join(
+        f"<div style='flex:1;text-align:center;font-size:1.2rem;color:{MGRAY}'>→</div>"
+        for _ in range(len(flow_steps) - 1)
+    )
+
+    st.markdown("---")
+
     # ── WHY NOW: THE TIMING ARGUMENT ─────────────────────────────────────────
     col_a, col_b = st.columns([3, 2])
     with col_a:
@@ -2624,6 +2671,25 @@ if sub_choice == "Why Chicago WHPC?":
         "What is missing is the community-level navigation layer. "
         "Chicago WHPC is that layer."
     )
+
+    # Why a civic organization box
+    col_civic1, col_civic2, col_civic3, col_civic4 = st.columns(4)
+    civic_items = [
+        (TEAL, "Universities educate", "They produce graduates and publish research, but don't navigate individual residents into careers."),
+        (NAVY, "Employers hire", "They need talent pipelines but don't build community awareness or provide pre-employment navigation."),
+        (GOLD, "Government invests", "IQMP, CQE, IBM commitments create infrastructure and demand, but not community access."),
+        (RED, "Chicago WHPC connects", "A trusted civic organization bridges residents to the ecosystem that already exists. That's the missing piece."),
+    ]
+    for col, (color, title, desc) in zip([col_civic1, col_civic2, col_civic3, col_civic4], civic_items):
+        col.markdown(
+            f"<div style='background:{color}12;border-top:4px solid {color};"
+            f"border-radius:8px;padding:14px;height:100%'>"
+            f"<div style='font-weight:700;color:{color};font-size:0.88rem;margin-bottom:6px'>{title}</div>"
+            f"<div style='font-size:0.8rem;color:{MGRAY}'>{desc}</div>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+    st.markdown("")
 
     # What we are / what we are not
     col_wn1, col_wn2 = st.columns(2)
