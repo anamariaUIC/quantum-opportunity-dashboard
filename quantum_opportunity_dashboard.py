@@ -302,46 +302,75 @@ if audience != "Overview":
             "Sponsor the workshop series ($5K–$15K, recognition at all sessions and in materials)",
         ], GOLD)
 
-# ── GROUPED NAVIGATION ────────────────────────────────────────────────────────
-st.markdown(
-    f"<div style='background:{LGRAY};border-radius:8px;padding:10px 16px;margin-bottom:16px'>"
-    f"<div style='font-size:0.78rem;font-weight:700;color:{MGRAY};text-transform:uppercase;"
-    f"letter-spacing:1px;margin-bottom:8px'>Navigate by section</div>"
-    f"</div>",
-    unsafe_allow_html=True
-)
+# ── SIDEBAR NAVIGATION ────────────────────────────────────────────────────────
+with st.sidebar:
+    st.markdown(
+        f"<div style='text-align:center;padding:8px 0 16px 0'>"
+        f"<div style='font-size:1.1rem;font-weight:700;color:{NAVY}'>Quantum x HPC Pathways</div>"
+        f"<div style='font-size:0.78rem;color:{MGRAY};margin-top:2px'>South Side Opportunity Dashboard</div>"
+        f"</div>"
+        f"<hr style='border:none;border-top:1px solid {TEAL};margin:0 0 16px 0'>",
+        unsafe_allow_html=True
+    )
 
-nav_section = st.radio(
-    "Section",
-    ["Why This Matters", "The Ecosystem", "The Evidence", "The Plan", "Get Involved"],
-    horizontal=True,
-    label_visibility="collapsed"
-)
+    # ── CORE STORY ───────────────────────────────────────────────────────────
+    st.markdown(
+        f"<div style='font-size:0.7rem;font-weight:700;color:{TEAL};text-transform:uppercase;"
+        f"letter-spacing:1.5px;margin:0 0 6px 0'>Core Story</div>",
+        unsafe_allow_html=True
+    )
 
-# Sub-page within each section
-sub_pages = {
-    "Why This Matters": ["Workforce Bridge", "Why Chicago WHPC?"],
-    "The Ecosystem":    ["Ecosystem Map", "Why HPC?"],
-    "The Evidence":     ["Illinois Opportunity", "South Side Strengths and Assets",
-                         "Geographic Proximity", "Community Profiles", "Community Readiness Profile"],
-    "The Plan":         ["Pathway Ladder", "What Success Looks Like"],
-    "Get Involved":     ["Community Impact Dashboard", "Partnership Opportunities"],
-}
+    core_pages = ["Workforce Bridge", "Why Chicago WHPC?", "Ecosystem Map", "Pathway Ladder", "Partnership Opportunities"]
+    core_choice = st.radio("core", core_pages, label_visibility="collapsed", key="core_nav")
 
-sub_choice = st.radio(
-    "Page",
-    sub_pages[nav_section],
-    horizontal=True,
-    label_visibility="collapsed"
-)
+    st.markdown("<div style='margin:12px 0 6px 0'>", unsafe_allow_html=True)
+    st.markdown(
+        f"<div style='font-size:0.7rem;font-weight:700;color:{MGRAY};text-transform:uppercase;"
+        f"letter-spacing:1.5px;margin:12px 0 6px 0'>Supporting Evidence</div>",
+        unsafe_allow_html=True
+    )
 
-# Map sub_choice to a numeric index for tab rendering
-all_pages = [p for pages in sub_pages.values() for p in pages]
-page_idx = all_pages.index(sub_choice)
+    evidence_sections = {
+        "The Ecosystem": ["Why HPC?"],
+        "The Evidence":  ["Illinois Opportunity", "South Side Strengths and Assets",
+                          "Geographic Proximity", "Community Profiles", "Community Readiness Profile"],
+        "The Plan":      ["What Success Looks Like", "Community Impact Dashboard"],
+    }
 
-# Use a single set of "tabs" but render only the selected one
-# We implement this as if/elif blocks keyed to sub_choice
-tabs = [None] * len(all_pages)  # placeholder for compatibility
+    evidence_choice = None
+    for section_label, pages in evidence_sections.items():
+        with st.expander(section_label, expanded=False):
+            choice = st.radio(section_label + "_r", pages,
+                              label_visibility="collapsed",
+                              key=f"ev_{section_label}")
+            # Track which expander was last interacted with
+            if st.session_state.get(f"ev_{section_label}") != pages[0] or                st.session_state.get("last_evidence_section") == section_label:
+                evidence_choice = choice
+                st.session_state["last_evidence_section"] = section_label
+
+    st.markdown("---")
+    st.markdown(
+        f"<div style='font-size:0.75rem;color:{MGRAY}'>"
+        f"<a href='https://www.chicagowhpc.org' style='color:{TEAL}'>chicagowhpc.org</a><br>"
+        f"<a href='https://forms.gle/2Lnv7LGsN3uUtNuu8' style='color:{TEAL}'>Mentorship Program</a><br>"
+        f"<a href='https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view' style='color:{TEAL}'>Civic Action Plan</a>"
+        f"</div>",
+        unsafe_allow_html=True
+    )
+
+# Determine active page: core nav takes priority unless evidence was explicitly selected
+if "last_evidence_section" in st.session_state and evidence_choice is not None:
+    # Check if user clicked a core page more recently - reset evidence if so
+    sub_choice = evidence_choice
+else:
+    sub_choice = core_choice
+
+# Allow core nav to override
+if st.session_state.get("core_nav") and st.session_state["core_nav"] in core_pages:
+    sub_choice = st.session_state["core_nav"]
+
+# tabs placeholder for compatibility
+tabs = [None] * 20
 
 
 # ══════════════════════════════════════════════════════════════════════════════
