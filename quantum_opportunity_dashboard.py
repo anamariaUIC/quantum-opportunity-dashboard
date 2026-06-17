@@ -137,30 +137,8 @@ def compute_qoi(df):
 SOUTH_SIDE_AREAS = compute_qoi(SOUTH_SIDE_AREAS)
 
 # ─── SIDEBAR ──────────────────────────────────────────────────────────────────
-with st.sidebar:
-    st.markdown(f"### Quantum x HPC Pathways")
-    st.markdown("**Chicago WHPC**")
-    st.markdown("---")
-    st.markdown("**Navigate by audience:**")
-    audience = st.radio("I am...", [
-        "Overview",
-        "Academia",
-        "CPS / Educators",
-        "IQMP / CQE / Labs",
-        "Funders and Foundations",
-        "Employers and Industry",
-    ], label_visibility="collapsed")
-    st.markdown("---")
-    st.markdown("**About this dashboard**")
-    st.caption(
-        "Research supporting the Quantum x HPC Pathways <a href='https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view?usp=drive_link' target='_blank'>civic action plan</a>. "
-        "Data: ACS 2023, CPS To&Through 2024, ISTC 2026, BCG/CQE 2024, IBM 2026. "
-        "Geography note: community area boundaries are used for planning purposes. "
-        "Zip codes, CPS networks, and community areas do not align exactly."
-    )
-    st.markdown("---")
-    st.markdown("[chicagowhpc.org](https://www.chicagowhpc.org)")
-    st.markdown("[Mentorship Program](https://www.chicagowhpc.org/mentorship)")
+# audience variable kept for backward compat
+audience = "Overview"
 
 # ─── HELPER: METRIC ROW ───────────────────────────────────────────────────────
 def metric_row(items):
@@ -201,6 +179,63 @@ def cta_box(audience_name, items, color=GOLD):
         f"{rows}</div>",
         unsafe_allow_html=True
     )
+
+# ── SIDEBAR NAVIGATION ────────────────────────────────────────────────────────
+with st.sidebar:
+    st.markdown(
+        f"<div style='padding:4px 0 10px 0'>"
+        f"<div style='font-size:1.05rem;font-weight:700;color:{NAVY}'>Quantum x HPC Pathways</div>"
+        f"<div style='font-size:0.76rem;color:{MGRAY};margin-top:2px'>South Side Opportunity Dashboard</div>"
+        f"</div>",
+        unsafe_allow_html=True
+    )
+    st.markdown(f"<hr style='border:none;border-top:2px solid {TEAL};margin:0 0 12px 0'>",
+                unsafe_allow_html=True)
+
+    st.markdown(
+        f"<div style='font-size:0.68rem;font-weight:700;color:{TEAL};"
+        f"text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px'>Core Story</div>",
+        unsafe_allow_html=True
+    )
+    sub_choice = st.radio(
+        "nav",
+        ["Workforce Bridge", "Why Chicago WHPC?", "Ecosystem Map",
+         "Pathway Ladder", "Partnership Opportunities"],
+        label_visibility="collapsed",
+        key="nav_main"
+    )
+
+    st.markdown(
+        f"<div style='font-size:0.68rem;font-weight:700;color:{MGRAY};"
+        f"text-transform:uppercase;letter-spacing:1.5px;margin:12px 0 4px 0'>Supporting Evidence</div>",
+        unsafe_allow_html=True
+    )
+    evidence_groups = {
+        "The Ecosystem": ["Why HPC?"],
+        "The Evidence":  ["Illinois Opportunity", "South Side Strengths and Assets",
+                          "Geographic Proximity", "Community Profiles", "Community Readiness Profile"],
+        "The Plan":      ["What Success Looks Like", "Community Impact Dashboard"],
+    }
+    for group_label, pages in evidence_groups.items():
+        with st.expander(group_label, expanded=False):
+            ev = st.radio(group_label, pages, label_visibility="collapsed", key=f"nav_{group_label}")
+            if st.button(f"Go to {ev}", key=f"go_{group_label}", use_container_width=True):
+                st.session_state["nav_override"] = ev
+                st.rerun()
+
+    if "nav_override" in st.session_state:
+        sub_choice = st.session_state.pop("nav_override")
+
+    st.markdown("---")
+    st.caption("Data: ACS 2023, CPS 2024, ISTC 2026, BCG/CQE 2024, IBM 2026.")
+    st.markdown(
+        "[chicagowhpc.org](https://www.chicagowhpc.org) | "
+        "[Mentorship](https://forms.gle/2Lnv7LGsN3uUtNuu8) | "
+        "[Civic Action Plan](https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view)"
+    )
+
+tabs = [None] * 20
+audience = "Overview"  # kept for backward compat
 
 # ─── MAIN CONTENT ─────────────────────────────────────────────────────────────
 
@@ -302,75 +337,7 @@ if audience != "Overview":
             "Sponsor the workshop series ($5K–$15K, recognition at all sessions and in materials)",
         ], GOLD)
 
-# ── SIDEBAR NAVIGATION ────────────────────────────────────────────────────────
-with st.sidebar:
-    st.markdown(
-        f"<div style='text-align:center;padding:8px 0 16px 0'>"
-        f"<div style='font-size:1.1rem;font-weight:700;color:{NAVY}'>Quantum x HPC Pathways</div>"
-        f"<div style='font-size:0.78rem;color:{MGRAY};margin-top:2px'>South Side Opportunity Dashboard</div>"
-        f"</div>"
-        f"<hr style='border:none;border-top:1px solid {TEAL};margin:0 0 16px 0'>",
-        unsafe_allow_html=True
-    )
 
-    # ── CORE STORY ───────────────────────────────────────────────────────────
-    st.markdown(
-        f"<div style='font-size:0.7rem;font-weight:700;color:{TEAL};text-transform:uppercase;"
-        f"letter-spacing:1.5px;margin:0 0 6px 0'>Core Story</div>",
-        unsafe_allow_html=True
-    )
-
-    core_pages = ["Workforce Bridge", "Why Chicago WHPC?", "Ecosystem Map", "Pathway Ladder", "Partnership Opportunities"]
-    core_choice = st.radio("core", core_pages, label_visibility="collapsed", key="core_nav")
-
-    st.markdown("<div style='margin:12px 0 6px 0'>", unsafe_allow_html=True)
-    st.markdown(
-        f"<div style='font-size:0.7rem;font-weight:700;color:{MGRAY};text-transform:uppercase;"
-        f"letter-spacing:1.5px;margin:12px 0 6px 0'>Supporting Evidence</div>",
-        unsafe_allow_html=True
-    )
-
-    evidence_sections = {
-        "The Ecosystem": ["Why HPC?"],
-        "The Evidence":  ["Illinois Opportunity", "South Side Strengths and Assets",
-                          "Geographic Proximity", "Community Profiles", "Community Readiness Profile"],
-        "The Plan":      ["What Success Looks Like", "Community Impact Dashboard"],
-    }
-
-    evidence_choice = None
-    for section_label, pages in evidence_sections.items():
-        with st.expander(section_label, expanded=False):
-            choice = st.radio(section_label + "_r", pages,
-                              label_visibility="collapsed",
-                              key=f"ev_{section_label}")
-            # Track which expander was last interacted with
-            if st.session_state.get(f"ev_{section_label}") != pages[0] or                st.session_state.get("last_evidence_section") == section_label:
-                evidence_choice = choice
-                st.session_state["last_evidence_section"] = section_label
-
-    st.markdown("---")
-    st.markdown(
-        f"<div style='font-size:0.75rem;color:{MGRAY}'>"
-        f"<a href='https://www.chicagowhpc.org' style='color:{TEAL}'>chicagowhpc.org</a><br>"
-        f"<a href='https://forms.gle/2Lnv7LGsN3uUtNuu8' style='color:{TEAL}'>Mentorship Program</a><br>"
-        f"<a href='https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view' style='color:{TEAL}'>Civic Action Plan</a>"
-        f"</div>",
-        unsafe_allow_html=True
-    )
-
-# Determine active page: core nav takes priority unless evidence was explicitly selected
-if "last_evidence_section" in st.session_state and evidence_choice is not None:
-    # Check if user clicked a core page more recently - reset evidence if so
-    sub_choice = evidence_choice
-else:
-    sub_choice = core_choice
-
-# Allow core nav to override
-if st.session_state.get("core_nav") and st.session_state["core_nav"] in core_pages:
-    sub_choice = st.session_state["core_nav"]
-
-# tabs placeholder for compatibility
-tabs = [None] * 20
 
 
 # ══════════════════════════════════════════════════════════════════════════════
