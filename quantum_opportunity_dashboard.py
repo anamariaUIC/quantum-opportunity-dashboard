@@ -1,9 +1,9 @@
 """
 Quantum × HPC Pathways: South Side Opportunity Dashboard
 Chicago Women in High Performance Computing (Chicago WHPC)
-Ana Marija Sokovic, PhD - Lead Computational Scientist, Research Computing
+Ana Marija Sokovic, PhD, MBA - Lead Computational Scientist, Research Computing
 
-Research dashboard supporting the Quantum × HPC Pathways civic action plan.
+Research dashboard supporting the Quantum x HPC Pathways civic action plan (https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view?usp=drive_link).
 Data sources: ACS 2023, CPS/To&Through 2024, ISTC 2026, BCG/CQE 2024, IBM 2026.
 """
 
@@ -153,7 +153,7 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("**About this dashboard**")
     st.caption(
-        "Research supporting the Quantum × HPC Pathways civic action plan. "
+        "Research supporting the Quantum x HPC Pathways <a href='https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view?usp=drive_link' target='_blank'>civic action plan</a>. "
         "Data: ACS 2023, CPS To&Through 2024, ISTC 2026, BCG/CQE 2024, IBM 2026. "
         "Geography note: community area boundaries are used for planning purposes. "
         "Zip codes, CPS networks, and community areas do not align exactly."
@@ -212,7 +212,7 @@ st.markdown(
     <p style='color:#B8D4E8;margin:8px 0 4px 0;font-size:1.1rem'>
     South Side Opportunity Dashboard</p>
     <p style='color:#8BB8CC;margin:0;font-size:0.85rem'>
-    Chicago Women in High Performance Computing (Chicago WHPC) | Ana Marija Sokovic, PhD | 2026 Change Collective Fellow</p>
+    Chicago Women in High Performance Computing (Chicago WHPC) | Ana Marija Sokovic, PhD, MBA | 2026 Change Collective Fellow</p>
     </div>""",
     unsafe_allow_html=True
 )
@@ -346,7 +346,7 @@ with tabs[0]:
 
         callout(
             "\"The organization does not need to create a new pipeline. It needs to open existing ones.\" "
-            "- Quantum × HPC Pathways Civic Action Plan, 2026"
+            "- <a href='https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view?usp=drive_link' target='_blank'>Quantum x HPC Pathways Civic Action Plan, 2026</a>"
         )
 
         st.markdown("#### Why HPC and quantum belong together")
@@ -1837,7 +1837,7 @@ with tabs[8]:
         policy_text = f"""
 QUANTUM × HPC PATHWAYS: SOUTH SIDE OPPORTUNITY BRIEF
 Chicago Women in High Performance Computing
-Ana Marija Sokovic, PhD | 2026 Change Collective Fellow
+Ana Marija Sokovic, PhD, MBA | 2026 Change Collective Fellow
 
 EXECUTIVE SUMMARY
 Illinois is positioned to generate up to $80 billion in quantum economic impact by 2035 (BCG/CQE).
@@ -1923,7 +1923,7 @@ WHAT PARTNERS RECEIVE
 - Community-level participation data (unique dataset)
 - Recognition in Opportunity Guide and program materials
 
-Contact: Ana Marija Sokovic, PhD | chicagowhpc@gmail.com | chicagowhpc.org
+Contact: Ana Marija Sokovic, PhD, MBA | chicagowhpc@gmail.com | chicagowhpc.org
 """
         st.download_button(
             "⬇️ Download Partner Guide (.txt)",
@@ -2060,7 +2060,7 @@ with tabs[9]:
     )
 
     st.markdown("#### Year 1 Targets vs. Progress")
-    st.caption("Program launches fall 2026. Targets established in civic action plan. Progress will be updated quarterly.")
+    st.caption("Program launches fall 2026. Targets established in the <a href='https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view?usp=drive_link' target='_blank'>civic action plan</a>. Progress will be updated quarterly.")
 
     tracker_data = [
         ("Community Education Sessions", 0, "3-5", "sessions delivered", TEAL),
@@ -2559,12 +2559,12 @@ with tabs[11]:
         f"<div style='font-size:1.2rem;font-weight:700;color:{NAVY};margin-bottom:8px'>"
         f"Ready to participate?</div>"
         f"<div style='color:{MGRAY};margin-bottom:12px'>"
-        f"Contact Ana Marija Sokovic, PhD - Founder and Chair, Chicago WHPC</div>"
+        f"Contact Ana Marija Sokovic, PhD, MBA - Founder and Chair, Chicago WHPC</div>"
         f"<div style='font-size:1.1rem;font-weight:600;color:{TEAL}'>chicagowhpc@gmail.com</div>"
         f"<div style='margin-top:8px'>"
         f"<a href='https://www.chicagowhpc.org' style='color:{TEAL}'>chicagowhpc.org</a>"
         f" &nbsp;|&nbsp; "
-        f"<a href='https://www.chicagowhpc.org/mentorship' style='color:{TEAL}'>Mentorship Program</a>"
+        f"<a href='https://www.chicagowhpc.org/mentorship' style='color:{TEAL}'>Mentorship Program</a> | "f"<a href='https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view?usp=drive_link' style='color:{TEAL}'>Civic Action Plan</a>"
         f"</div></div>",
         unsafe_allow_html=True
     )
@@ -2597,7 +2597,7 @@ st.markdown("---")
 st.markdown(
     f"""<div style='text-align:center;color:{MGRAY};font-size:0.8rem;padding:12px'>
     Quantum × HPC Pathways | Chicago Women in High Performance Computing (Chicago WHPC) |
-    Ana Marija Sokovic, PhD | 2026 Change Collective Fellow<br>
+    Ana Marija Sokovic, PhD, MBA | 2026 Change Collective Fellow<br>
     Data: ACS 2023 · CPS To&Through 2024 · ISTC 2026 · BCG/CQE 2024 · IBM 2026 ·
     Chicago WHPC survey 2026 (N=181)<br>
     <a href="https://www.chicagowhpc.org" style="color:{TEAL}">chicagowhpc.org</a> |
