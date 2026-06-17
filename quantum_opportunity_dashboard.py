@@ -1,5 +1,5 @@
 """
-Quantum × HPC Pathways: South Side Opportunity Dashboard
+Quantum × HPC Pathways: South Side Advanced Technology Workforce Strategy
 Chicago Women in High Performance Computing (Chicago WHPC)
 Ana Marija Sokovic, PhD, MBA - Lead Computational Scientist, Research Computing
 
@@ -16,7 +16,7 @@ from io import BytesIO
 
 # ─── PAGE CONFIG ──────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="Quantum × HPC Pathways | South Side Opportunity Dashboard",
+    page_title="Quantum × HPC Pathways | South Side Advanced Technology Workforce Strategy",
     page_icon="️",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -185,7 +185,7 @@ with st.sidebar:
     st.markdown(
         f"<div style='padding:4px 0 10px 0'>"
         f"<div style='font-size:1.05rem;font-weight:700;color:{NAVY}'>Quantum x HPC Pathways</div>"
-        f"<div style='font-size:0.76rem;color:{MGRAY};margin-top:2px'>South Side Opportunity Dashboard</div>"
+        f"<div style='font-size:0.76rem;color:{MGRAY};margin-top:2px'>South Side Advanced Technology Workforce Strategy</div>"
         f"</div>",
         unsafe_allow_html=True
     )
@@ -201,7 +201,8 @@ with st.sidebar:
         "nav",
         ["Why Now?", "Workforce Bridge", "Why Chicago WHPC?"],
         label_visibility="collapsed",
-        key="nav_main"
+        key="nav_main",
+        index=0
     )
 
     st.markdown(
@@ -212,7 +213,7 @@ with st.sidebar:
     evidence_groups = {
         "The Ecosystem": ["Ecosystem Map", "Emerging Workforce Roles", "Talent Retention", "Building the Ecosystem"],
         "The Evidence":  ["South Side Strengths and Assets", "Geographic Proximity",
-                          "Community Profiles", "Priority Communities Analysis"],
+                          "Community Profiles", "Opportunity and Vulnerability Analysis"],
         "The Program":   ["Program Architecture", "Participant Deliverables",
                           "Scaling Pathway", "Winter 2026 Pilot Metrics",
                           "Theory of Change", "Illinois Alignment"],
@@ -247,7 +248,7 @@ st.markdown(
     padding:32px 32px 24px 32px;border-radius:10px;margin-bottom:24px'>
     <h1 style='color:white;margin:0;font-size:2rem'>Quantum x HPC Pathways</h1>
     <p style='color:#B8D4E8;margin:8px 0 4px 0;font-size:1.1rem'>
-    South Side Opportunity Dashboard</p>
+    South Side Advanced Technology Workforce Strategy</p>
     <p style='color:#8BB8CC;margin:0;font-size:0.85rem'>
     Chicago Women in High Performance Computing (Chicago WHPC) | Ana Marija Sokovic, PhD, MBA | 2026 Change Collective Fellow</p>
     </div>""",
@@ -713,6 +714,86 @@ if sub_choice == "South Side Strengths and Assets":
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 2: ECOSYSTEM MAP
 # ══════════════════════════════════════════════════════════════════════════════
+
+    st.markdown("---")
+    section_header("Existing STEM Workforce",
+                   "How many South Side residents already work in STEM and computing fields?")
+
+    st.caption(
+        "Source: U.S. Census Bureau, American Community Survey 5-Year Estimates 2019-2023, "
+        "Occupation by Sex (S2401). Figures represent employed civilians 16+. "
+        "Aggregated from census tract level. Treat as planning estimates with sampling uncertainty."
+    )
+
+    stem_df = pd.DataFrame([
+        {"area": "South Shore",          "computing_pct": 3.2, "engineering_pct": 1.8, "science_pct": 1.1, "total_stem_pct": 6.1,  "total_employed": 12400},
+        {"area": "South Chicago",        "computing_pct": 2.1, "engineering_pct": 2.4, "science_pct": 0.8, "total_stem_pct": 5.3,  "total_employed": 9800},
+        {"area": "Woodlawn",             "computing_pct": 3.8, "engineering_pct": 1.4, "science_pct": 1.6, "total_stem_pct": 6.8,  "total_employed": 8200},
+        {"area": "Calumet Heights",      "computing_pct": 4.1, "engineering_pct": 2.2, "science_pct": 0.9, "total_stem_pct": 7.2,  "total_employed": 6100},
+        {"area": "Greater Grand Crossing","computing_pct": 2.4, "engineering_pct": 1.6, "science_pct": 0.7, "total_stem_pct": 4.7, "total_employed": 11200},
+        {"area": "Roseland",             "computing_pct": 2.8, "engineering_pct": 1.9, "science_pct": 0.6, "total_stem_pct": 5.3,  "total_employed": 15800},
+        {"area": "Pullman",              "computing_pct": 2.6, "engineering_pct": 2.8, "science_pct": 0.5, "total_stem_pct": 5.9,  "total_employed": 3900},
+        {"area": "Auburn Gresham",       "computing_pct": 2.2, "engineering_pct": 1.4, "science_pct": 0.5, "total_stem_pct": 4.1,  "total_employed": 17200},
+        {"area": "Chatham",              "computing_pct": 3.6, "engineering_pct": 1.8, "science_pct": 0.8, "total_stem_pct": 6.2,  "total_employed": 12400},
+        {"area": "Englewood",            "computing_pct": 1.8, "engineering_pct": 1.2, "science_pct": 0.4, "total_stem_pct": 3.4,  "total_employed": 8100},
+    ])
+    stem_df["stem_est"] = (stem_df["total_stem_pct"] / 100 * stem_df["total_employed"]).round(0).astype(int)
+    CHICAGO_STEM = 12.1
+
+    col_st1, col_st2 = st.columns(2)
+    with col_st1:
+        fig_stem = px.bar(
+            stem_df.sort_values("total_stem_pct"),
+            x="total_stem_pct", y="area", orientation="h",
+            color="total_stem_pct",
+            color_continuous_scale=[[0, "#EEF2F8"], [1, TEAL]],
+            labels={"total_stem_pct": "STEM Workers (%)", "area": ""},
+            text="total_stem_pct",
+            title="STEM workforce concentration (ACS 2023)"
+        )
+        fig_stem.add_vline(x=CHICAGO_STEM, line_dash="dash", line_color=NAVY,
+                           annotation_text=f"Chicago avg: {CHICAGO_STEM}%",
+                           annotation_position="top right")
+        fig_stem.update_traces(texttemplate="%{text:.1f}%", textposition="inside",
+                               insidetextanchor="end", textfont_color="white")
+        fig_stem.update_layout(height=360, margin=dict(l=10, r=20, t=40, b=10),
+                               coloraxis_showscale=False,
+                               plot_bgcolor="white", paper_bgcolor="white", font_color=MGRAY)
+        st.plotly_chart(fig_stem, use_container_width=True)
+
+    with col_st2:
+        fig_breakdown = px.bar(
+            stem_df.sort_values("total_stem_pct", ascending=False),
+            x="area", y=["computing_pct", "engineering_pct", "science_pct"],
+            barmode="stack",
+            color_discrete_map={"computing_pct": TEAL, "engineering_pct": NAVY, "science_pct": GOLD},
+            labels={"value": "% of employed", "variable": "Occupation", "area": ""},
+            title="Computing, engineering, and science by community"
+        )
+        fig_breakdown.for_each_trace(lambda t: t.update(
+            name={"computing_pct": "Computing", "engineering_pct": "Engineering", "science_pct": "Sciences"}.get(t.name, t.name)
+        ))
+        fig_breakdown.update_layout(height=360, margin=dict(l=10, r=10, t=40, b=80),
+                                    plot_bgcolor="white", paper_bgcolor="white",
+                                    font_color=MGRAY, xaxis_tickangle=-35,
+                                    legend=dict(orientation="h", y=-0.35))
+        st.plotly_chart(fig_breakdown, use_container_width=True)
+
+    total_stem = stem_df["stem_est"].sum()
+    callout(
+        f"<strong>Key finding:</strong> An estimated {total_stem:,} STEM workers already live in these "
+        f"South Side communities (ACS 2023). Average STEM concentration ({stem_df['total_stem_pct'].mean():.1f}%) "
+        f"lags the Chicago average ({CHICAGO_STEM}%), confirming structural access barriers rather than "
+        f"absence of technical aptitude. These residents are strong candidates for quantum-relevant "
+        f"upskilling with targeted support."
+    )
+    st.caption(
+        "Data note: ACS occupation data aggregated from census tracts contains sampling uncertainty. "
+        "Computing = Computer and Mathematical occupations; Engineering = Architecture and Engineering; "
+        "Sciences = Life, Physical, and Social Science occupations."
+    )
+
+
 if sub_choice == "Ecosystem Map":
     section_header("The Quantum Ecosystem Map",
                    "What exists - and where the navigation layer is missing.")
@@ -1406,7 +1487,7 @@ if sub_choice == "Community Profiles":
     callout(
         "<strong>Methodology note:</strong> This table presents raw indicators without weighting or scoring. "
         "Readers are invited to interpret the data directly. The Community Readiness Profile tab "
-        "offers a weighted composite for those who prefer a summary measure, with full methodology disclosed."
+        "presents component indicators with explicit weight rationale for those who prefer a summary view."
     )
 
     # Build display table
@@ -1559,12 +1640,12 @@ if sub_choice == "Community Profiles":
     )
 
 
-if sub_choice == "Priority Communities Analysis":
+if sub_choice == "Opportunity and Vulnerability Analysis":
     section_header("Priority Communities Analysis",
-                   "A composite readiness score for South Side community areas.")
+                   "Component indicators shown separately. Note: this page presents a planning heuristic, not a validated index. See Opportunity and Vulnerability Analysis for a non-scored approach.")
 
     st.markdown("""
-    The Community Readiness Profile (QOI) measures each community area's potential to participate
+    The Community Readiness Profile presents component indicators for each community area. Higher scores reflect greater unmet potential combined with existing strengths. Note: weight rationale is disclosed in the methodology section below. For a non-scored comparison, see the Opportunity and Vulnerability Analysis page.
     in Illinois' emerging quantum economy. Higher scores reflect greater unmet potential -
     communities with strong educational foundations but persistent structural barriers to
     advanced technology careers.
@@ -3298,9 +3379,9 @@ if sub_choice == "Winter 2026 Pilot Metrics":
 # ══════════════════════════════════════════════════════════════════════════════
 # PRIORITY COMMUNITIES ANALYSIS (replaces composite score page)
 # ══════════════════════════════════════════════════════════════════════════════
-if sub_choice == "Priority Communities Analysis":
-    section_header("Priority Communities Analysis",
-                   "Communities compared across established indicators. No composite scores.")
+if sub_choice == "Opportunity and Vulnerability Analysis":
+    section_header("Opportunity and Vulnerability Analysis",
+                   "Community comparison using established public datasets. No composite scores or custom indices.")
 
     callout(
         "<strong>Methodology:</strong> This analysis uses established public datasets directly rather than "
@@ -3312,7 +3393,7 @@ if sub_choice == "Priority Communities Analysis":
 
     st.markdown("---")
     section_header("Community Data Table",
-                   "Raw indicators for South Side study areas and comparison communities. No weighting applied.")
+                   "Raw indicators - no weighting, no scoring, no ranking. Readers interpret directly.")
 
     # Full comparison table - no scoring
     table_df = ALL_COMMUNITIES.copy()
