@@ -279,32 +279,32 @@ with st.sidebar:
         "Workforce Bridge",
         "Why Chicago WHPC?",
         "Theory of Change",
-        "────── The Ecosystem",
+        "〉 THE ECOSYSTEM",
         "Ecosystem Map",
         "Emerging Workforce Roles",
         "Talent Retention",
         "Building the Ecosystem",
-        "────── The Evidence",
+        "〉 THE EVIDENCE",
         "South Side Strengths and Assets",
         "Geographic Proximity",
         "Community Profiles",
         "Community Opportunity Landscape",
         "Workforce Baseline Analysis",
-        "────── The Program",
+        "〉 THE PROGRAM",
         "Program Architecture",
         "Participant Deliverables",
         "Scaling Pathway",
         "Winter 2026 Pilot Metrics",
         "Sustainability Model",
-        "────── Policy",
+        "〉 POLICY",
         "Illinois Alignment",
         "Stakeholder Map Overview",
         "Public Value Framework",
-        "────── Get Involved",
+        "〉 GET INVOLVED",
         "Launch Status",
         "Community Impact Dashboard",
         "Partnership Opportunities",
-        "────── Methodology",
+        "〉 METHODOLOGY",
         "Methodology and Data Sources",
         "Evaluation Framework",
         "Limitations",
@@ -319,7 +319,7 @@ with st.sidebar:
     )
 
     # Section dividers are not real pages — fall back to Why Now?
-    if sub_choice and sub_choice.startswith("──"):
+    if sub_choice and sub_choice.startswith("〉"):
         sub_choice = "Why Now?"
 
     st.markdown("---")
