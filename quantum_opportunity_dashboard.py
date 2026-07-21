@@ -283,15 +283,12 @@ with st.sidebar:
         ["Why Now?", "Latest Developments", "Workforce Bridge", "Why Chicago WHPC?", "Theory of Change"],
         label_visibility="collapsed",
         key="nav_main",
-        index=0
+        index=0,
+        on_change=lambda: st.session_state.update({"nav_source": "core", "nav_evidence": None})
     )
 
-    st.markdown(
-        f"<div style='font-size:0.68rem;font-weight:700;color:{MGRAY};"
-        f"text-transform:uppercase;letter-spacing:1.5px;margin:12px 0 4px 0'>Supporting Evidence</div>",
-        unsafe_allow_html=True
-    )
-    evidence_groups = {
+    # All pages in one flat radio — instant navigation, no button needed
+    all_sections = {
         "The Ecosystem": ["Ecosystem Map", "Emerging Workforce Roles", "Talent Retention", "Building the Ecosystem"],
         "The Evidence":  ["South Side Strengths and Assets", "Geographic Proximity",
                           "Community Profiles", "Community Opportunity Landscape",
@@ -301,17 +298,44 @@ with st.sidebar:
                           "Sustainability Model"],
         "Policy":        ["Illinois Alignment", "Stakeholder Map Overview", "Public Value Framework"],
         "Get Involved":  ["Launch Status", "Community Impact Dashboard", "Partnership Opportunities"],
-        "Methodology":   ["Methodology and Data Sources", "Evaluation Framework", "Limitations", "Community Readiness Profile (Appendix)"],
+        "Methodology":   ["Methodology and Data Sources", "Evaluation Framework",
+                          "Limitations", "Community Readiness Profile (Appendix)"],
     }
-    for group_label, pages in evidence_groups.items():
-        with st.expander(group_label, expanded=False):
-            ev = st.radio(group_label, pages, label_visibility="collapsed", key=f"nav_{group_label}")
-            if st.button(f"Go to {ev}", key=f"go_{group_label}", use_container_width=True):
-                st.session_state["nav_override"] = ev
+
+    all_evidence_pages = []
+    section_map = {}
+    for section, pages in all_sections.items():
+        all_evidence_pages.extend(pages)
+        for p in pages:
+            section_map[p] = section
+
+    # Render section labels + flat radio
+    # We use a single radio over all pages, with HTML labels between groups
+    for section, pages in all_sections.items():
+        st.markdown(
+            f"<div style='font-size:0.65rem;font-weight:700;color:{MGRAY};"
+            f"text-transform:uppercase;letter-spacing:1.5px;"
+            f"margin:10px 0 2px 4px'>{section}</div>",
+            unsafe_allow_html=True
+        )
+        for page in pages:
+            is_selected = st.session_state.get("nav_evidence") == page
+            if st.button(
+                page,
+                key=f"navbtn_{page}",
+                use_container_width=True,
+                type="secondary",
+            ):
+                st.session_state["nav_evidence"] = page
+                st.session_state["nav_source"] = "evidence"
                 st.rerun()
 
-    if "nav_override" in st.session_state:
-        sub_choice = st.session_state.pop("nav_override")
+    # Resolve active page
+    if st.session_state.get("nav_source") == "evidence" and st.session_state.get("nav_evidence"):
+        sub_choice = st.session_state["nav_evidence"]
+        # Clear core nav selection so evidence wins
+        if "nav_main" in st.session_state:
+            st.session_state["nav_main"] = None
 
     st.markdown("---")
     st.caption("Data: ACS 2023, CPS 2024, ISTC 2026, BCG/CQE 2024, IBM 2026.")
