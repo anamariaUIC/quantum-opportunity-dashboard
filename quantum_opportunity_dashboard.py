@@ -348,40 +348,29 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Mobile navigation - inject JS to show sidebar toggle button prominently on mobile
-st.markdown("""
-<style>
-/* Make the sidebar toggle button visible and prominent on mobile */
-@media (max-width: 768px) {
-    /* Force show the sidebar toggle */
-    [data-testid="collapsedControl"] {
-        display: flex !important;
-        visibility: visible !important;
-        position: fixed !important;
-        top: 12px !important;
-        left: 12px !important;
-        z-index: 9999 !important;
-        background: #1A7A6E !important;
-        border-radius: 8px !important;
-        padding: 8px !important;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
-    }
-    [data-testid="collapsedControl"] svg {
-        fill: white !important;
-        color: white !important;
-    }
-    /* Add a visible label */
-    [data-testid="collapsedControl"]::after {
-        content: " Menu";
-        color: white;
-        font-size: 14px;
-        font-weight: 700;
-        margin-left: 4px;
-        white-space: nowrap;
-    }
-}
-</style>
-""", unsafe_allow_html=True)
+# Mobile navigation selectbox - always visible on page
+all_pages_mobile = [
+    "Why Now?", "Latest Developments", "Workforce Bridge", "Why Chicago WHPC?", "Theory of Change",
+    "Ecosystem Map", "Emerging Workforce Roles", "Talent Retention", "Building the Ecosystem",
+    "South Side Strengths and Assets", "Geographic Proximity", "Community Profiles",
+    "Community Opportunity Landscape", "Workforce Baseline Analysis",
+    "Program Architecture", "Participant Deliverables", "Scaling Pathway",
+    "Winter 2026 Pilot Metrics", "Sustainability Model",
+    "Illinois Alignment", "Stakeholder Map Overview", "Public Value Framework",
+    "Launch Status", "Community Impact Dashboard", "Partnership Opportunities",
+    "Methodology and Data Sources", "Evaluation Framework",
+    "Limitations", "Community Readiness Profile (Appendix)",
+]
+
+mobile_pick = st.selectbox(
+    "Navigate to page",
+    all_pages_mobile,
+    key="mobile_nav",
+    label_visibility="visible"
+)
+# Mobile selectbox overrides sidebar selection
+if mobile_pick:
+    sub_choice = mobile_pick
 
 # ── TAB ROUTING ───────────────────────────────────────────────────────────────
 
