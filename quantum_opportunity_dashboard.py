@@ -19,7 +19,7 @@ st.set_page_config(
     page_title="Quantum × HPC Pathways | South Side Advanced Technology Workforce Strategy",
     page_icon="️",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="expanded"
 )
 
 # ─── COLORS ───────────────────────────────────────────────────────────────────
@@ -344,6 +344,22 @@ st.markdown(
     South Side Advanced Technology Workforce Strategy</p>
     <p style='color:#8BB8CC;margin:0;font-size:0.85rem'>
     Chicago Women in High Performance Computing (Chicago WHPC) | Ana Marija Sokovic, PhD, MBA | 2026 Change Collective Fellow</p>
+    </div>""",
+    unsafe_allow_html=True
+)
+
+# Mobile navigation hint
+st.markdown(
+    f"""<div style='display:none' class='mobile-nav-hint'>
+    <style>
+    @media (max-width: 768px) {{
+        .mobile-nav-hint {{ display:block !important; }}
+    }}
+    </style>
+    <div style='background:{TEAL}18;border:1px solid {TEAL};border-radius:8px;
+    padding:10px 14px;margin-bottom:12px;font-size:0.85rem;color:{NAVY};text-align:center'>
+    Tap the <strong>&gt;</strong> arrow at top left to open the navigation menu
+    </div>
     </div>""",
     unsafe_allow_html=True
 )
