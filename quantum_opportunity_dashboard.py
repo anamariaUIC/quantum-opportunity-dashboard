@@ -278,44 +278,52 @@ with st.sidebar:
         f"text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px'>Core Story</div>",
         unsafe_allow_html=True
     )
-    sub_choice = st.radio(
-        "nav",
-        ["Why Now?", "Latest Developments", "Workforce Bridge", "Why Chicago WHPC?", "Theory of Change"],
+    # Core Story - radio (always visible, instant)
+    core_pages = ["Why Now?", "Latest Developments", "Workforce Bridge", "Why Chicago WHPC?", "Theory of Change"]
+    core_choice = st.radio(
+        "core_nav", core_pages,
         label_visibility="collapsed",
-        key="nav_main",
-        index=0
-    )
-    # Single flat radio for all supporting pages — guaranteed instant navigation
-    all_evidence_pages = [
-        "--- The Ecosystem ---",
-        "Ecosystem Map", "Emerging Workforce Roles", "Talent Retention", "Building the Ecosystem",
-        "--- The Evidence ---",
-        "South Side Strengths and Assets", "Geographic Proximity",
-        "Community Profiles", "Community Opportunity Landscape", "Workforce Baseline Analysis",
-        "--- The Program ---",
-        "Program Architecture", "Participant Deliverables",
-        "Scaling Pathway", "Winter 2026 Pilot Metrics", "Sustainability Model",
-        "--- Policy ---",
-        "Illinois Alignment", "Stakeholder Map Overview", "Public Value Framework",
-        "--- Get Involved ---",
-        "Launch Status", "Community Impact Dashboard", "Partnership Opportunities",
-        "--- Methodology ---",
-        "Methodology and Data Sources", "Evaluation Framework",
-        "Limitations", "Community Readiness Profile (Appendix)",
-    ]
-
-    ev_choice = st.radio(
-        "evidence_nav",
-        all_evidence_pages,
-        label_visibility="collapsed",
-        key="nav_evidence_radio"
+        key="nav_main", index=0
     )
 
-    # Section dividers (starting with ---) are not real pages
-    if ev_choice and not ev_choice.startswith("---"):
-        sub_choice = ev_choice
+    # Supporting sections - styled headers + selectbox per section
+    sections = {
+        "The Ecosystem": ["Ecosystem Map", "Emerging Workforce Roles", "Talent Retention", "Building the Ecosystem"],
+        "The Evidence":  ["South Side Strengths and Assets", "Geographic Proximity",
+                          "Community Profiles", "Community Opportunity Landscape", "Workforce Baseline Analysis"],
+        "The Program":   ["Program Architecture", "Participant Deliverables",
+                          "Scaling Pathway", "Winter 2026 Pilot Metrics", "Sustainability Model"],
+        "Policy":        ["Illinois Alignment", "Stakeholder Map Overview", "Public Value Framework"],
+        "Get Involved":  ["Launch Status", "Community Impact Dashboard", "Partnership Opportunities"],
+        "Methodology":   ["Methodology and Data Sources", "Evaluation Framework",
+                          "Limitations", "Community Readiness Profile (Appendix)"],
+    }
 
+    last_section_pick = None
+    for sec_label, pages in sections.items():
+        st.markdown(
+            f"<div style='font-size:0.65rem;font-weight:700;color:{TEAL};"
+            f"text-transform:uppercase;letter-spacing:1.5px;"
+            f"padding:8px 0 3px 4px;border-top:1px solid #E8E8E8;margin-top:4px'>"
+            f"{sec_label}</div>",
+            unsafe_allow_html=True
+        )
+        pick = st.selectbox(
+            sec_label, ["Select..."] + pages,
+            label_visibility="collapsed",
+            key=f"sel_{sec_label}"
+        )
+        if pick and pick != "Select...":
+            last_section_pick = pick
 
+    # Determine active page: section selectbox overrides core radio
+    if last_section_pick:
+        sub_choice = last_section_pick
+    else:
+        sub_choice = core_choice
+
+    st.markdown("---")
+    st.markdown("---")
     st.markdown("---")
     st.caption("Data: ACS 2023, CPS 2024, ISTC 2026, BCG/CQE 2024, IBM 2026.")
     st.markdown(
