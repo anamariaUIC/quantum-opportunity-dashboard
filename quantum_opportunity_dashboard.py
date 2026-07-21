@@ -285,57 +285,36 @@ with st.sidebar:
         key="nav_main",
         index=0
     )
-    # When core radio is used, clear evidence selection
-    if st.session_state.get("nav_main"):
-        st.session_state["nav_source"] = "core"
-        st.session_state["nav_evidence"] = None
+    # Single flat radio for all supporting pages — guaranteed instant navigation
+    all_evidence_pages = [
+        "--- The Ecosystem ---",
+        "Ecosystem Map", "Emerging Workforce Roles", "Talent Retention", "Building the Ecosystem",
+        "--- The Evidence ---",
+        "South Side Strengths and Assets", "Geographic Proximity",
+        "Community Profiles", "Community Opportunity Landscape", "Workforce Baseline Analysis",
+        "--- The Program ---",
+        "Program Architecture", "Participant Deliverables",
+        "Scaling Pathway", "Winter 2026 Pilot Metrics", "Sustainability Model",
+        "--- Policy ---",
+        "Illinois Alignment", "Stakeholder Map Overview", "Public Value Framework",
+        "--- Get Involved ---",
+        "Launch Status", "Community Impact Dashboard", "Partnership Opportunities",
+        "--- Methodology ---",
+        "Methodology and Data Sources", "Evaluation Framework",
+        "Limitations", "Community Readiness Profile (Appendix)",
+    ]
 
-    # All pages in one flat radio — instant navigation, no button needed
-    all_sections = {
-        "The Ecosystem": ["Ecosystem Map", "Emerging Workforce Roles", "Talent Retention", "Building the Ecosystem"],
-        "The Evidence":  ["South Side Strengths and Assets", "Geographic Proximity",
-                          "Community Profiles", "Community Opportunity Landscape",
-                          "Workforce Baseline Analysis"],
-        "The Program":   ["Program Architecture", "Participant Deliverables",
-                          "Scaling Pathway", "Winter 2026 Pilot Metrics",
-                          "Sustainability Model"],
-        "Policy":        ["Illinois Alignment", "Stakeholder Map Overview", "Public Value Framework"],
-        "Get Involved":  ["Launch Status", "Community Impact Dashboard", "Partnership Opportunities"],
-        "Methodology":   ["Methodology and Data Sources", "Evaluation Framework",
-                          "Limitations", "Community Readiness Profile (Appendix)"],
-    }
+    ev_choice = st.radio(
+        "evidence_nav",
+        all_evidence_pages,
+        label_visibility="collapsed",
+        key="nav_evidence_radio"
+    )
 
-    all_evidence_pages = []
-    section_map = {}
-    for section, pages in all_sections.items():
-        all_evidence_pages.extend(pages)
-        for p in pages:
-            section_map[p] = section
+    # Section dividers (starting with ---) are not real pages
+    if ev_choice and not ev_choice.startswith("---"):
+        sub_choice = ev_choice
 
-    # Render section labels + flat radio
-    # We use a single radio over all pages, with HTML labels between groups
-    for section, pages in all_sections.items():
-        st.markdown(
-            f"<div style='font-size:0.65rem;font-weight:700;color:{MGRAY};"
-            f"text-transform:uppercase;letter-spacing:1.5px;"
-            f"margin:10px 0 2px 4px'>{section}</div>",
-            unsafe_allow_html=True
-        )
-        for page in pages:
-            is_selected = st.session_state.get("nav_evidence") == page
-            if st.button(
-                page,
-                key=f"navbtn_{page}",
-                use_container_width=True,
-                type="secondary",
-            ):
-                st.session_state["nav_evidence"] = page
-                st.session_state["nav_source"] = "evidence"
-                st.rerun()
-
-    # Resolve active page - evidence buttons override core radio
-    if st.session_state.get("nav_source") == "evidence" and st.session_state.get("nav_evidence"):
-        sub_choice = st.session_state["nav_evidence"]
 
     st.markdown("---")
     st.caption("Data: ACS 2023, CPS 2024, ISTC 2026, BCG/CQE 2024, IBM 2026.")
