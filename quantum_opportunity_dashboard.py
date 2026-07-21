@@ -278,19 +278,30 @@ with st.sidebar:
         f"text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px'>Core Story</div>",
         unsafe_allow_html=True
     )
-    # Core Story - radio (always visible, instant)
-    core_pages = ["Why Now?", "Latest Developments", "Workforce Bridge", "Why Chicago WHPC?", "Theory of Change"]
+    # ── NAVIGATION ───────────────────────────────────────────────────────────
+    core_pages = ["Why Now?", "Latest Developments", "Workforce Bridge",
+                  "Why Chicago WHPC?", "Theory of Change"]
+
+    st.markdown(
+        f"<div style='font-size:0.65rem;font-weight:700;color:{TEAL};"
+        f"text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px'>Core Story</div>",
+        unsafe_allow_html=True
+    )
     core_choice = st.radio(
         "core_nav", core_pages,
         label_visibility="collapsed",
         key="nav_main", index=0
     )
 
-    # Supporting sections - styled headers + selectbox per section
+    # Default to core radio
+    sub_choice = core_choice
+
     sections = {
-        "The Ecosystem": ["Ecosystem Map", "Emerging Workforce Roles", "Talent Retention", "Building the Ecosystem"],
+        "The Ecosystem": ["Ecosystem Map", "Emerging Workforce Roles",
+                          "Talent Retention", "Building the Ecosystem"],
         "The Evidence":  ["South Side Strengths and Assets", "Geographic Proximity",
-                          "Community Profiles", "Community Opportunity Landscape", "Workforce Baseline Analysis"],
+                          "Community Profiles", "Community Opportunity Landscape",
+                          "Workforce Baseline Analysis"],
         "The Program":   ["Program Architecture", "Participant Deliverables",
                           "Scaling Pathway", "Winter 2026 Pilot Metrics", "Sustainability Model"],
         "Policy":        ["Illinois Alignment", "Stakeholder Map Overview", "Public Value Framework"],
@@ -299,7 +310,6 @@ with st.sidebar:
                           "Limitations", "Community Readiness Profile (Appendix)"],
     }
 
-    last_section_pick = None
     for sec_label, pages in sections.items():
         st.markdown(
             f"<div style='font-size:0.65rem;font-weight:700;color:{TEAL};"
@@ -309,19 +319,15 @@ with st.sidebar:
             unsafe_allow_html=True
         )
         pick = st.selectbox(
-            sec_label, ["Select..."] + pages,
+            sec_label, ["Select a page..."] + pages,
             label_visibility="collapsed",
             key=f"sel_{sec_label}"
         )
-        if pick and pick != "Select...":
-            last_section_pick = pick
+        # Only override sub_choice if user actually picked a real page
+        if pick and pick != "Select a page...":
+            sub_choice = pick
 
-    # Determine active page: section selectbox overrides core radio
-    if last_section_pick:
-        sub_choice = last_section_pick
-    else:
-        sub_choice = core_choice
-
+    st.markdown("---")
     st.markdown("---")
     st.markdown("---")
     st.markdown("---")
