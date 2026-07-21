@@ -348,21 +348,40 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Mobile navigation hint
-st.markdown(
-    f"""<div style='display:none' class='mobile-nav-hint'>
-    <style>
-    @media (max-width: 768px) {{
-        .mobile-nav-hint {{ display:block !important; }}
-    }}
-    </style>
-    <div style='background:{TEAL}18;border:1px solid {TEAL};border-radius:8px;
-    padding:10px 14px;margin-bottom:12px;font-size:0.85rem;color:{NAVY};text-align:center'>
-    Tap the <strong>&gt;</strong> arrow at top left to open the navigation menu
-    </div>
-    </div>""",
-    unsafe_allow_html=True
-)
+# Mobile navigation - inject JS to show sidebar toggle button prominently on mobile
+st.markdown("""
+<style>
+/* Make the sidebar toggle button visible and prominent on mobile */
+@media (max-width: 768px) {
+    /* Force show the sidebar toggle */
+    [data-testid="collapsedControl"] {
+        display: flex !important;
+        visibility: visible !important;
+        position: fixed !important;
+        top: 12px !important;
+        left: 12px !important;
+        z-index: 9999 !important;
+        background: #1A7A6E !important;
+        border-radius: 8px !important;
+        padding: 8px !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+    }
+    [data-testid="collapsedControl"] svg {
+        fill: white !important;
+        color: white !important;
+    }
+    /* Add a visible label */
+    [data-testid="collapsedControl"]::after {
+        content: " Menu";
+        color: white;
+        font-size: 14px;
+        font-weight: 700;
+        margin-left: 4px;
+        white-space: nowrap;
+    }
+}
+</style>
+""", unsafe_allow_html=True)
 
 # ── TAB ROUTING ───────────────────────────────────────────────────────────────
 
