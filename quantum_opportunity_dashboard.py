@@ -283,9 +283,12 @@ with st.sidebar:
         ["Why Now?", "Latest Developments", "Workforce Bridge", "Why Chicago WHPC?", "Theory of Change"],
         label_visibility="collapsed",
         key="nav_main",
-        index=0,
-        on_change=lambda: st.session_state.update({"nav_source": "core", "nav_evidence": None})
+        index=0
     )
+    # When core radio is used, clear evidence selection
+    if st.session_state.get("nav_main"):
+        st.session_state["nav_source"] = "core"
+        st.session_state["nav_evidence"] = None
 
     # All pages in one flat radio — instant navigation, no button needed
     all_sections = {
@@ -330,12 +333,9 @@ with st.sidebar:
                 st.session_state["nav_source"] = "evidence"
                 st.rerun()
 
-    # Resolve active page
+    # Resolve active page - evidence buttons override core radio
     if st.session_state.get("nav_source") == "evidence" and st.session_state.get("nav_evidence"):
         sub_choice = st.session_state["nav_evidence"]
-        # Clear core nav selection so evidence wins
-        if "nav_main" in st.session_state:
-            st.session_state["nav_main"] = None
 
     st.markdown("---")
     st.caption("Data: ACS 2023, CPS 2024, ISTC 2026, BCG/CQE 2024, IBM 2026.")
