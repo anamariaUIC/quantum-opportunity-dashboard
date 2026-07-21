@@ -300,7 +300,7 @@ with st.sidebar:
                           "Scaling Pathway", "Winter 2026 Pilot Metrics",
                           "Sustainability Model"],
         "Policy":        ["Illinois Alignment", "Stakeholder Map Overview", "Public Value Framework"],
-        "Get Involved":  ["Community Impact Dashboard", "Partnership Opportunities"],
+        "Get Involved":  ["Launch Status", "Community Impact Dashboard", "Partnership Opportunities"],
         "Methodology":   ["Methodology and Data Sources", "Evaluation Framework", "Limitations", "Community Readiness Profile (Appendix)"],
     }
     for group_label, pages in evidence_groups.items():
@@ -5146,6 +5146,216 @@ if sub_choice == "Latest Developments":
         "The case for launching Quantum x HPC Pathways in Winter 2026 has never been stronger."
     )
 
+
+
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# LAUNCH STATUS
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Launch Status":
+    section_header("Launch Status",
+                   "Winter 2026 pilot — what is ready, what we need, and how you can help.")
+
+    # ── HERO STATUS BAR ───────────────────────────────────────────────────────
+    st.markdown(
+        f"<div style='background:linear-gradient(135deg,{NAVY} 0%,{TEAL} 100%);"
+        f"border-radius:12px;padding:28px 36px;margin-bottom:24px'>"
+        f"<div style='font-size:1.3rem;font-weight:700;color:white;margin-bottom:8px'>"
+        f"Quantum x HPC Pathways — Winter 2026 Pilot</div>"
+        f"<div style='font-size:0.95rem;color:#B8D4E8;margin-bottom:16px'>"
+        f"Chicago Women in High Performance Computing (Chicago WHPC) | chicagowhpc@gmail.com</div>"
+        f"<div style='display:flex;gap:12px;flex-wrap:wrap'>"
+        f"<span style='background:rgba(255,255,255,0.2);color:white;padding:4px 14px;"
+        f"border-radius:20px;font-size:0.82rem;font-weight:600'>501(c)(3) Nonprofit</span>"
+        f"<span style='background:rgba(255,255,255,0.2);color:white;padding:4px 14px;"
+        f"border-radius:20px;font-size:0.82rem;font-weight:600'>2026 Change Collective Fellow</span>"
+        f"<span style='background:rgba(255,255,255,0.2);color:white;padding:4px 14px;"
+        f"border-radius:20px;font-size:0.82rem;font-weight:600'>300+ Member Network</span>"
+        f"<span style='background:{GOLD};color:white;padding:4px 14px;"
+        f"border-radius:20px;font-size:0.82rem;font-weight:700'>Launching Winter 2026</span>"
+        f"</div></div>",
+        unsafe_allow_html=True
+    )
+
+    col_ready, col_need = st.columns(2)
+
+    # ── WHAT IS READY ─────────────────────────────────────────────────────────
+    with col_ready:
+        st.markdown(
+            f"<div style='background:{GREEN}12;border:2px solid {GREEN};"
+            f"border-radius:10px;padding:16px 20px;height:100%'>"
+            f"<div style='font-weight:700;color:{GREEN};font-size:1rem;margin-bottom:14px'>"
+            f"What Is Already in Place</div>",
+            unsafe_allow_html=True
+        )
+        ready_items = [
+            ("501(c)(3) organizational infrastructure",
+             "Chicago WHPC is a registered nonprofit with governance, finances, and operational capacity."),
+            ("300+ member professional network",
+             "An existing pool of HPC and quantum professionals available for mentorship and speaking."),
+            ("Mentorship platform",
+             "Together platform configured and live at chicagowhpc.org/mentorship."),
+            ("HPC infrastructure access",
+             "GPU-accelerated cluster access through institutional partnerships for workshop participants."),
+            ("Curriculum framework",
+             "Six-stage program architecture (Awareness through Outcomes) with deliverables defined."),
+            ("South Side Quantum Opportunity Guide",
+             "In development — maps certificates, degrees, employers, and pathways accessible from the South Side."),
+            ("Quantum Meets HPC event track record",
+             "200+ registrants, 56% awareness gap documented, demonstrated community demand."),
+            ("Strategy platform",
+             "This dashboard — research, policy alignment, stakeholder map, evaluation framework."),
+        ]
+        for title, desc in ready_items:
+            st.markdown(
+                f"<div style='display:flex;gap:10px;margin:8px 0;align-items:flex-start'>"
+                f"<span style='color:{GREEN};font-size:1rem;margin-top:1px'>✓</span>"
+                f"<div><div style='font-weight:600;color:{NAVY};font-size:0.85rem'>{title}</div>"
+                f"<div style='font-size:0.78rem;color:{MGRAY}'>{desc}</div></div></div>",
+                unsafe_allow_html=True
+            )
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    # ── WHAT WE NEED ─────────────────────────────────────────────────────────
+    with col_need:
+        st.markdown(
+            f"<div style='background:{GOLD}12;border:2px solid {GOLD};"
+            f"border-radius:10px;padding:16px 20px;height:100%'>"
+            f"<div style='font-weight:700;color:{GOLD};font-size:1rem;margin-bottom:14px'>"
+            f"What We Need for Winter 2026</div>",
+            unsafe_allow_html=True
+        )
+        need_items = [
+            ("$25K - $50K seed funding", "HIGH",
+             "Covers instructional coordination, participant stipends, curriculum materials, and Year 1 evaluation."),
+            ("2-3 pilot mentors", "HIGH",
+             "HPC or quantum professionals for semester-long structured matches. Chicago WHPC coordinates everything."),
+            ("1 community venue partner", "HIGH",
+             "Library, community center, school, or park facility in South Shore, South Chicago, or Woodlawn for 4-6 sessions."),
+            ("1 employer-facing partner", "HIGH",
+             "Company willing to present career information and provide role descriptions for the Opportunity Guide."),
+            ("CPS or City Colleges introduction", "MEDIUM",
+             "A warm connection to Network 17 CS teachers or Olive Harvey staff for participant recruitment."),
+            ("Facility tour host", "MEDIUM",
+             "Lab, computing center, or employer site willing to host 10-15 participants for a half-day visit."),
+        ]
+        for title, priority, desc in need_items:
+            p_color = RED if priority == "HIGH" else GOLD
+            st.markdown(
+                f"<div style='background:white;border-radius:6px;padding:10px 12px;margin:6px 0'>"
+                f"<div style='display:flex;justify-content:space-between;align-items:flex-start'>"
+                f"<div style='font-weight:600;color:{NAVY};font-size:0.85rem'>{title}</div>"
+                f"<span style='background:{p_color};color:white;padding:1px 8px;"
+                f"border-radius:10px;font-size:0.7rem;white-space:nowrap;margin-left:8px'>{priority}</span>"
+                f"</div>"
+                f"<div style='font-size:0.78rem;color:{MGRAY};margin-top:3px'>{desc}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    # ── TIMELINE ─────────────────────────────────────────────────────────────
+    section_header("Winter 2026 Timeline")
+    timeline_items = [
+        ("July - August 2026", "Partner outreach and confirmation",
+         "Secure venue, mentors, and employer partner. Finalize seed funding.", TEAL),
+        ("September 2026", "Participant recruitment",
+         "Community outreach in South Shore, South Chicago, Woodlawn. Target 20-30 applicants for 15-20 spots.", NAVY),
+        ("October 2026", "Community education sessions",
+         "3 plain-language sessions: What is quantum? What is HPC? What jobs exist at IQMP?", TEAL),
+        ("October - November 2026", "HPC workshop series",
+         "4-6 hands-on workshops: Linux, GPU computing, quantum simulation, portfolio project.", NAVY),
+        ("November 2026", "Mentorship matching",
+         "5+ structured mentor matches. Career roadmap development. Professional introductions.", GOLD),
+        ("December 2026", "Exposure and cohort showcase",
+         "Facility tour. Employer panel. Participant showcase. Next step commitments documented.", GREEN),
+    ]
+    for period, title, desc, color in timeline_items:
+        st.markdown(
+            f"<div style='display:flex;gap:12px;margin:6px 0;align-items:flex-start'>"
+            f"<div style='background:{color};color:white;padding:4px 10px;border-radius:12px;"
+            f"font-size:0.75rem;font-weight:700;white-space:nowrap;min-width:160px;"
+            f"text-align:center'>{period}</div>"
+            f"<div style='background:{LGRAY};border-radius:6px;padding:8px 14px;flex:1'>"
+            f"<div style='font-weight:600;color:{NAVY};font-size:0.85rem'>{title}</div>"
+            f"<div style='font-size:0.8rem;color:{MGRAY};margin-top:2px'>{desc}</div>"
+            f"</div></div>",
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+
+    # ── HOW TO HELP ───────────────────────────────────────────────────────────
+    section_header("How You Can Help")
+
+    help_cols = st.columns(2)
+    help_items = [
+        ("Be a Mentor", TEAL,
+         "One professional. One semester. One hour per month.",
+         "Chicago WHPC handles all coordination, matching, and check-ins.",
+         "Email us to join the mentor pool"),
+        ("Provide a Venue", GREEN,
+         "Host 4-6 community sessions in your space.",
+         "We handle all content, facilitation, and promotion. You provide the room.",
+         "Email us to discuss venue partnership"),
+        ("Fund the Pilot", GOLD,
+         "$25K funds one full cohort. $5K funds one workshop.",
+         "Year 1 outcomes generate the evidence base for NSF, DOE, and federal workforce grants.",
+         "Email us for a funding conversation"),
+        ("Make an Introduction", NAVY,
+         "Know someone at IBM, CQE, Argonne, City Colleges, or CPS?",
+         "A warm introduction is often the highest-value contribution you can make.",
+         "Email us the name and we'll take it from there"),
+        ("Be a Guest Speaker", "#8E44AD",
+         "60 minutes at a community session. No prep beyond a brief bio.",
+         "Audience: 20-40 South Side residents curious about quantum and HPC careers.",
+         "Email us to schedule"),
+        ("Host a Facility Tour", "#2980B9",
+         "Show 10-15 participants your lab, computing center, or office.",
+         "Often the single most motivating experience for community participants.",
+         "Email us to coordinate"),
+    ]
+    for i, (title, color, hook, detail, cta) in enumerate(help_items):
+        col = help_cols[i % 2]
+        col.markdown(
+            f"<div style='background:{color}12;border:2px solid {color}44;"
+            f"border-radius:10px;padding:16px;margin:8px 0'>"
+            f"<div style='font-weight:700;color:{color};font-size:0.95rem;margin-bottom:6px'>{title}</div>"
+            f"<div style='font-weight:600;color:{NAVY};font-size:0.85rem;margin-bottom:4px'>{hook}</div>"
+            f"<div style='font-size:0.8rem;color:{MGRAY};margin-bottom:10px'>{detail}</div>"
+            f"<a href='mailto:chicagowhpc@gmail.com?subject={title} - Quantum x HPC Pathways' "
+            f"style='background:{color};color:white;padding:6px 14px;border-radius:20px;"
+            f"font-size:0.78rem;font-weight:600;text-decoration:none;display:inline-block'>"
+            f"{cta} →</a>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+
+    # ── STAY UPDATED SIGNUP ───────────────────────────────────────────────────
+    st.markdown(
+        f"<div style='background:{NAVY};border-radius:12px;padding:28px 36px;text-align:center'>"
+        f"<div style='font-size:1.2rem;font-weight:700;color:white;margin-bottom:8px'>"
+        f"Stay Updated on Quantum x HPC Pathways</div>"
+        f"<div style='font-size:0.9rem;color:#B8D4E8;margin-bottom:20px'>"
+        f"Get notified when the Winter 2026 pilot opens for applications, "
+        f"when the South Side Quantum Opportunity Guide is published, "
+        f"and when new partnership opportunities become available.</div>"
+        f"<a href='https://forms.gle/DTnxNhTB3yxJr5eh8' target='_blank' "
+        f"style='background:{TEAL};color:white;padding:12px 32px;border-radius:30px;"
+        f"font-size:1rem;font-weight:700;text-decoration:none;display:inline-block;margin-bottom:16px'>"
+        f"Sign Up for Updates</a>"
+        f"<div style='font-size:0.82rem;color:#8BB8CC;margin-top:8px'>"
+        f"Or email us directly: "
+        f"<a href='mailto:chicagowhpc@gmail.com' style='color:{TEAL}'>chicagowhpc@gmail.com</a>"
+        f" | <a href='https://www.chicagowhpc.org' style='color:{TEAL}'>chicagowhpc.org</a>"
+        f"</div></div>",
+        unsafe_allow_html=True
+    )
 
 
 # ─── FOOTER ───────────────────────────────────────────────────────────────────
