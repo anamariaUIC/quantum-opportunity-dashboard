@@ -19,7 +19,7 @@ st.set_page_config(
     page_title="Quantum × HPC Pathways | South Side Advanced Technology Workforce Strategy",
     page_icon="️",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
 # ─── COLORS ───────────────────────────────────────────────────────────────────
@@ -32,6 +32,87 @@ RED = "#C0392B"
 GREEN = "#27AE60"
 LIGHT_TEAL = "#E8F4F3"
 LIGHT_NAVY = "#EEF2F8"
+
+
+# ─── FORCE LIGHT THEME + MOBILE RESPONSIVE ───────────────────────────────────
+st.markdown("""
+<style>
+/* Force white background regardless of OS dark mode */
+html, body, [data-testid="stApp"], [data-testid="stAppViewContainer"],
+[data-testid="stMain"], [data-testid="block-container"],
+.main, .block-container {
+    background-color: #FFFFFF !important;
+    color: #222222 !important;
+}
+
+/* Sidebar white background */
+[data-testid="stSidebar"], [data-testid="stSidebarContent"] {
+    background-color: #F8F9FA !important;
+    color: #222222 !important;
+}
+
+/* Force all text dark */
+p, span, div, label, li, h1, h2, h3, h4, h5, h6 {
+    color: inherit;
+}
+
+/* Plotly charts white background */
+.js-plotly-plot .plotly, .plot-container {
+    background-color: #FFFFFF !important;
+}
+
+/* Radio buttons and widgets */
+[data-testid="stRadio"] label,
+[data-testid="stSelectbox"] label,
+[data-testid="stMultiSelect"] label {
+    color: #222222 !important;
+}
+
+/* Expander */
+[data-testid="stExpander"] {
+    background-color: #F8F9FA !important;
+    border: 1px solid #E0E0E0 !important;
+}
+
+/* Mobile responsive: stack columns on small screens */
+@media (max-width: 768px) {
+    /* Reduce padding on mobile */
+    .block-container {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+        padding-top: 16px !important;
+    }
+
+    /* Stack grid columns */
+    [data-testid="column"] {
+        min-width: 100% !important;
+        margin-bottom: 8px !important;
+    }
+
+    /* Smaller hero text on mobile */
+    .stMarkdown h1 { font-size: 1.4rem !important; }
+    .stMarkdown h2 { font-size: 1.2rem !important; }
+    .stMarkdown h3 { font-size: 1rem !important; }
+
+    /* Sidebar collapse by default on mobile */
+    [data-testid="stSidebar"] {
+        min-width: 0 !important;
+    }
+
+    /* Dataframes scroll horizontally */
+    [data-testid="stDataFrame"] {
+        overflow-x: auto !important;
+    }
+}
+
+/* Hide Streamlit default footer and menu */
+#MainMenu { visibility: hidden; }
+footer { visibility: hidden; }
+[data-testid="stToolbar"] { display: none; }
+header[data-testid="stHeader"] { background: transparent !important; }
+</style>
+""", unsafe_allow_html=True)
+
 
 # ─── EMBEDDED DATA ────────────────────────────────────────────────────────────
 
@@ -199,7 +280,7 @@ with st.sidebar:
     )
     sub_choice = st.radio(
         "nav",
-        ["Why Now?", "Workforce Bridge", "Why Chicago WHPC?", "Theory of Change"],
+        ["Why Now?", "Latest Developments", "Workforce Bridge", "Why Chicago WHPC?", "Theory of Change"],
         label_visibility="collapsed",
         key="nav_main",
         index=0
@@ -486,7 +567,7 @@ if sub_choice == "Why Now?":
         f"""<div style='background:linear-gradient(135deg,{NAVY} 0%,{TEAL} 100%);
         border-radius:12px;padding:36px 40px;margin-bottom:28px'>
         <div style='font-size:1.5rem;font-weight:700;color:white;line-height:1.4;margin-bottom:16px'>
-        Illinois is making one of the largest public investments in advanced technology in its history.
+        Illinois is making one of the largest public investments in advanced technology in its history — and the federal government has now joined.
         </div>
         <div style='font-size:1rem;color:#B8D4E8;line-height:1.7;margin-bottom:20px'>
         IQMP, CQE, IBM, Argonne, Fermilab, universities, and employers are building
@@ -506,12 +587,12 @@ if sub_choice == "Why Now?":
 
     # ── KEY FACTS ROW ─────────────────────────────────────────────────────────
     metric_row([
-        ("projected regional quantum economic impact by 2035", "$80B",
-         "BCG/CQE 2024 (projected, not confirmed)", TEAL),
+        ("federal + state quantum investment at IQMP companies", "$2.7B+",
+         "Federal $1.2B (May 2026) + Illinois $500M state + company investments", RED),
+        ("projected quantum jobs in IL-WI-IN region by 2035", "191,000",
+         "CQE/BCG analysis cited in ISTC May 2026 report", TEAL),
         ("IBM jobs + apprenticeships announced at IQMP", "1,250",
-         "750 FT + 500 apprenticeships (announced April 2026)", NAVY),
-        ("quantum-relevant IL postsecondary completions in 2024", "33,441",
-         "+33% since 2018 National Quantum Initiative Act (ISTC 2026)", GOLD),
+         "750 FT + 500 Moonshot apprenticeships with City Colleges (April 2026)", NAVY),
         ("South Side residents within 20 min transit of IQMP", "72,000+",
          "South Chicago (12 min), South Shore (18 min), Calumet Heights (15 min)", GREEN),
     ])
@@ -521,25 +602,25 @@ if sub_choice == "Why Now?":
     # ── INVESTMENT FLOW VISUAL ────────────────────────────────────────────────
     section_header("The Story in Six Steps")
     flow_steps = [
-        ("Illinois Quantum Investment",
-         "$500M+ in IQMP. CQE as EDA Tech Hub. IBM FutureNow. National Quantum Algorithm Center.",
+        ("Bipartisan Public Investment",
+         "Illinois $500M+ state + Federal $1.2B federal (May 2026) in IQMP companies IBM, PsiQuantum, Infleqtion, Diraq.",
          NAVY),
-        ("IQMP: A New Economic Hub",
-         "The nation's first quantum commercialization campus, located on Chicago's South Side lakefront.",
+        ("IQMP: Operating Now",
+         "On-Ramp program active at mHUB and UChicago Science Incubator. memQ, Bluefors, Quantum Machines, stac12 operating today.",
          TEAL),
         ("Jobs and Demand for Talent",
-         "750 IBM jobs announced. 500 apprenticeships with City Colleges. Tenant companies arriving 2027-2028.",
+         "750 IBM FutureNow jobs. 500 Moonshot apprenticeships with City Colleges. 191,000 projected regional jobs by 2035.",
          TEAL),
         ("The Gap: Who Participates?",
          "Without a community bridge, surrounding neighborhoods observe economic activity without participating. "
-         "South Side residents are 12-38 minutes from IQMP but institutionally disconnected.",
+         "South Side residents are 12-38 min from IQMP but institutionally disconnected.",
          RED),
         ("Quantum x HPC Pathways",
          "Community education, HPC technical training, mentorship, and pathway navigation — "
          "the civic workforce bridge that connects South Side residents to the ecosystem.",
          GOLD),
         ("Community Participation",
-         "South Side residents enter quantum-relevant apprenticeships, certificates, and careers. "
+         "South Side residents enter Moonshot apprenticeships, certificates, and quantum careers. "
          "Talent stays in Illinois. Public investment produces community benefit.",
          GREEN),
     ]
@@ -592,12 +673,16 @@ if sub_choice == "Why Now?":
             (2017, "Chicago Quantum Exchange founded", TEAL, False),
             (2021, "IQMP site selected: former US Steel South Works", NAVY, False),
             (2023, "CQE designated EDA Tech Hub (The Bloch)", TEAL, False),
-            (2024, "IQMP formally announced, $500M+ state investment", NAVY, False),
-            (2025, "IQMP groundbreaking", NAVY, False),
-            (2026, "IBM FutureNow: 750 jobs + 500 apprenticeships", GREEN, False),
+            (2024, "IQMP announced + PsiQuantum anchor tenant", NAVY, False),
+            (2025, "IQMP groundbreaking + NQAC launched", NAVY, False),
+            (2026, "IQMP On-Ramp active: memQ, Bluefors, QMachines, stac12", TEAL, False),
+            (2026, "IBM FutureNow + Moonshot apprenticeships announced", GREEN, False),
+            (2026, "CQE Advancing Together strategy released", TEAL, False),
+            (2026, "Federal government: $1.2B in IBM, PsiQuantum, Infleqtion, Diraq", RED, False),
+            (2026, "NQAC Grand Challenges: 5 research awards", GOLD, False),
             (2026, "QUANTUM x HPC PATHWAYS PILOT", RED, True),
-            (2027, "First IQMP operations (projected)", NAVY, False),
-            (2028, "IBM apprenticeship cohorts begin (projected)", GREEN, False),
+            (2027, "First IQMP permanent operations (projected)", NAVY, False),
+            (2028, "Moonshot apprenticeship cohorts operational (projected)", GREEN, False),
         ]
         for year, event, color, is_program in milestones:
             weight = "700" if is_program else "400"
@@ -3782,9 +3867,10 @@ if sub_choice == "Illinois Alignment":
          "Quantum x HPC Pathways is the community-level implementation of what CQE's Advancing Together strategy calls for. "
          "Program data on South Side participation fills a gap CQE has identified in workforce research.",
          ["Direct implementation of CQE community strategy", "Data partner for CQE workforce research", "EDA Tech Hub workforce component"]),
-        ("IBM FutureNow Chicago", GREEN,
-         "IBM announced 750 full-time jobs and 500 apprenticeships at IQMP, designed with City Colleges of Chicago. "
-         "Olive Harvey College is the designated anchor for this program.",
+        ("IBM FutureNow Chicago + Moonshot Apprenticeships", GREEN,
+         "IBM announced 750 full-time jobs at IQMP's Quantum Works center (2028) plus the 'Moonshot' paid apprenticeship program "
+         "launching in the next academic year with City Colleges. Internships also through Chicago State University and SIUE. "
+         "Job types: 250 app developers, 150 software developers, 80 data analysts, technical leaders, admin roles.",
          "Chicago WHPC can serve as a community feeder into the IBM/City Colleges pipeline. "
          "Program participants who complete HPC workshops are better positioned for IBM apprenticeship applications.",
          ["Community feeder for IBM apprenticeships", "Awareness pipeline for IBM job announcements", "South Side participant preparation"]),
@@ -4818,6 +4904,248 @@ if sub_choice == "Sustainability Model":
         "Actual funding will depend on program outcomes, partner relationships, and "
         "federal and state funding availability."
     )
+
+
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# LATEST DEVELOPMENTS (new page - added July 2026)
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Latest Developments":
+    section_header("Latest Developments",
+                   "New announcements in the Illinois quantum ecosystem since April 2026.")
+
+    st.caption(
+        "This page tracks significant announcements relevant to the Quantum x HPC Pathways program. "
+        "Last updated: July 2026. Sources linked for each item."
+    )
+
+    developments = [
+        {
+            "date": "June 22-23, 2026",
+            "title": "Federal Executive Orders Back Quantum Sector Backing Quantum Sector",
+            "summary": (
+                "President executive orders were signed supporting quantum computing, "
+                "causing quantum computing stocks to surge 25-33%. IBM, Infleqtion, "
+                "D-Wave, Rigetti, and Quantinuum all posted significant gains. "
+                "The orders align with the May 2026 CHIPS Act investments and signal "
+                "sustained bipartisan federal commitment to quantum technology."
+            ),
+            "relevance": (
+                "Federal policy support at the highest level. The bipartisan nature of "
+                "quantum investment — supported across administrations via the CHIPS and Science Act "
+                "and subsequent executive orders — makes the Illinois ecosystem exceptionally stable."
+            ),
+            "color": RED,
+            "tag": "Federal Policy",
+            "url": "https://fortune.com/2026/06/23/quantum-computing-stocks-rally-trump-executive-orders-2026-ibm-quantinuum-infleqtion-dwave/",
+            "source": "Fortune, June 23, 2026"
+        },
+        {
+            "date": "May 21, 2026",
+            "title": "Federal Government: $1.2B in IQMP Companies via CHIPS Act",
+            "summary": (
+                "Four IQMP tenant companies — IBM ($1B for quantum foundry), "
+                "PsiQuantum ($100M), Infleqtion ($100M), and Diraq ($38M) — will receive "
+                "a combined $1.2B under the CHIPS and Science Act. "
+                "The federal government takes minority, non-controlling equity stakes in each company. "
+                "Commerce Secretary Howard Lutnick: 'These strategic quantum technology investments "
+                "will build on our domestic industry, creating thousands of high-paying American jobs.'"
+            ),
+            "relevance": (
+                "The four companies receiving federal investment are all IQMP tenants. "
+                "This dramatically increases the financial certainty of IQMP operations "
+                "and strengthens the workforce demand argument for Quantum x HPC Pathways."
+            ),
+            "color": RED,
+            "tag": "Federal Investment",
+            "url": "https://www.hpherald.com/evening_digest/trump-administration-takes-equity-stakes-in-four-illinois-quantum-campus-companies/article_d6a85bd7-659d-46ae-bf78-c8aee1a2c503.html",
+            "source": "Highland Park Herald, June 20, 2026"
+        },
+        {
+            "date": "April 28-29, 2026",
+            "title": "IBM FutureNow Chicago: 750 Jobs + 'Moonshot' Apprenticeship Program",
+            "summary": (
+                "IBM announced 750 full-time jobs at IQMP's Quantum Works workforce center "
+                "(opening 2028) in exchange for $19M in state income tax credits. "
+                "Job breakdown: 250 app developers, 150 software developers, 80 data analysts, "
+                "plus technical leaders and administrative roles. "
+                "IBM also announced the 'Moonshot' paid City Colleges apprenticeship program "
+                "(launching next academic year, 5-year implementation) plus internships through "
+                "Chicago State University and Southern Illinois University Edwardsville."
+            ),
+            "relevance": (
+                "The Moonshot apprenticeship program is a direct pipeline from City Colleges — "
+                "including Olive Harvey — into IQMP careers. "
+                "Chicago WHPC's HPC on-ramp prepares South Side residents for exactly this pathway."
+            ),
+            "color": NAVY,
+            "tag": "Jobs + Apprenticeships",
+            "url": "https://blockclubchicago.org/2026/04/29/ibm-promises-750-full-time-jobs-at-south-side-quantum-campus-officials-say/",
+            "source": "Block Club Chicago, April 29, 2026"
+        },
+        {
+            "date": "April 28, 2026",
+            "title": "CQE Releases 'Advancing Together' — Unified Midwest Quantum Workforce Strategy",
+            "summary": (
+                "The Chicago Quantum Exchange released 'Advancing Together: A Unified Strategy "
+                "for Scaling Midwest Quantum Talent,' backed by NSF. "
+                "The strategy projects 191,000 quantum jobs in the IL-WI-IN region by 2035 "
+                "and explicitly calls for community-level navigation programs connecting "
+                "residents to the ecosystem. "
+                "CQE Director David Awschalom: 'Smart, curious learners are everywhere. "
+                "Our job is to create the awareness, access points, and unified systems "
+                "to ensure that everyone has a shot at these well-paid jobs.'"
+            ),
+            "relevance": (
+                "This strategy document validates Quantum x HPC Pathways by name and function. "
+                "CQE is calling for exactly the community navigation layer Chicago WHPC provides. "
+                "The 191,000 jobs projection replaces the 80,000 figure previously used."
+            ),
+            "color": TEAL,
+            "tag": "Workforce Strategy",
+            "url": "https://chicagoquantum.org/news/cqe-releases-unified-strategy-scale-midwest-quantum-workforce",
+            "source": "Chicago Quantum Exchange, April 28, 2026"
+        },
+        {
+            "date": "April 24, 2026",
+            "title": "NQAC Grand Challenges: Five Research Awards Announced",
+            "summary": (
+                "The National Quantum Algorithm Center at IQMP announced five Grand Challenges awards "
+                "funded by P33, Northwestern University, and DPI/UIUC. "
+                "Projects pair postdoctoral researchers with quantum companies (IBM, PsiQuantum) "
+                "and industry end-users (AbbVie) in clean energy, chemistry, and drug discovery. "
+                "Northwestern's Nikos Hardavellas and Roberto dos Reis lead one project "
+                "developing a Hamiltonian Simulation Compiler in collaboration with IBM and AbbVie."
+            ),
+            "relevance": (
+                "NQAC is already funding active research at IQMP companies. "
+                "This demonstrates the ecosystem is generating real scientific output now, "
+                "not just future promises — strengthening the urgency of community workforce preparation."
+            ),
+            "color": GOLD,
+            "tag": "Research + Innovation",
+            "url": "https://iqmp.org/news/national-quantum-algorithm-center-at-the-iqmp-announces-grand-challenges-awards/",
+            "source": "IQMP Newsroom, April 24, 2026"
+        },
+        {
+            "date": "March 3 - May 7, 2026",
+            "title": "IQMP On-Ramp Program: Companies Operating at Chicago Sites Now",
+            "summary": (
+                "IQMP launched the On-Ramp program — a network of temporary facilities at mHUB "
+                "and the UChicago Science Incubator while the permanent park is under construction. "
+                "Four quantum labs at mHUB include cryostats, control electronics, lasers, and optical tables. "
+                "Companies currently operating through On-Ramp: IBM, Pasqal, Diraq, and Quantum Machines. "
+                "Early tenants at UChicago Science Incubator: memQ, Quantum Machines, Bluefors, and stac12. "
+                "Bluefors operates a cryogenic measurement service lab accessible to startups and researchers."
+            ),
+            "relevance": (
+                "The quantum ecosystem is not a future plan — it is operating in Chicago right now. "
+                "IQMP tenant companies are hiring and building. "
+                "The window to prepare South Side residents is open today."
+            ),
+            "color": TEAL,
+            "tag": "Ecosystem: Operating Now",
+            "url": "https://iqmp.org/news/illinois-quantum-and-microelectronics-park-announces-on-ramp-locations-to-accelerate-tenant-entry-into-illinois-quantum-ecosystem/",
+            "source": "IQMP Newsroom, May 7, 2026"
+        },
+        {
+            "date": "May 22, 2026",
+            "title": "ISTC Report: 33,441 Quantum-Relevant IL Completions in 2024",
+            "summary": (
+                "ISTC, Illinois EDC, IQMP, and CQE released the first-of-its-kind Illinois quantum "
+                "talent pipeline report. Key findings: 33,441 quantum-relevant postsecondary completions "
+                "in 2024 across 171 CIP codes. Illinois' master's-level computing pipeline is among "
+                "the strongest nationally (nearly 3,000 CS master's in 2024 alone). "
+                "Report concludes that quantum careers are 'fully accessible to workers without advanced degrees' "
+                "including technicians, manufacturing specialists, software developers, and data scientists."
+            ),
+            "relevance": (
+                "The report explicitly validates the non-PhD pathway argument central to "
+                "Quantum x HPC Pathways. Community college and certificate completions are "
+                "the fastest-growing quantum credential category in Illinois."
+            ),
+            "color": GOLD,
+            "tag": "Workforce Data",
+            "url": "https://www.nprillinois.org/economy-business/2026-05-22/illinois-touts-growing-quantum-workforce-as-state-shows-industry-leadership",
+            "source": "NPR Illinois, May 26, 2026"
+        },
+        {
+            "date": "January 2026",
+            "title": "Six Southeast Chicago Schools Join Science Olympiad via IQMP Partnership",
+            "summary": (
+                "IQMP, P33, Claretian Associates, and CQE sponsored six Southeast Side schools "
+                "to form Science Olympiad teams: Thomas Hoyne Fine Arts Elementary, "
+                "Robert A. Black Magnet Elementary, Niños Heroes Elementary, "
+                "James Madison Elementary, Bowen High School, and St. Francis de Sales. "
+                "This is the first formal IQMP education partnership with schools "
+                "in the immediate South Chicago neighborhood surrounding the IQMP site."
+            ),
+            "relevance": (
+                "These are the schools in the communities Quantum x HPC Pathways serves. "
+                "IQMP's investment in K-12 programming creates an awareness pathway that "
+                "Chicago WHPC's HPC on-ramp can build on for high school graduates and community members."
+            ),
+            "color": GREEN,
+            "tag": "K-12 Education",
+            "url": "https://iqmp.org/news/future-ready-future-proof-science-olympiad-prepares-students-for-whats-next/",
+            "source": "IQMP Newsroom, 2026"
+        },
+        {
+            "date": "February 2026",
+            "title": "DOE Quantum Leadership Act Introduced (Sen. Durbin)",
+            "summary": (
+                "Sen. Dick Durbin introduced the DOE Quantum Leadership Act, authorizing "
+                "more than $2.5 billion in DOE quantum funding over five years — "
+                "more than four times the $625M DOE allocation in the original "
+                "National Quantum Initiative Act of 2018. "
+                "The bill is endorsed by PsiQuantum."
+            ),
+            "relevance": (
+                "If passed, this would dramatically expand federal research funding flowing "
+                "to Illinois national labs (Argonne, Fermilab) and add additional workforce "
+                "development requirements to quantum funding recipients."
+            ),
+            "color": NAVY,
+            "tag": "Federal Legislation",
+            "url": "https://www.durbin.senate.gov/newsroom/press-releases/durbin-meets-with-psiquantum-leadership",
+            "source": "Sen. Durbin Newsroom, March 26, 2026"
+        },
+    ]
+
+    for dev in developments:
+        color = dev["color"]
+        st.markdown(
+            f"<div style='background:{LGRAY};border-left:5px solid {color};"
+            f"border-radius:8px;padding:16px 20px;margin:12px 0'>"
+            f"<div style='display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px'>"
+            f"<div>"
+            f"<span style='background:{color};color:white;padding:2px 10px;border-radius:12px;"
+            f"font-size:0.72rem;font-weight:700'>{dev['tag']}</span>"
+            f"<span style='font-size:0.78rem;color:{MGRAY};margin-left:8px'>{dev['date']}</span>"
+            f"</div>"
+            f"<a href='{dev['url']}' target='_blank' style='font-size:0.72rem;color:{color};white-space:nowrap;margin-left:8px'>"
+            f"{dev['source']} →</a>"
+            f"</div>"
+            f"<div style='font-weight:700;color:{NAVY};font-size:0.95rem;margin-bottom:6px'>{dev['title']}</div>"
+            f"<div style='font-size:0.83rem;color:{MGRAY};margin-bottom:8px'>{dev['summary']}</div>"
+            f"<div style='background:{color}12;border-radius:6px;padding:8px 12px'>"
+            f"<span style='font-size:0.72rem;font-weight:700;color:{color}'>RELEVANCE TO QUANTUM x HPC PATHWAYS: </span>"
+            f"<span style='font-size:0.8rem;color:{MGRAY}'>{dev['relevance']}</span>"
+            f"</div></div>",
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+    callout(
+        "<strong>The bottom line:</strong> In the three months since April 2026, the Illinois quantum "
+        "ecosystem has seen: bipartisan federal investment ($1.2B), an active on-ramp program with "
+        "companies already operating in Chicago, a named apprenticeship program (IBM Moonshot) "
+        "designed with City Colleges, a CQE strategy document explicitly calling for community "
+        "navigation programs, and federal executive orders cementing federal quantum commitment. "
+        "The case for launching Quantum x HPC Pathways in Winter 2026 has never been stronger."
+    )
+
 
 
 # ─── FOOTER ───────────────────────────────────────────────────────────────────
