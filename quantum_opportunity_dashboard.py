@@ -270,32 +270,23 @@ with st.sidebar:
         f"</div>",
         unsafe_allow_html=True
     )
-    st.markdown(f"<hr style='border:none;border-top:2px solid {TEAL};margin:0 0 12px 0'>",
+    st.markdown(f"<hr style='border:none;border-top:2px solid {TEAL};margin:0 0 8px 0'>",
                 unsafe_allow_html=True)
 
-    st.markdown(
-        f"<div style='font-size:0.68rem;font-weight:700;color:{TEAL};"
-        f"text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px'>Core Story</div>",
-        unsafe_allow_html=True
-    )
-    # ── NAVIGATION ───────────────────────────────────────────────────────────
-    core_pages = ["Why Now?", "Latest Developments", "Workforce Bridge",
-                  "Why Chicago WHPC?", "Theory of Change"]
-
+    # Core Story radio - no fixed index so selection persists
     st.markdown(
         f"<div style='font-size:0.65rem;font-weight:700;color:{TEAL};"
         f"text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px'>Core Story</div>",
         unsafe_allow_html=True
     )
     core_choice = st.radio(
-        "core_nav", core_pages,
+        "core_nav",
+        ["Why Now?", "Latest Developments", "Workforce Bridge", "Why Chicago WHPC?", "Theory of Change"],
         label_visibility="collapsed",
-        key="nav_main", index=0
+        key="nav_main"
     )
 
-    # Default to core radio
-    sub_choice = core_choice
-
+    # Supporting sections
     sections = {
         "The Ecosystem": ["Ecosystem Map", "Emerging Workforce Roles",
                           "Talent Retention", "Building the Ecosystem"],
@@ -310,26 +301,29 @@ with st.sidebar:
                           "Limitations", "Community Readiness Profile (Appendix)"],
     }
 
+    section_pick = None
     for sec_label, pages in sections.items():
         st.markdown(
             f"<div style='font-size:0.65rem;font-weight:700;color:{TEAL};"
             f"text-transform:uppercase;letter-spacing:1.5px;"
-            f"padding:8px 0 3px 4px;border-top:1px solid #E8E8E8;margin-top:4px'>"
+            f"padding:6px 0 2px 0;border-top:1px solid #E8E8E8;margin-top:6px'>"
             f"{sec_label}</div>",
             unsafe_allow_html=True
         )
         pick = st.selectbox(
-            sec_label, ["Select a page..."] + pages,
+            sec_label, ["—"] + pages,
             label_visibility="collapsed",
             key=f"sel_{sec_label}"
         )
-        # Only override sub_choice if user actually picked a real page
-        if pick and pick != "Select a page...":
-            sub_choice = pick
+        if pick != "—":
+            section_pick = pick
 
-    st.markdown("---")
-    st.markdown("---")
-    st.markdown("---")
+    # Resolve: section selectbox wins over core radio only if something chosen
+    if section_pick:
+        sub_choice = section_pick
+    else:
+        sub_choice = core_choice
+
     st.markdown("---")
     st.caption("Data: ACS 2023, CPS 2024, ISTC 2026, BCG/CQE 2024, IBM 2026.")
     st.markdown(
