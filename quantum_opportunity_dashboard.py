@@ -272,62 +272,16 @@ with st.sidebar:
     )
     st.markdown(f"<hr style='border:none;border-top:2px solid {TEAL};margin:0 0 8px 0'>",
                 unsafe_allow_html=True)
-
-    all_pages = [
-        "Why Now?",
-        "Latest Developments",
-        "Workforce Bridge",
-        "Why Chicago WHPC?",
-        "Theory of Change",
-        "〉 THE ECOSYSTEM",
-        "Ecosystem Map",
-        "Emerging Workforce Roles",
-        "Talent Retention",
-        "Building the Ecosystem",
-        "〉 THE EVIDENCE",
-        "South Side Strengths and Assets",
-        "Geographic Proximity",
-        "Community Profiles",
-        "Community Opportunity Landscape",
-        "Workforce Baseline Analysis",
-        "〉 THE PROGRAM",
-        "Program Architecture",
-        "Participant Deliverables",
-        "Scaling Pathway",
-        "Winter 2026 Pilot Metrics",
-        "Sustainability Model",
-        "〉 POLICY",
-        "Illinois Alignment",
-        "Stakeholder Map Overview",
-        "Public Value Framework",
-        "〉 GET INVOLVED",
-        "Launch Status",
-        "Community Impact Dashboard",
-        "Partnership Opportunities",
-        "〉 METHODOLOGY",
-        "Methodology and Data Sources",
-        "Evaluation Framework",
-        "Limitations",
-        "Community Readiness Profile (Appendix)",
-    ]
-
-    sub_choice = st.radio(
-        "navigation",
-        all_pages,
-        label_visibility="collapsed",
-        key="nav_main"
-    )
-
-    # Section dividers are not real pages — fall back to Why Now?
-    if sub_choice and sub_choice.startswith("〉"):
-        sub_choice = "Why Now?"
-
-    st.markdown("---")
-    st.caption("Data: ACS 2023, CPS 2024, ISTC 2026, BCG/CQE 2024, IBM 2026.")
     st.markdown(
-        "[chicagowhpc.org](https://www.chicagowhpc.org) | "
-        "[Mentorship](https://forms.gle/2Lnv7LGsN3uUtNuu8) | "
-        "[Civic Action Plan](https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view)"
+        f"<div style='font-size:0.82rem;color:{MGRAY};padding:8px 4px'>"
+        f"Use the <strong>Navigate to page</strong> dropdown on the main page to switch pages.<br><br>"
+        f"<a href='https://www.chicagowhpc.org' style='color:{TEAL}'>chicagowhpc.org</a><br>"
+        f"<a href='https://forms.gle/DTnxNhTB3yxJr5eh8' style='color:{TEAL}'>Sign up for updates</a><br>"
+        f"<a href='https://forms.gle/2Lnv7LGsN3uUtNuu8' style='color:{TEAL}'>Mentorship Program</a><br>"
+        f"<a href='https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view' style='color:{TEAL}'>Civic Action Plan</a><br><br>"
+        f"chicagowhpc@gmail.com"
+        f"</div>",
+        unsafe_allow_html=True
     )
 
 tabs = [None] * 20
@@ -350,27 +304,47 @@ st.markdown(
 
 # Mobile navigation selectbox - always visible on page
 all_pages_mobile = [
-    "Why Now?", "Latest Developments", "Workforce Bridge", "Why Chicago WHPC?", "Theory of Change",
-    "Ecosystem Map", "Emerging Workforce Roles", "Talent Retention", "Building the Ecosystem",
-    "South Side Strengths and Assets", "Geographic Proximity", "Community Profiles",
-    "Community Opportunity Landscape", "Workforce Baseline Analysis",
-    "Program Architecture", "Participant Deliverables", "Scaling Pathway",
-    "Winter 2026 Pilot Metrics", "Sustainability Model",
-    "Illinois Alignment", "Stakeholder Map Overview", "Public Value Framework",
-    "Launch Status", "Community Impact Dashboard", "Partnership Opportunities",
-    "Methodology and Data Sources", "Evaluation Framework",
-    "Limitations", "Community Readiness Profile (Appendix)",
+    "Why Now?",
+    "Latest Developments",
+    "Workforce Bridge",
+    "Why Chicago WHPC?",
+    "Theory of Change",
+    "Ecosystem Map",
+    "Emerging Workforce Roles",
+    "Talent Retention",
+    "Building the Ecosystem",
+    "South Side Strengths and Assets",
+    "Geographic Proximity",
+    "Community Profiles",
+    "Community Opportunity Landscape",
+    "Workforce Baseline Analysis",
+    "Why HPC?",
+    "Quantum Skills Map",
+    "Pathway Ladder",
+    "Program Architecture",
+    "Participant Deliverables",
+    "Scaling Pathway",
+    "Winter 2026 Pilot Metrics",
+    "Sustainability Model",
+    "What Success Looks Like",
+    "Illinois Alignment",
+    "Stakeholder Map Overview",
+    "Public Value Framework",
+    "Launch Status",
+    "Community Impact Dashboard",
+    "Partnership Opportunities",
+    "Methodology and Data Sources",
+    "Evaluation Framework",
+    "Limitations",
+    "Community Readiness Profile (Appendix)",
 ]
 
-mobile_pick = st.selectbox(
+sub_choice = st.selectbox(
     "Navigate to page",
     all_pages_mobile,
     key="mobile_nav",
     label_visibility="visible"
 )
-# Mobile selectbox overrides sidebar selection
-if mobile_pick:
-    sub_choice = mobile_pick
 
 # ── TAB ROUTING ───────────────────────────────────────────────────────────────
 
