@@ -2461,6 +2461,14 @@ if sub_choice == "Quantum Learning Resources":
         "change over time. This list is a starting point for self-directed exploration, "
         "not a substitute for the structured pathways on the Pathway Advisor page."
     )
+    st.markdown(
+        f"<div style='font-size:0.88rem;color:{NAVY};font-style:italic;margin:4px 0 16px 0'>"
+        f"Once you've found a pathway on the Pathway Advisor, these resources help you start "
+        f"learning today — from beginner-friendly tools through the same enterprise-grade "
+        f"platforms used in the industry you're entering."
+        f"</div>",
+        unsafe_allow_html=True
+    )
 
     _tier_data = [
         {
