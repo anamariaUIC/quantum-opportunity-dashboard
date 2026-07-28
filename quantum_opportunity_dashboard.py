@@ -199,6 +199,441 @@ ECOSYSTEM_ASSETS = pd.DataFrame([
     {"org": "Chicago WHPC", "type": "Bridge Org", "lat": 41.762, "lon": -87.568, "focus": "Community nav, HPC workshops, mentorship","community_access": "Strong","has_community_nav": True},
 ])
 
+# Skills taxonomy: 18 skills across 4 categories, sourced from arXiv:2511.11820,
+# ISTC 2026, and CQE workforce reports. Chicago WHPC coverage as of June 2026.
+# Extracted here so matching logic and the Skills Map renderer share one definition.
+SKILLS_DATA = pd.DataFrame([
+    {"category": "Hardware",    "subcategory": "H3/H4 Technical Specialists",
+     "skill": "Cryogenic systems and dilution refrigerators",
+     "credential_min": "MS / BS", "whpc_provides": False,
+     "whpc_note": "", "local_provider": "Argonne, Fermilab (research roles only)"},
+    {"category": "Hardware",    "subcategory": "H4 Technical Subsystem Specialists",
+     "skill": "Electronics, fabrication, materials characterization",
+     "credential_min": "BS / AS", "whpc_provides": False,
+     "whpc_note": "", "local_provider": "Olive Harvey (IT certs), Kennedy-King"},
+    {"category": "Hardware",    "subcategory": "H4 Technical Subsystem Specialists",
+     "skill": "Precision manufacturing and semiconductor production",
+     "credential_min": "Certificate / AS", "whpc_provides": False,
+     "whpc_note": "", "local_provider": "City Colleges (manufacturing tech programs)"},
+    {"category": "Software",    "subcategory": "S1 Software Engineering",
+     "skill": "Classical software development (Python, scripting, version control)",
+     "credential_min": "BS / Certificate", "whpc_provides": True,
+     "whpc_note": "Python and scripting foundations covered in HPC on-ramp curriculum",
+     "local_provider": "CPS CS for All, City Colleges"},
+    {"category": "Software",    "subcategory": "S1 Software Engineering",
+     "skill": "HPC systems and job scheduling (Slurm, Linux, cluster environments)",
+     "credential_min": "Certificate / BS", "whpc_provides": True,
+     "whpc_note": "Core HPC workshop curriculum - not offered at community level elsewhere in Chicago",
+     "local_provider": "Chicago WHPC (fills gap)"},
+    {"category": "Software",    "subcategory": "S1 Software Engineering",
+     "skill": "GPU computing and accelerated workflows (CUDA, CuPy, RAPIDS)",
+     "credential_min": "BS / Certificate", "whpc_provides": True,
+     "whpc_note": "GPU workshop module delivered on H100 NVL hardware via institutional partnership",
+     "local_provider": "Chicago WHPC (fills gap)"},
+    {"category": "Software",    "subcategory": "S1 Software Engineering",
+     "skill": "Cloud computing and APIs (AWS Braket, containerization)",
+     "credential_min": "Certificate / BS", "whpc_provides": True,
+     "whpc_note": "Introductory cloud and API coverage in HPC curriculum",
+     "local_provider": "City Colleges (IT certs), Chicago WHPC"},
+    {"category": "Software",    "subcategory": "S2 Applications and Algorithms",
+     "skill": "Quantum circuit design (Qiskit, PennyLane, CUDA-Q)",
+     "credential_min": "BS / MS", "whpc_provides": True,
+     "whpc_note": "Introductory quantum simulation covered in workshop series; PennyLane partnership with Xanadu",
+     "local_provider": "Chicago WHPC, Fermilab SMQ* (quantum basics only)"},
+    {"category": "Software",    "subcategory": "S2 Applications and Algorithms",
+     "skill": "Hybrid quantum-classical workflows",
+     "credential_min": "BS / MS", "whpc_provides": True,
+     "whpc_note": "Taught as the core bridge concept connecting HPC and quantum - not offered locally elsewhere",
+     "local_provider": "Chicago WHPC (fills critical gap)"},
+    {"category": "Software",    "subcategory": "S2 Applications and Algorithms",
+     "skill": "Quantum machine learning (QML)",
+     "credential_min": "MS / BS", "whpc_provides": True,
+     "whpc_note": "PennyLane workshop covers QML fundamentals in partnership with Xanadu",
+     "local_provider": "Chicago WHPC / Xanadu"},
+    {"category": "Software",    "subcategory": "S2 Applications and Algorithms",
+     "skill": "Error correction and noise mitigation",
+     "credential_min": "MS / PhD", "whpc_provides": False,
+     "whpc_note": "Advanced topic - beyond community program scope",
+     "local_provider": "University research programs"},
+    {"category": "Bridging",    "subcategory": "B2 Hardware-Software Bridge",
+     "skill": "Data pipelines and scientific computing workflows",
+     "credential_min": "Certificate / BS", "whpc_provides": True,
+     "whpc_note": "Core HPC on-ramp curriculum component",
+     "local_provider": "Chicago WHPC (fills gap)"},
+    {"category": "Bridging",    "subcategory": "B2 Hardware-Software Bridge",
+     "skill": "Technical documentation and knowledge transfer",
+     "credential_min": "Certificate", "whpc_provides": True,
+     "whpc_note": "Covered in mentorship and professional skills module",
+     "local_provider": "Chicago WHPC"},
+    {"category": "Bridging",    "subcategory": "B1 Applications Bridge",
+     "skill": "Translating domain problems into quantum circuits",
+     "credential_min": "BS / MS", "whpc_provides": False,
+     "whpc_note": "Requires deep quantum knowledge - Year 2+ program goal",
+     "local_provider": "Argonne, CQE programs"},
+    {"category": "Public Facing & Business", "subcategory": "P3 Engagement",
+     "skill": "Community outreach and workforce development",
+     "credential_min": "BS / Certificate", "whpc_provides": True,
+     "whpc_note": "Chicago WHPC is itself a working model of this role in practice",
+     "local_provider": "Chicago WHPC"},
+    {"category": "Public Facing & Business", "subcategory": "P3 Engagement",
+     "skill": "Quantum science communication and education",
+     "credential_min": "BS / Certificate", "whpc_provides": True,
+     "whpc_note": "Community education sessions and teacher/student engagement programming",
+     "local_provider": "Chicago WHPC, DPI, Fermilab"},
+    {"category": "Public Facing & Business", "subcategory": "P3 Engagement",
+     "skill": "Career navigation and professional networking",
+     "credential_min": "No minimum", "whpc_provides": True,
+     "whpc_note": "Mentorship program and South Side Quantum Opportunity Guide",
+     "local_provider": "Chicago WHPC (fills gap at community level)"},
+    {"category": "Public Facing & Business", "subcategory": "P2 Client Interactions",
+     "skill": "Technical sales and customer success",
+     "credential_min": "BS / Certificate", "whpc_provides": False,
+     "whpc_note": "Pathway navigation module covers adjacent awareness",
+     "local_provider": "City Colleges (business programs)"},
+])
+
+# Employer demand data sourced from Quantum-HPC-Pathways-Research-Report.md.
+# Used by the advisor's Opportunity-axis matching logic.
+# pathway_tags align with CREDENTIAL_DATA and intake interest categories.
+# jobs_committed: contractual (DCEO incentive agreements) unless noted.
+EMPLOYER_DATA = pd.DataFrame([
+    {
+        "employer":       "PsiQuantum",
+        "type":           "Private quantum-computing company",
+        "jobs_committed": "154 new jobs (DCEO incentive agreement)",
+        "salary_range":   "$107K\u2013$147K (Chicago on-site roles)",
+        "credential_min": "Degree required (~95% of IQMP roles require a degree)",
+        "timeline":       "Groundbreak September 2025; building at former U.S. Steel South Works",
+        "domain":         "Quantum Hardware",
+        "pathway_tags":   ["hardware", "quantum"],
+        "source":         "psiquantum.com/illinois (primary, current); illinoisanswers.org (Feb 5, 2026)",
+    },
+    {
+        "employer":       "Infleqtion",
+        "type":           "Private quantum-computing company",
+        "jobs_committed": "36 new + 14 retained jobs (DCEO incentive agreement)",
+        "salary_range":   "Quantum Physicist $115K\u2013$165K",
+        "credential_min": "Degree required (~95% of IQMP roles require a degree)",
+        "timeline":       "First neutral-atom quantum computer at IQMP by 2027",
+        "domain":         "Quantum Hardware",
+        "pathway_tags":   ["hardware", "quantum"],
+        "source":         "illinoisanswers.org (Feb 5, 2026; primary); Forbes Jul 22 2026 (secondary)",
+    },
+    {
+        "employer":       "Pasqal",
+        "type":           "Private quantum-computing company",
+        "jobs_committed": "50 new jobs (DCEO incentive agreement)",
+        "salary_range":   "Not specified",
+        "credential_min": "Degree required (~95% of IQMP roles require a degree)",
+        "timeline":       "Not specified",
+        "domain":         "Quantum Hardware",
+        "pathway_tags":   ["hardware", "quantum"],
+        "source":         "illinoisanswers.org (Feb 5, 2026; primary)",
+    },
+    {
+        "employer":       "IBM FutureNow Chicago (IQMP portion)",
+        "type":           "Multi-national technology corporation",
+        "jobs_committed": "50 IQMP-specific jobs (part of 750-job FutureNow hub total)",
+        "salary_range":   "Not specified",
+        "credential_min": "Mixed (varies by role: AI, cybersecurity, data science, quantum)",
+        "timeline":       "IBM \u2018Quantum Works\u2019 building expected to open 2028",
+        "domain":         "Mixed (AI / cybersecurity / data science / quantum)",
+        "pathway_tags":   ["software", "data", "hpc", "quantum"],
+        "source":         "colleges.ccc.edu (primary, April 2026); gov-pritzker-newsroom (primary, April 2026)",
+    },
+    {
+        "employer":       "Argonne National Laboratory",
+        "type":           "U.S. Department of Energy research laboratory",
+        "jobs_committed": "Multiple (CCI/SULI internships; not DCEO contractual)",
+        "salary_range":   "~$105,990 median IT occupation wage (BLS May 2024)",
+        "credential_min": "Community college or undergraduate enrollment",
+        "timeline":       "Year-round; Fall 2026 CCI application deadline May 20, 2026",
+        "domain":         "HPC / Quantum Research",
+        "pathway_tags":   ["hpc", "quantum", "research"],
+        "source":         "anl.gov (primary, current); bls.gov Occupational Outlook Handbook (government, current)",
+    },
+    {
+        "employer":       "Fermilab",
+        "type":           "U.S. Department of Energy research laboratory",
+        "jobs_committed": "Multiple (TECHS/PACMAN/Quantum Computing Internship; not DCEO contractual)",
+        "salary_range":   "Paid (amount not specified)",
+        "credential_min": "High school to undergraduate enrollment (varies by program)",
+        "timeline":       "Year-round; program-specific application cycles",
+        "domain":         "HPC / Quantum Research",
+        "pathway_tags":   ["hpc", "quantum", "technician", "research"],
+        "source":         "fnal.gov (primary, current)",
+    },
+    {
+        "employer":       "Chicago Quantum Exchange (CQE Talent Portal)",
+        "type":           "University-affiliated quantum research/workforce consortium",
+        "jobs_committed": "755 active listings across 62 employers (Allstate, BMO, KPMG + 59 others)",
+        "salary_range":   "Varies by employer",
+        "credential_min": "Varies by role",
+        "timeline":       "Active (portal is live; funded by Brinson Foundation)",
+        "domain":         "Cross-sector quantum roles",
+        "pathway_tags":   ["software", "hardware", "data", "quantum"],
+        "source":         "chicagoquantum.org (primary, current); chicagoquantum.org/jobprojectiondata",
+    },
+])
+
+# Credential and training program data sourced from Quantum-HPC-Pathways-Research-Report.md.
+# Used by the advisor's Opportunity-axis matching logic.
+# south_side_accessible: True = program located on or easily reachable from South Side.
+# pathway_tags align with EMPLOYER_DATA and intake interest categories.
+CREDENTIAL_DATA = pd.DataFrame([
+    {
+        "program":               "CCC\u2013IBM Apprenticeship",
+        "provider":              "City Colleges of Chicago / IBM",
+        "duration":              "Year-long",
+        "cost":                  "Paid directly to apprentice (philanthropy-funded; goal $7M for first 2\u20133 yrs)",
+        "credential_type":       "Apprenticeship",
+        "prerequisite":          "Entry requirements not specified (flagged gap in research report)",
+        "target_group":          "General adult learner",
+        "pathway_tags":          ["software", "hpc", "data"],
+        "south_side_accessible": True,
+        "source":                "colleges.ccc.edu (primary, April 2026); CCC newsroom; Chicago Sun-Times; Crain\u2019s Chicago Business (April 2026)",
+        "url":                    "https://colleges.ccc.edu/2026/04/29/gov-pritzker-and-ibm-collaborate-to-bring-750-new-jobs-to-the-illinois-quantum-and-microelectronics-park-hire-city-colleges-of-chicago-students/",
+    },
+    {
+        "program":               "Project Evolve (CCC WEI)",
+        "provider":              "Olive-Harvey College (City Colleges of Chicago)",
+        "duration":              "Short-term",
+        "cost":                  "Free tuition + transit cards + childcare funds + up to $500 completion/employment stipend",
+        "credential_type":       "Short certificate (13 programs)",
+        "prerequisite":          "Open admission",
+        "target_group":          "Black, unemployed or underemployed residents",
+        "pathway_tags":          ["technician", "software"],
+        "south_side_accessible": True,
+        "source":                "pages.ccc.edu/wei (primary, updated Sept 2025); Illinois Community College Board WEI grant ($5.5M)",
+        "url":                    "https://pages.ccc.edu/ohc-projectevolve/",
+    },
+    {
+        "program":               "IBM SkillsBuild (Quantum credentials)",
+        "provider":              "IBM",
+        "duration":              "Self-paced",
+        "cost":                  "Free",
+        "credential_type":       "Digital badge via Credly",
+        "prerequisite":          "18+ adult learner; registered user",
+        "target_group":          "General adult",
+        "pathway_tags":          ["quantum", "software"],
+        "south_side_accessible": True,
+        "source":                "skillsbuild.org/students/digital-credentials (primary, current); credly.com/org/ibm (primary, current); ibm.com/quantum",
+        "url":                    "https://skillsbuild.org/students/digital-credentials",
+    },
+    {
+        "program":               "Q-Ready",
+        "provider":              "Chicago Quantum Exchange (CQE)",
+        "duration":              "Short-term",
+        "cost":                  "Free",
+        "credential_type":       "Professional development certificate",
+        "prerequisite":          "Current student or postdoc status (IL/WI/IN) \u2014 NOTE: not yet extended to adult career-changers (flagged gap in research report)",
+        "target_group":          "Undergraduates, graduates, postdocs in IL/WI/IN",
+        "pathway_tags":          ["quantum", "software"],
+        "south_side_accessible": False,
+        "source":                "chicagoquantum.org (primary, current; launched March 2026, ~500 participants)",
+        "url":                    "https://chicagoquantum.org/q-ready",
+    },
+    {
+        "program":               "Open Quantum Initiative (OQI) Undergraduate Fellowship",
+        "provider":              "Multiple host institutions (UChicago, Argonne, Fermilab, UIUC, Wisconsin, Northwestern, Ohio State, Purdue)",
+        "duration":              "10 weeks",
+        "cost":                  "Paid (stipend; amount not specified)",
+        "credential_type":       "Research fellowship",
+        "prerequisite":          "Undergraduate enrollment",
+        "target_group":          "Undergraduates",
+        "pathway_tags":          ["quantum", "research"],
+        "south_side_accessible": False,
+        "source":                "chicagoquantum.org (primary, current); 27 fellows in 2025 cohort",
+        "url":                    "https://chicagoquantum.org/oqi-undergraduate-fellowship",
+    },
+    {
+        "program":               "DOE Community College Internship (CCI)",
+        "provider":              "Argonne National Laboratory / U.S. Department of Energy",
+        "duration":              "10 weeks",
+        "cost":                  "Paid internship (stipend; amount not specified)",
+        "credential_type":       "Internship",
+        "prerequisite":          "Community college enrollment",
+        "target_group":          "Community college students",
+        "pathway_tags":          ["hpc", "quantum", "research"],
+        "south_side_accessible": True,
+        "source":                "anl.gov (primary, current); Fall 2026 application deadline May 20, 2026",
+        "url":                    "https://www.anl.gov/education/community-college-internship",
+    },
+    {
+        "program":               "Fermilab TECHS",
+        "provider":              "Fermilab / DOE Office of High Energy Physics",
+        "duration":              "Multi-year",
+        "cost":                  "Paid (amount not specified; $2M over five years DOE funding)",
+        "credential_type":       "Apprenticeship",
+        "prerequisite":          "High school enrollment",
+        "target_group":          "High school students",
+        "pathway_tags":          ["technician", "quantum"],
+        "south_side_accessible": False,
+        "source":                "fnal.gov (primary, current); $2M over 5 yrs from DOE Office of High Energy Physics",
+        "url":                    "https://internships.fnal.gov/high-school-student-programs/",
+    },
+    {
+        "program":               "Fermilab Quantum Computing Internship for Physics Undergraduates",
+        "provider":              "Fermilab",
+        "duration":              "Year-long",
+        "cost":                  "Paid (amount not specified)",
+        "credential_type":       "Internship",
+        "prerequisite":          "Physics undergraduate enrollment",
+        "target_group":          "Physics undergraduates",
+        "pathway_tags":          ["quantum", "research"],
+        "south_side_accessible": False,
+        "source":                "fnal.gov (primary, current)",
+        "url":                    "https://internships.fnal.gov/",
+    },
+    {
+        "program":               "CCC WEI Technology Works",
+        "provider":              "Daley College (City Colleges of Chicago)",
+        "duration":              "Short-term",
+        "cost":                  "Free tuition + transit cards + childcare funds + up to $500 stipend",
+        "credential_type":       "Short certificate",
+        "prerequisite":          "Open admission",
+        "target_group":          "Adult learners",
+        "pathway_tags":          ["technician"],
+        "south_side_accessible": False,
+        "source":                "pages.ccc.edu/wei (primary, updated Sept 2025); focus: advanced manufacturing (CNC, welding, automation)",
+        "url":                    "https://pages.ccc.edu/da-wei/",
+    },
+    {
+        "program":               "ISTC Quantum-Relevant Credentials (statewide pipeline)",
+        "provider":              "Various Illinois institutions (171 quantum-relevant CIP codes)",
+        "duration":              "Varies",
+        "cost":                  "Varies",
+        "credential_type":       "Certificate through PhD",
+        "prerequisite":          "Varies",
+        "target_group":          "Varies",
+        "pathway_tags":          ["quantum", "software", "hardware", "data"],
+        "south_side_accessible": False,
+        "source":                "ISTC \u2018Mapping Illinois\u2019 Quantum Talent Pipeline\u2019 (May 21, 2026); istcoalition.org; illinoisedc.org; iqmp.org (primary, current); 33,441 completions in 2024 (+33% since 2018 NQI Act); statewide pipeline \u2014 specific institution accessibility varies",
+        "url":                    "https://www.istcoalition.org/blog/mapping-illinois-quantum-talent-pipeline-a-framework-for-defining-quantum-relevant-degrees-and-certificates/",
+    },
+])
+
+# Support resources for the advisor's Vulnerability-axis output.
+# Sourced from Quantum-HPC-Pathways-Research-Report.md.
+# barrier_addressed categories used by matching logic:
+#   childcare | transportation | financial | training_cost | wraparound | food
+# The "Sustainability Model" and "Partnership Opportunities" page blocks are
+# unchanged — this constant is additive only.
+SUPPORT_RESOURCES = [
+    # ── Childcare ──────────────────────────────────────────────────────────────
+    {
+        "category":           "childcare",
+        "name":               "Illinois Child Care Assistance Program (CCAP)",
+        "provider":           "Illinois Department of Human Services (IDHS) / Illinois Action for Children (Cook County administrator)",
+        "eligibility":        "Parents in education, training, or work activities including vocational training and 2- and 4-year college degree programs; children under 13",
+        "cost_to_participant": "Free (state-subsidized)",
+        "location":           "Cook County; South Side office: 8741 S. Greenwood Ave, Suite 300",
+        "contact":            "312.823.1100; actforchildren.org; dhs.state.il.us",
+        "barrier_addressed":  "childcare",
+        "source":             "dhs.state.il.us (government/primary, current — CCAP policy manual updated June 2026); actforchildren.org (primary, current)",
+        "url":                 "https://www.dhs.state.il.us/page.aspx?item=30355",
+    },
+    {
+        "category":           "childcare",
+        "name":               "CCC Child Development Laboratory Schools",
+        "provider":           "City Colleges of Chicago",
+        "eligibility":        "CCC students and families; children ages 2\u20135",
+        "cost_to_participant": "Subsidized (amount not specified)",
+        "location":           "Five CCC campuses",
+        "contact":            "ccc.edu",
+        "barrier_addressed":  "childcare",
+        "source":             "ccc.edu (primary, current)",
+        "url":                 "https://www.ccc.edu/menu/child-development-lab-schools/",
+    },
+    # ── Transportation ─────────────────────────────────────────────────────────
+    {
+        "category":           "transportation",
+        "name":               "RTA Reduced-Fare / Transit Benefit Program",
+        "provider":           "Regional Transportation Authority (RTA)",
+        "eligibility":        "Low-income residents (reduced-fare); employed or training participants (transit benefit, pre-tax up to $300/month). NOTE: RTA ride-free is largely restricted to seniors and people with disabilities \u2014 general low-income adult trainees rely on reduced-fare permits or program-issued transit cards.",
+        "cost_to_participant": "Reduced fare; transit benefit saves up to ~40% (~$300/month pre-tax)",
+        "location":           "Chicago region (Ventra card)",
+        "contact":            "rtachicago.org; ventrachicago.com",
+        "barrier_addressed":  "transportation",
+        "source":             "rtachicago.org (primary, current); ventrachicago.com (primary, current)",
+        "url":                 "https://www.rtachicago.org/riders/free-and-reduced-fare-programs",
+    },
+    {
+        "category":           "transportation",
+        "name":               "CCC WEI Program-Issued Transit Cards",
+        "provider":           "City Colleges of Chicago (WEI programs: Project Evolve, Project MPACT, Technology Works)",
+        "eligibility":        "WEI program participants (Project Evolve at Olive-Harvey, Project MPACT at Malcolm X, Technology Works at Daley)",
+        "cost_to_participant": "Free (issued at enrollment; funded via ICCB WEI grant $5.5M)",
+        "location":           "At enrollment in WEI program",
+        "contact":            "pages.ccc.edu/wei",
+        "barrier_addressed":  "transportation",
+        "source":             "pages.ccc.edu/wei (primary, updated Sept 2025)",
+        "url":                 "https://pages.ccc.edu/wei/",
+    },
+    # ── Financial aid / wraparound ─────────────────────────────────────────────
+    {
+        "category":           "wraparound",
+        "name":               "One Million Degrees (OMD)",
+        "provider":           "One Million Degrees (Chicago nonprofit, founded 2006)",
+        "eligibility":        "Low-income community college students; expanding to Olive-Harvey College (South Side) April 2026 \u2014 goal 3,000 students/year",
+        "cost_to_participant": "Free; includes up to $1,000/year performance-based stipend (usable for books, transportation, or other barriers)",
+        "location":           "Expanding to Olive-Harvey College (South Side); other CCC campuses",
+        "contact":            "onemilliondegrees.org",
+        "barrier_addressed":  "wraparound",
+        "source":             "onemilliondegrees.org (primary, current); colleges.ccc.edu (primary, April 2026); harris.uchicago.edu \u2014 University of Chicago randomized study: 18% more likely to earn degree in 3 yrs; earnings increase >$14,000/yr average 7 yrs post-enrollment",
+        "url":                 "https://onemilliondegrees.org/the-program/apply/",
+    },
+    {
+        "category":           "financial",
+        "name":               "CCC WEI Stipends",
+        "provider":           "City Colleges of Chicago (WEI programs)",
+        "eligibility":        "WEI program participants upon completion or employment milestone",
+        "cost_to_participant": "Free; up to $500 per completion/employment milestone",
+        "location":           "CCC campuses (Olive-Harvey, Malcolm X, Daley)",
+        "contact":            "pages.ccc.edu/wei",
+        "barrier_addressed":  "financial",
+        "source":             "pages.ccc.edu/wei (primary, updated Sept 2025)",
+        "url":                 "https://pages.ccc.edu/wei/",
+    },
+    {
+        "category":           "training_cost",
+        "name":               "WIOA Individual Training Accounts (ITAs)",
+        "provider":           "Chicago Cook Workforce Partnership (LWIA 7)",
+        "eligibility":        "Priority to public-assistance recipients, low-income individuals, and basic-skills-deficient individuals",
+        "cost_to_participant": "Free (ITAs cover approved training costs)",
+        "location":           "~10 American Job Centers; Mid-South center: 4314 S. Cottage Grove",
+        "contact":            "chicookworks.org; dol.gov",
+        "barrier_addressed":  "training_cost",
+        "source":             "chicookworks.org (primary, current); dol.gov (government/primary, current); ccc.edu WIOA pages",
+        "url":                 "https://chicookworks.org/",
+    },
+    {
+        "category":           "financial",
+        "name":               "CCC Financial Aid / Future Ready CCC / Fresh Start",
+        "provider":           "City Colleges of Chicago",
+        "eligibility":        "CCC students with financial need (Future Ready CCC last-dollar scholarship); students with prior CCC debt (Fresh Start debt relief program)",
+        "cost_to_participant": "Free; debt eliminated under Fresh Start; tuition gap covered under Future Ready CCC",
+        "location":           "All CCC campuses",
+        "contact":            "pages.ccc.edu",
+        "barrier_addressed":  "financial",
+        "source":             "pages.ccc.edu (primary, current)",
+        "url":                 "https://pages.ccc.edu/futureready/",
+    },
+    # ── Food security ──────────────────────────────────────────────────────────
+    {
+        "category":           "food",
+        "name":               "CCC Wellness Centers + Greater Chicago Food Depository Partnership",
+        "provider":           "City Colleges of Chicago / Greater Chicago Food Depository",
+        "eligibility":        "CCC students",
+        "cost_to_participant": "Free",
+        "location":           "All CCC campuses",
+        "contact":            "ccc.edu",
+        "barrier_addressed":  "food",
+        "source":             "ccc.edu (primary); WBEZ/Sun-Times/Chalkbeat/Higher Ed Dive (reputable news, April 2026)",
+        "url":                 "https://success.ccc.edu/2025/09/30/city-colleges-of-chicago-and-greater-chicago-food-depository-collaborate-to-launch-food-security-for-life/",
+    },
+]
+
 # Community Readiness Profile - scored by community area
 # Composite: bach_pct (neg weight), hs_pct, college_enroll_pct, youth_pop (normalized), transit_min_iqmp (neg weight)
 def compute_qoi(df):
@@ -261,6 +696,446 @@ def cta_box(audience_name, items, color=GOLD):
         unsafe_allow_html=True
     )
 
+# ── ADVISOR MATCHING LOGIC (pure functions — no Streamlit calls) ──────────────
+# Placement: after helper rendering functions, before sidebar/navigation.
+# All functions receive data constants as arguments so they are independently
+# testable without a running Streamlit server.
+
+# Interest label → pathway_tags used in EMPLOYER_DATA / CREDENTIAL_DATA
+_INTEREST_TAG_MAP = {
+    "Quantum hardware (devices, lab work)":    ["hardware", "quantum"],
+    "HPC systems / infrastructure":            ["hpc", "software"],
+    "Software, data, and programming":         ["software", "data"],
+    "Technician-level roles (hands-on)":       ["technician"],
+    "Community education and outreach":        ["outreach"],
+}
+
+# Education level → set of accessible prerequisite strings (cumulative tiers).
+# None = all credentials accessible (Bachelor's / Graduate).
+# NOTE: "High school enrollment" is intentionally excluded from every tier
+# below. It means "currently enrolled in high school," not "has a diploma" —
+# programs with this prerequisite (e.g. Fermilab TECHS) are for current
+# teenagers, not adult residents who hold a HS diploma or GED. Treating it as
+# accessible to adults was a bug; it's handled instead via _STUDENT_ONLY_PREREQS
+# below, alongside Q-Ready/OQI's current-enrollment restriction.
+_EDU_PREREQ_ACCESS = {
+    "Less than high school diploma": {
+        "18+ adult learner; registered user",
+        "None",
+    },
+    "High school diploma or GED": {
+        "18+ adult learner; registered user",
+        "None",
+        "Open admission",
+    },
+    "Some college (no degree)": {
+        "18+ adult learner; registered user",
+        "None",
+        "Open admission",
+        "Community college enrollment",
+    },
+    "Associate's degree": {
+        "18+ adult learner; registered user",
+        "None",
+        "Open admission",
+        "Community college enrollment",
+    },
+    "Bachelor's degree":                    None,
+    "Graduate degree (Master's or higher)": None,
+}
+
+# Prerequisite strings that indicate student/postdoc-only programs.
+# Rule 1: if all candidates fall into this set, confidence is capped at moderate.
+_STUDENT_ONLY_PREREQS = {
+    "Undergraduate enrollment",
+    "Physics undergraduate enrollment",
+    "High school enrollment",
+    (
+        "Current student or postdoc status (IL/WI/IN) \u2014 NOTE: not yet "
+        "extended to adult career-changers (flagged gap in research report)"
+    ),
+}
+
+# Substring indicating unspecified entry requirements (Rule 2).
+_UNSPECIFIED_PREREQ_MARKER = "not specified"
+
+# Contractual demand markers (both are IQMP incentive commitments):
+#   "DCEO incentive agreement" covers PsiQuantum, Infleqtion, Pasqal
+#   "IQMP-specific jobs"       covers IBM FutureNow (gov-pritzker-newsroom)
+_CONTRACTUAL_MARKERS = ("DCEO incentive agreement", "IQMP-specific jobs")
+
+# Duration values compatible with part-time availability.
+_PART_TIME_DURATIONS = {"Self-paced", "Short-term", "Short certificate", "10 weeks"}
+# Duration values appropriate for full-time commitment.
+_FULL_TIME_DURATIONS  = {"Year-long", "Multi-year"}
+
+# Explicit allowlist of (employer_name, credential_program) pairs that have a
+# documented programmatic pipeline in Quantum-HPC-Pathways-Research-Report.md.
+# Only these exact combinations earn contractual demand credit in scoring.
+# Source: "IBM commits to hire one-third of qualified graduates"
+# (colleges.ccc.edu; CCC newsroom, April 2026).
+_CONTRACTUAL_PIPELINES = {
+    ("IBM FutureNow Chicago (IQMP portion)", "CCC\u2013IBM Apprenticeship"),
+}
+
+
+def _prereq_accessible(prerequisite, edu_level):
+    """Return True if a credential's prerequisite is accessible at this education level.
+    Rule 2: prerequisites containing 'not specified' are treated as accessible to all."""
+    if _UNSPECIFIED_PREREQ_MARKER in prerequisite.lower():
+        return True
+    allowed = _EDU_PREREQ_ACCESS.get(edu_level)
+    if allowed is None:
+        return True
+    return prerequisite in allowed
+
+
+def _is_contractual_employer(jobs_committed):
+    return any(m in jobs_committed for m in _CONTRACTUAL_MARKERS)
+
+
+def _has_pipeline_connection(credential_program, contractual_employer_names):
+    """Return True only when this (employer, credential) pair is in the explicit
+    research-report allowlist. No substring or domain heuristics."""
+    for emp_name in contractual_employer_names:
+        if (emp_name, credential_program) in _CONTRACTUAL_PIPELINES:
+            return True
+    return False
+
+
+def score_opportunity(intake, employer_data, credential_data, skills_data):
+    """
+    Map intake answers to matching credential and employer records.
+
+    has_contractual_demand: True only when the credential appears in
+    _CONTRACTUAL_PIPELINES alongside a DCEO/IQMP-contractual employer.
+    This is an explicit allowlist — no heuristic substring matching.
+
+    Score components (additive):
+        +3  south_side_accessible = True
+        +2  has_contractual_demand (allowlist pipeline connection)
+        +1  duration matches resident's time preference
+    """
+    interests    = intake.get("interests", [])
+    edu          = intake.get("education", "")
+    time_pref    = intake.get("time", "")
+    is_full_time = "Full-time" in time_pref
+    is_part_time = "Part-time" in time_pref
+
+    wanted_tags = set()
+    outreach_requested = False
+    for interest in interests:
+        tags = _INTEREST_TAG_MAP.get(interest, [])
+        if "outreach" in tags:
+            outreach_requested = True
+        wanted_tags.update(tags)
+
+    contractual_employer_names = employer_data.loc[
+        employer_data["jobs_committed"].apply(_is_contractual_employer),
+        "employer",
+    ].tolist()
+
+    candidates = []
+
+    for _, row in credential_data.iterrows():
+        cred_tags = set(row["pathway_tags"])
+        effective_wanted = wanted_tags - {"outreach"}
+        if not effective_wanted:
+            continue
+        if not (cred_tags & effective_wanted):
+            continue
+        if not _prereq_accessible(row["prerequisite"], edu):
+            continue
+
+        is_part_time_ok = row["duration"] in _PART_TIME_DURATIONS
+        is_full_time_ok = row["duration"] in _FULL_TIME_DURATIONS
+        if is_part_time and not is_part_time_ok:
+            continue
+
+        has_contractual = _has_pipeline_connection(
+            row["program"], contractual_employer_names
+        )
+
+        # Citation rule: only name a specific employer's job commitment when
+        # this credential has a real, documented pipeline to that employer
+        # (has_contractual == True). Otherwise, citing a specific employer's
+        # contractual job count here would imply a connection that isn't
+        # documented in the research report, even though it doesn't affect
+        # scoring or confidence. When there's no pipeline, cite general
+        # regional demand context without naming a specific job count.
+        demand_note = ""
+        if has_contractual:
+            matching_employers = employer_data[
+                employer_data["pathway_tags"].apply(
+                    lambda t: bool(set(t) & cred_tags & effective_wanted)
+                )
+            ]
+            contractual_display = matching_employers[
+                matching_employers["jobs_committed"].apply(_is_contractual_employer)
+            ]
+            emp_row = (
+                contractual_display.iloc[0] if not contractual_display.empty
+                else None
+            )
+            if emp_row is not None:
+                demand_note = (
+                    f" Employer demand context: {emp_row['employer']} \u2014 "
+                    f"{emp_row['jobs_committed']} ({emp_row['source']})"
+                )
+        else:
+            demand_note = (
+                " Regional demand context (not specific to this program): "
+                "quantum/HPC job growth in the Illinois-Wisconsin-Indiana region "
+                "is projected via BCG/CQE 2035 forecasts, not tied to a specific "
+                "employer commitment for this credential."
+            )
+
+        is_unspecified  = _UNSPECIFIED_PREREQ_MARKER in row["prerequisite"].lower()
+        is_student_only = row["prerequisite"] in _STUDENT_ONLY_PREREQS
+
+        time_score = 0
+        if is_part_time and is_part_time_ok:
+            time_score = 1
+        elif is_full_time and is_full_time_ok:
+            time_score = 1
+
+        score = 0
+        if row["south_side_accessible"]:
+            score += 3
+        if has_contractual:
+            score += 2
+        score += time_score
+
+        candidates.append({
+            "program":                row["program"],
+            "provider":               row["provider"],
+            "credential_type":        row["credential_type"],
+            "duration":               row["duration"],
+            "cost":                   row["cost"],
+            "south_side_accessible":  row["south_side_accessible"],
+            "pathway_tags":           list(cred_tags),
+            "url":                    row.get("url", ""),
+            "source_citation":        (
+                f"{row['program']} ({row['provider']}, {row['source']})"
+                + demand_note
+            ),
+            "has_contractual_demand": has_contractual,
+            "score":                  score,
+            "unspecified_prereq":     is_unspecified,
+            "student_only":           is_student_only,
+        })
+
+    if outreach_requested:
+        outreach_skills = skills_data[skills_data["category"] == "Public Facing & Business"]
+        whpc_outreach   = outreach_skills[outreach_skills["whpc_provides"] == True]
+        if not whpc_outreach.empty:
+            skill_names = "; ".join(whpc_outreach["skill"].tolist())
+            candidates.append({
+                "program":                "Chicago WHPC Community Education Pathway",
+                "provider":               "Chicago WHPC",
+                "credential_type":        "Non-credit pathway (community education)",
+                "duration":               "Ongoing",
+                "cost":                   "Free",
+                "south_side_accessible":  True,
+                "pathway_tags":           ["outreach"],
+                "url":                    "https://www.chicagowhpc.org",
+                "source_citation":        (
+                    "Chicago WHPC community education program "
+                    "(chicagowhpc.org, primary, current); "
+                    f"skills covered: {skill_names}. "
+                    "NOTE: No credential or employer demand data currently exists "
+                    "for community outreach roles in EMPLOYER_DATA or CREDENTIAL_DATA "
+                    "\u2014 this recommendation is directional only."
+                ),
+                "has_contractual_demand": False,
+                "score":                  2,
+                "unspecified_prereq":     False,
+                "student_only":           False,
+            })
+
+    candidates.sort(key=lambda c: c["score"], reverse=True)
+    return candidates
+
+
+def score_vulnerability(intake, support_resources):
+    """Return relevant support-resource records based on intake barrier flags.
+    Always surfaces financial/wraparound/training_cost resources when unemployed.
+
+    NOTE: uses exact string matches against the known intake option text,
+    not substring checks. A substring check on "barrier" would incorrectly
+    match both "X is a barrier" and "X is not a barrier" options, since both
+    contain the word "barrier".
+    """
+    transportation_barrier = intake.get("transportation", "") == "Transportation is a barrier for me"
+    childcare_barrier      = intake.get("childcare", "") == "Childcare is a barrier for me"
+    food_barrier           = intake.get("food_security", "") == "Food access is a barrier for me"
+    unemployed              = "unemployed" in intake.get("employment", "").lower()
+
+    flags = []
+    for r in support_resources:
+        barrier = r["barrier_addressed"]
+        if transportation_barrier and barrier == "transportation":
+            flags.append(r)
+        elif childcare_barrier and barrier == "childcare":
+            flags.append(r)
+        elif food_barrier and barrier == "food":
+            flags.append(r)
+        elif unemployed and barrier in ("training_cost", "financial", "wraparound"):
+            flags.append(r)
+
+    seen, deduped = set(), []
+    for r in flags:
+        if r["name"] not in seen:
+            seen.add(r["name"])
+            deduped.append(r)
+    return deduped
+
+
+def assess_confidence(intake, pathway_candidates):
+    """Return (confidence_level, confidence_note).
+    confidence_level: "high" | "moderate" | "low"."""
+    interests = intake.get("interests", [])
+
+    if not interests:
+        return (
+            "low",
+            "No pathway interests were selected. Select at least one interest "
+            "area to generate a recommendation.",
+        )
+
+    if not pathway_candidates:
+        return (
+            "low",
+            "No matching programs or credentials were found for this profile in "
+            "the current dataset. This may reflect a gap in available "
+            "community-level programming rather than a gap in your qualifications. "
+            "Contact Chicago WHPC directly for guidance: chicagowhpc@gmail.com",
+        )
+
+    all_student_only = all(c["student_only"] for c in pathway_candidates)
+    any_south_side   = any(c["south_side_accessible"] for c in pathway_candidates)
+
+    if all_student_only and not any_south_side:
+        return (
+            "low",
+            "The programs that match your interests (e.g. Q-Ready, OQI Fellowship) "
+            "currently require current student or postdoc enrollment and are not "
+            "accessible to adult career-changers. This is a documented gap in the "
+            "local ecosystem. Check back as programs expand, or contact Chicago "
+            "WHPC for alternative pathways: chicagowhpc@gmail.com",
+        )
+
+    if all_student_only:
+        names = ", ".join(c["program"] for c in pathway_candidates)
+        return (
+            "moderate",
+            f"The best-matching programs ({names}) currently require current "
+            "student or postdoc enrollment and are not yet extended to adult "
+            "career-changers \u2014 a documented gap noted in the research report. "
+            "Recommendations are directional; verify current eligibility directly "
+            "with each provider.",
+        )
+
+    top = next(
+        (c for c in pathway_candidates if not c["student_only"]),
+        pathway_candidates[0],
+    )
+
+    if top["south_side_accessible"] and top["has_contractual_demand"]:
+        note = (
+            f"{top['program']} is currently active and located on or near the "
+            f"South Side ({top['provider']}). Employer demand is backed by "
+            "contractual IQMP incentive agreements (DCEO/IBM FutureNow, Feb 2026)."
+        )
+        if top["unspecified_prereq"]:
+            note += (
+                " Entry requirements for this program are not publicly specified "
+                "\u2014 confirm eligibility directly with the provider before applying."
+            )
+        return ("high", note)
+
+    if top["unspecified_prereq"]:
+        return (
+            "moderate",
+            f"{top['program']} lists entry requirements as unspecified in the "
+            "research report. This recommendation assumes open eligibility, but "
+            "confirm directly with the provider before applying.",
+        )
+
+    if not top["has_contractual_demand"]:
+        return (
+            "moderate",
+            f"{top['program']} matches your interests and is accessible, but "
+            "employer demand data for this pathway is based on projections "
+            "(BCG/CQE 2035 forecast) rather than contractual job commitments. "
+            "The recommendation is directional.",
+        )
+
+    return (
+        "moderate",
+        f"{top['program']} matches your profile. Verify current program "
+        "availability and entry requirements directly with the provider.",
+    )
+
+
+def match_pathways(intake, employer_data, credential_data, skills_data, support_resources):
+    """
+    Orchestrator. Returns:
+    {
+        "pathways":        list of up to 3 pathway dicts (ranked by score),
+        "support_flags":   list of relevant support-resource records,
+        "confidence":      "high" | "moderate" | "low",
+        "confidence_note": str
+    }
+    Each pathway dict: rank, pathway_name, description, on_ramp, why_it_fits,
+    source_citation, credential_type, cost, duration, provider
+    """
+    candidates    = score_opportunity(intake, employer_data, credential_data, skills_data)
+    support_flags = score_vulnerability(intake, support_resources)
+    confidence, confidence_note = assess_confidence(intake, candidates)
+
+    pathways = []
+    for rank, c in enumerate(candidates[:3], start=1):
+        interest_match = [
+            i for i in intake.get("interests", [])
+            if set(_INTEREST_TAG_MAP.get(i, [])) & set(c["pathway_tags"])
+        ]
+        interest_str   = ", ".join(interest_match) if interest_match else "your stated pathway interests"
+        south_side_str = (
+            "on or near the South Side" if c["south_side_accessible"]
+            else "not South Side-specific (accessible with transportation)"
+        )
+        demand_str = (
+            "Employer demand is backed by IQMP contractual commitments "
+            "(DCEO incentive agreements / IBM FutureNow, Feb 2026)."
+            if c["has_contractual_demand"]
+            else "Demand signal is based on projections rather than contractual commitments."
+        )
+        pathways.append({
+            "rank":            rank,
+            "pathway_name":    c["program"],
+            "description":     f"{c['credential_type']} \u2014 {c['duration']}",
+            "on_ramp":         c["provider"],
+            "url":             c.get("url", ""),
+            "why_it_fits":     (
+                f"Matches your interest in {interest_str}. "
+                f"Program is {south_side_str}. {demand_str} "
+                f"Cost: {c['cost']}."
+            ),
+            "source_citation": c["source_citation"],
+            "credential_type": c["credential_type"],
+            "cost":            c["cost"],
+            "duration":        c["duration"],
+            "provider":        c["provider"],
+        })
+
+    return {
+        "pathways":        pathways,
+        "support_flags":   support_flags,
+        "confidence":      confidence,
+        "confidence_note": confidence_note,
+    }
+
 # ── SIDEBAR NAVIGATION ────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown(
@@ -283,6 +1158,19 @@ with st.sidebar:
         f"</div>",
         unsafe_allow_html=True
     )
+    st.markdown(
+        f"<div style='margin:6px 0 4px 0'>"
+        f"<div style='font-size:0.72rem;font-weight:700;color:{MGRAY};"
+        f"letter-spacing:0.04em;margin-bottom:4px'>QUICK LINKS</div>"
+        f"</div>",
+        unsafe_allow_html=True
+    )
+    if st.button("\u2192 Pathway Advisor", key="sidebar_nav_advisor", use_container_width=True):
+        st.session_state["mobile_nav"] = "Pathway Advisor"
+        st.rerun()
+    if st.button("\u2192 Quantum Learning Resources", key="sidebar_nav_learning", use_container_width=True):
+        st.session_state["mobile_nav"] = "Quantum Learning Resources"
+        st.rerun()
 
 tabs = [None] * 20
 audience = "Overview"  # kept for backward compat
@@ -305,6 +1193,7 @@ st.markdown(
 # Mobile navigation selectbox - always visible on page
 all_pages_mobile = [
     "Why Now?",
+    "Pathway Advisor",
     "Latest Developments",
     "Workforce Bridge",
     "Why Chicago WHPC?",
@@ -320,6 +1209,7 @@ all_pages_mobile = [
     "Workforce Baseline Analysis",
     "Why HPC?",
     "Quantum Skills Map",
+    "Quantum Learning Resources",
     "Pathway Ladder",
     "Program Architecture",
     "Participant Deliverables",
@@ -695,12 +1585,16 @@ if sub_choice == "Why Now?":
             weight = "700" if is_program else "400"
             bg = f"{color}20" if is_program else "transparent"
             border = f"2px solid {color}" if is_program else f"1px solid {color}44"
+            padding = "8px 10px" if is_program else "4px 6px"
+            border_style = f"border:{border}" if is_program else ""
+            font_size = "0.85rem" if is_program else "0.8rem"
+            text_color = RED if is_program else NAVY
             st.markdown(
                 f"<div style='display:flex;gap:10px;align-items:center;margin:5px 0;"
-                f"background:{bg};border-radius:6px;padding:{'8px 10px' if is_program else '4px 6px'};{f"border:{border}" if is_program else ''}'>"
+                f"background:{bg};border-radius:6px;padding:{padding};{border_style}'>"
                 f"<div style='font-size:0.78rem;font-weight:700;color:{color};min-width:36px'>{year}</div>"
-                f"<div style='font-size:{'0.85rem' if is_program else '0.8rem'};"
-                f"font-weight:{weight};color:{NAVY if not is_program else RED}'>{event}</div>"
+                f"<div style='font-size:{font_size};"
+                f"font-weight:{weight};color:{text_color}'>{event}</div>"
                 f"</div>",
                 unsafe_allow_html=True
             )
@@ -1260,95 +2154,7 @@ if sub_choice == "Quantum Skills Map":
         "Chicago WHPC coverage based on current and planned curriculum as of June 2026."
     )
 
-    skills_data = pd.DataFrame([
-        {"category": "Hardware",    "subcategory": "H3/H4 Technical Specialists",
-         "skill": "Cryogenic systems and dilution refrigerators",
-         "credential_min": "MS / BS", "whpc_provides": False,
-         "whpc_note": "", "local_provider": "Argonne, Fermilab (research roles only)"},
-        {"category": "Hardware",    "subcategory": "H4 Technical Subsystem Specialists",
-         "skill": "Electronics, fabrication, materials characterization",
-         "credential_min": "BS / AS", "whpc_provides": False,
-         "whpc_note": "", "local_provider": "Olive Harvey (IT certs), Kennedy-King"},
-        {"category": "Hardware",    "subcategory": "H4 Technical Subsystem Specialists",
-         "skill": "Precision manufacturing and semiconductor production",
-         "credential_min": "Certificate / AS", "whpc_provides": False,
-         "whpc_note": "", "local_provider": "City Colleges (manufacturing tech programs)"},
-        {"category": "Software",    "subcategory": "S1 Software Engineering",
-         "skill": "Classical software development (Python, scripting, version control)",
-         "credential_min": "BS / Certificate", "whpc_provides": True,
-         "whpc_note": "Python and scripting foundations covered in HPC on-ramp curriculum",
-         "local_provider": "CPS CS for All, City Colleges"},
-        {"category": "Software",    "subcategory": "S1 Software Engineering",
-         "skill": "HPC systems and job scheduling (Slurm, Linux, cluster environments)",
-         "credential_min": "Certificate / BS", "whpc_provides": True,
-         "whpc_note": "Core HPC workshop curriculum - not offered at community level elsewhere in Chicago",
-         "local_provider": "Chicago WHPC (fills gap)"},
-        {"category": "Software",    "subcategory": "S1 Software Engineering",
-         "skill": "GPU computing and accelerated workflows (CUDA, CuPy, RAPIDS)",
-         "credential_min": "BS / Certificate", "whpc_provides": True,
-         "whpc_note": "GPU workshop module delivered on H100 NVL hardware via institutional partnership",
-         "local_provider": "Chicago WHPC (fills gap)"},
-        {"category": "Software",    "subcategory": "S1 Software Engineering",
-         "skill": "Cloud computing and APIs (AWS Braket, containerization)",
-         "credential_min": "Certificate / BS", "whpc_provides": True,
-         "whpc_note": "Introductory cloud and API coverage in HPC curriculum",
-         "local_provider": "City Colleges (IT certs), Chicago WHPC"},
-        {"category": "Software",    "subcategory": "S2 Applications and Algorithms",
-         "skill": "Quantum circuit design (Qiskit, PennyLane, CUDA-Q)",
-         "credential_min": "BS / MS", "whpc_provides": True,
-         "whpc_note": "Introductory quantum simulation covered in workshop series; PennyLane partnership with Xanadu",
-         "local_provider": "Chicago WHPC, Fermilab SMQ* (quantum basics only)"},
-        {"category": "Software",    "subcategory": "S2 Applications and Algorithms",
-         "skill": "Hybrid quantum-classical workflows",
-         "credential_min": "BS / MS", "whpc_provides": True,
-         "whpc_note": "Taught as the core bridge concept connecting HPC and quantum - not offered locally elsewhere",
-         "local_provider": "Chicago WHPC (fills critical gap)"},
-        {"category": "Software",    "subcategory": "S2 Applications and Algorithms",
-         "skill": "Quantum machine learning (QML)",
-         "credential_min": "MS / BS", "whpc_provides": True,
-         "whpc_note": "PennyLane workshop covers QML fundamentals in partnership with Xanadu",
-         "local_provider": "Chicago WHPC / Xanadu"},
-        {"category": "Software",    "subcategory": "S2 Applications and Algorithms",
-         "skill": "Error correction and noise mitigation",
-         "credential_min": "MS / PhD", "whpc_provides": False,
-         "whpc_note": "Advanced topic - beyond community program scope",
-         "local_provider": "University research programs"},
-        {"category": "Bridging",    "subcategory": "B2 Hardware-Software Bridge",
-         "skill": "Data pipelines and scientific computing workflows",
-         "credential_min": "Certificate / BS", "whpc_provides": True,
-         "whpc_note": "Core HPC on-ramp curriculum component",
-         "local_provider": "Chicago WHPC (fills gap)"},
-        {"category": "Bridging",    "subcategory": "B2 Hardware-Software Bridge",
-         "skill": "Technical documentation and knowledge transfer",
-         "credential_min": "Certificate", "whpc_provides": True,
-         "whpc_note": "Covered in mentorship and professional skills module",
-         "local_provider": "Chicago WHPC"},
-        {"category": "Bridging",    "subcategory": "B1 Applications Bridge",
-         "skill": "Translating domain problems into quantum circuits",
-         "credential_min": "BS / MS", "whpc_provides": False,
-         "whpc_note": "Requires deep quantum knowledge - Year 2+ program goal",
-         "local_provider": "Argonne, CQE programs"},
-        {"category": "Public Facing & Business", "subcategory": "P3 Engagement",
-         "skill": "Community outreach and workforce development",
-         "credential_min": "BS / Certificate", "whpc_provides": True,
-         "whpc_note": "Chicago WHPC is itself a working model of this role in practice",
-         "local_provider": "Chicago WHPC"},
-        {"category": "Public Facing & Business", "subcategory": "P3 Engagement",
-         "skill": "Quantum science communication and education",
-         "credential_min": "BS / Certificate", "whpc_provides": True,
-         "whpc_note": "Community education sessions and teacher/student engagement programming",
-         "local_provider": "Chicago WHPC, DPI, Fermilab"},
-        {"category": "Public Facing & Business", "subcategory": "P3 Engagement",
-         "skill": "Career navigation and professional networking",
-         "credential_min": "No minimum", "whpc_provides": True,
-         "whpc_note": "Mentorship program and South Side Quantum Opportunity Guide",
-         "local_provider": "Chicago WHPC (fills gap at community level)"},
-        {"category": "Public Facing & Business", "subcategory": "P2 Client Interactions",
-         "skill": "Technical sales and customer success",
-         "credential_min": "BS / Certificate", "whpc_provides": False,
-         "whpc_note": "Pathway navigation module covers adjacent awareness",
-         "local_provider": "City Colleges (business programs)"},
-    ])
+    skills_data = SKILLS_DATA.copy()
 
     # ── VISUALIZATION TOGGLE ─────────────────────────────────────────────────
     n_total = len(skills_data)
@@ -1640,6 +2446,163 @@ if sub_choice == "Quantum Skills Map":
 
 # TAB 5: QUANTUM OPPORTUNITY INDEX
 # ══════════════════════════════════════════════════════════════════════════════
+
+# ══════════════════════════════════════════════════════════════════════════════
+# QUANTUM LEARNING RESOURCES
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Quantum Learning Resources":
+    section_header(
+        "Quantum Learning Resources",
+        "Free, self-directed resources organized by difficulty level — for exploring quantum computing before or alongside a formal program."
+    )
+    callout(
+        "These are free, publicly available resources, not Chicago WHPC programs. "
+        "Verify current availability directly with each provider, since free-tier offers "
+        "change over time. This list is a starting point for self-directed exploration, "
+        "not a substitute for the structured pathways on the Pathway Advisor page."
+    )
+
+    _tier_data = [
+        {
+            "tier": "Getting Started",
+            "subtitle": "No coding required — visual and conceptual tools",
+            "color": TEAL,
+            "items": [
+                ("Quirk", "A drag-and-drop visual quantum circuit simulator in your browser. No installation, no account.", "https://algassert.com/quirk"),
+                ("IBM Quantum Composer", "Build circuits by dragging gates onto a graphical interface — IBM's official beginner tool.", "https://quantum.cloud.ibm.com/composer"),
+                ("IBM Quantum Composer Guide", "Interactive intro guide to the Composer's drag-and-drop interface, gate reference, and how to run circuits on real hardware.", "https://quantum.cloud.ibm.com/docs/en/guides/composer"),
+            ],
+        },
+        {
+            "tier": "Beginner",
+            "subtitle": "Basic Python helpful — first real circuits and tutorials",
+            "color": NAVY,
+            "items": [
+                ("IBM Quantum Learning Platform", "IBM's free structured courses and tutorials, from fundamentals through Qiskit basics.", "https://quantum.cloud.ibm.com/learning/en"),
+                ("IBM Quantum Learning: Grover's Algorithm Tutorial", "A guided first algorithm — searching an unsorted list faster than classically possible.", "https://quantum.cloud.ibm.com/docs/en/tutorials/grovers-algorithm"),
+                ("Qiskit (IBM)", "The most widely used open-source quantum SDK — official homepage and install docs.", "https://www.ibm.com/quantum/qiskit"),
+                ("Quantum Inspire Learning Materials", "QuTech's (TU Delft) free tutorials paired with real free hardware access — see Free QPU Access below.", "https://www.quantum-inspire.com/"),
+                ("PennyLane Demos (Xanadu)", "Hands-on quantum machine learning and quantum computing demos with runnable code.", "https://pennylane.ai/qml"),
+            ],
+        },
+        {
+            "tier": "Intermediate",
+            "subtitle": "Writing your own programs — SDKs across hardware providers",
+            "color": GOLD,
+            "items": [
+                ("Qiskit Documentation", "Full API reference and guides for IBM's SDK.", "https://quantum.cloud.ibm.com/docs/en/guides"),
+                ("Qiskit Tutorial Catalog", "Curated, runnable notebooks covering algorithms, hardware, and applications.", "https://quantum.cloud.ibm.com/docs/en/tutorials"),
+                ("PennyLane (Xanadu)", "Cross-platform Python library for differentiable quantum programming — works across IBM, Google, Rigetti, and more.", "https://pennylane.ai/"),
+                ("Cirq (Google)", "Google's open-source framework for writing, running, and analyzing quantum circuits.", "https://github.com/quantumlib/Cirq"),
+                ("Amazon Braket SDK", "AWS's quantum SDK — one interface across IonQ, Rigetti, IQM, and QuEra hardware.", "https://aws.amazon.com/braket/"),
+                ("D-Wave Ocean SDK", "Free, open-source (Apache 2.0) Python tools for programming D-Wave's quantum annealers, built for optimization problems.", "https://github.com/dwavesystems/dwave-ocean-sdk"),
+                ("CUDA-Q Tutorials (NVIDIA)", "Official runnable tutorials for CUDA-Q, NVIDIA's QPU-agnostic hybrid quantum-classical platform — the same SDK used in Chicago WHPC's Lakeshore benchmarking work.", "https://nvidia.github.io/cuda-quantum/latest/using/tutorials.html"),
+                ("CUDA-Q Academic (NVIDIA)", "Free, structured learning path with cloud notebooks (Colab/qBraid/Braket) preloaded — no local install needed.", "https://nvidia.github.io/cuda-q-academic/learningpath.html"),
+                ("Microsoft Quantum Development Kit (Q#)", "Microsoft's quantum programming language and tools, integrated with Azure Quantum.", "https://www.microsoft.com/en-us/quantum/development-kit"),
+                ("UChicago Professional: Quantum Science, Networking, and Communications", "A paid, 8-week instructor-led course (CQE-affiliated) for those ready to go deeper than self-study — recommended background: bachelor's degree in a related field. Worth comparing against free options first.", "https://professional.uchicago.edu/find-your-fit/courses/quantum-science-networking-and-communications"),
+            ],
+        },
+        {
+            "tier": "Advanced",
+            "subtitle": "Research-level — algorithms, theory, and HPC-scale resources",
+            "color": RED,
+            "items": [
+                ("Quantum Algorithm Zoo", "A comprehensive, actively maintained catalog of known quantum algorithms and their speedups over classical methods.", "https://quantumalgorithmzoo.org/"),
+                ("Nielsen & Chuang, Quantum Computation and Quantum Information", "The standard graduate reference textbook. Check university library access or the publisher for a legitimate copy.", "https://www.cambridge.org/highereducation/books/quantum-computation-and-quantum-information/01E10196D0A682A6AEFFEA52D53BE9AE"),
+                ("arXiv quant-ph", "Preprint server for current quantum computing research papers.", "https://arxiv.org/list/quant-ph/recent"),
+            ],
+        },
+    ]
+
+    for tier in _tier_data:
+        st.markdown(
+            f"<div style='margin:24px 0 6px 0'>"
+            f"<span style='background:{tier['color']};color:white;font-weight:700;"
+            f"font-size:0.78rem;border-radius:14px;padding:4px 14px'>{tier['tier']}</span>"
+            f"<span style='color:{MGRAY};font-size:0.85rem;margin-left:10px'>{tier['subtitle']}</span>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+        for name, desc, url in tier["items"]:
+            st.markdown(
+                f"<div style='border-left:3px solid {tier['color']};padding:6px 0 6px 14px;margin:4px 0'>"
+                f"<a href='{url}' target='_blank' rel='noopener' "
+                f"style='font-weight:700;font-size:0.92rem;color:{NAVY};text-decoration:none;"
+                f"border-bottom:1px dotted {tier['color']}'>{name} \u2197</a>"
+                f"<div style='font-size:0.82rem;color:{MGRAY};margin-top:2px'>{desc}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+
+    st.markdown("---")
+    section_header(
+        "Free QPU Access",
+        "Ways to run programs on real quantum hardware — not simulators — at no cost."
+    )
+    callout(
+        "\"Free\" quantum computer access almost always means limited time on real hardware "
+        "(measured in minutes), with unlimited free access to simulators alongside it. "
+        "Simulators are the right place to develop and debug; save real hardware time for "
+        "final runs. Offers and limits change — confirm current terms before relying on them."
+    )
+
+    _qpu_data = [
+        ("IBM Quantum Open Plan", TEAL,
+         "10 minutes of free real QPU runtime every 28 days, up to 127-qubit systems, no credit card required. "
+         "Active users who log 20 minutes within 12 months can opt into a one-time 180-minute bonus.",
+         "https://quantum.cloud.ibm.com/docs/en/guides/plans-overview"),
+        ("Quantum Inspire (QuTech / TU Delft)", NAVY,
+         "Free, uncapped access to real superconducting quantum hardware (Tuna-17, 17 qubits) and simulators up to 31 qubits — "
+         "no usage limits, open globally to researchers, students, and educators.",
+         "https://www.quantum-inspire.com/"),
+        ("D-Wave Leap", GOLD,
+         "Free real-time access to D-Wave's quantum annealer for signup (historically ~1 minute/month); "
+         "qualified applicants can also apply for the Leap Quantum LaunchPad program, a 3-month free trial with expanded access and expert support.",
+         "https://cloud.dwavesys.com/leap/"),
+        ("Amazon Braket", RED,
+         "1 hour of free quantum circuit simulation per month. Real QPU access (IonQ, Rigetti, IQM, QuEra) is pay-per-shot, "
+         "not free — but eligible researchers can apply for AWS Cloud Credit for Research.",
+         "https://aws.amazon.com/braket/"),
+        ("Azure Quantum", "#8E44AD",
+         "New accounts automatically receive $500 in free Azure Quantum Credits, usable toward IonQ, Rigetti, Pasqal, or "
+         "Quantinuum hardware access. Qualified research teams can apply for up to $10,000 in additional credits.",
+         "https://learn.microsoft.com/en-us/azure/quantum/pricing"),
+    ]
+
+    for name, color, desc, url in _qpu_data:
+        st.markdown(
+            f"<div style='background:white;border:1.5px solid {color}55;border-left:5px solid {color};"
+            f"border-radius:8px;padding:14px 18px;margin:8px 0'>"
+            f"<a href='{url}' target='_blank' rel='noopener' "
+            f"style='font-weight:700;font-size:0.95rem;color:{NAVY};text-decoration:none;"
+            f"border-bottom:1px dotted {color}'>{name} \u2197</a>"
+            f"<div style='font-size:0.85rem;color:{MGRAY};margin-top:4px'>{desc}</div>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+    section_header(
+        "Community, Events, and Career Pathways",
+        "Where to connect with the local and national quantum community."
+    )
+
+    _community_data = [
+        ("CQE Member and Partner Collaboration Opportunities", "https://chicagoquantum.org/member-and-partner-collaboration-opportunities"),
+        ("CQE Upcoming Events", "https://chicagoquantum.org/upcoming-events"),
+        ("CQE Education and Training / Internships", "https://chicagoquantum.org/education-and-training"),
+        ("CQE: Meet the Researchers", "https://chicagoquantum.org/about/meet-researchers"),
+        ("Quantum Coalition — Learning Resources and Hackathons", "https://www.quantumcoalition.io/"),
+    ]
+    for name, url in _community_data:
+        st.markdown(
+            f"<div style='padding:4px 0'>"
+            f"<a href='{url}' target='_blank' rel='noopener' "
+            f"style='font-size:0.88rem;color:{TEAL}'>{name} \u2197</a>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+
 
 if sub_choice == "Community Profiles":
     section_header("Community Profiles",
@@ -2104,13 +3067,17 @@ if sub_choice == "Community Readiness Profile (Appendix)":
             if not areas_in_quad:
                 continue
             is_priority = "PRIORITY" in quad
+            areas_html = "".join(
+                f'<div style="font-size:0.85rem;color:{NAVY};margin:3px 0">- {a}</div>'
+                for a in areas_in_quad
+            )
             st.markdown(
                 f"<div style='background:{color}{'25' if is_priority else '15'};"
                 f"border:{'2px' if is_priority else '1px'} solid {color};"
                 f"border-radius:8px;padding:12px;margin:8px 0'>"
                 f"<div style='font-weight:{'700' if is_priority else '600'};"
                 f"color:{color};font-size:0.82rem;margin-bottom:6px'>{quad}</div>"
-                f"{''.join(f'<div style="font-size:0.85rem;color:{NAVY};margin:3px 0">- {a}</div>' for a in areas_in_quad)}"
+                f"{areas_html}"
                 f"</div>",
                 unsafe_allow_html=True
             )
@@ -3811,11 +4778,15 @@ if sub_choice == "Theory of Change":
                 f"padding-left:8px;border-left:2px solid {color}55'>"
                 f"<em>{a}</em></div>" for a in assumptions
             ) if assumptions else ""
+            key_assumptions_html = (
+                f"<div style='margin-top:8px;font-size:0.75rem;font-weight:700;color:{color}'>KEY ASSUMPTIONS:</div>"
+                + assumptions_html
+            ) if assumptions else ""
             st.markdown(
                 f"<div style='border:1.5px solid {color}33;border-radius:8px;"
                 f"padding:10px 14px;height:100%'>"
                 f"<div style='font-size:0.85rem;color:{MGRAY}'>{desc}</div>"
-                f"{('<div style=\"margin-top:8px;font-size:0.75rem;font-weight:700;color:' + color + '\">KEY ASSUMPTIONS:</div>' + assumptions_html) if assumptions else ''}"
+                f"{key_assumptions_html}"
                 f"</div>",
                 unsafe_allow_html=True
             )
@@ -4236,6 +5207,12 @@ if sub_choice == "Stakeholder Map Overview":
                 f"padding-left:6px;border-left:2px solid {color}55'>{m}</div>"
                 for m in members
             )
+            civic_note = (
+                f"<div style='margin-top:10px;font-size:0.75rem;color:{color};font-style:italic'>"
+                f"Connects all other sectors to community</div>"
+                if is_civic else ""
+            )
+
             st.markdown(
                 f"<div style='background:{color}{'25' if is_civic else '12'};"
                 f"border:{'2.5px' if is_civic else '1.5px'} solid {color};"
@@ -4243,7 +5220,7 @@ if sub_choice == "Stakeholder Map Overview":
                 f"<div style='font-weight:700;color:{color};font-size:0.9rem;"
                 f"margin-bottom:10px'>{group}</div>"
                 f"{items_html}"
-                f"{'<div style="margin-top:10px;font-size:0.75rem;color:' + color + ';font-style:italic">Connects all other sectors to community</div>' if is_civic else ''}"
+                f"{civic_note}"
                 f"</div>",
                 unsafe_allow_html=True
             )
@@ -4571,6 +5548,10 @@ if sub_choice == "Public Value Framework":
     ]
 
     for title, color, desc, bullets in benefits:
+        bullets_html = "".join(
+            f"<div style='font-size:0.8rem;color:{NAVY};margin:3px 0;padding-left:8px;border-left:2px solid {color}55'>{b}</div>"
+            for b in bullets
+        )
         st.markdown(
             f"<div style='background:{LGRAY};border-radius:10px;padding:16px 20px;margin:10px 0'>"
             f"<div style='display:grid;grid-template-columns:1fr 2fr;gap:16px;align-items:start'>"
@@ -4578,7 +5559,7 @@ if sub_choice == "Public Value Framework":
             f"<div style='font-weight:700;font-size:0.95rem'>{title}</div></div>"
             f"<div>"
             f"<div style='font-size:0.85rem;color:{MGRAY};margin-bottom:8px'>{desc}</div>"
-            f"{''.join(f'<div style=\"font-size:0.8rem;color:{NAVY};margin:3px 0;padding-left:8px;border-left:2px solid {color}55\">{b}</div>' for b in bullets)}"
+            f"{bullets_html}"
             f"</div></div></div>",
             unsafe_allow_html=True
         )
@@ -5364,6 +6345,287 @@ if sub_choice == "Launch Status":
         unsafe_allow_html=True
     )
 
+
+# ─── PATHWAY ADVISOR ──────────────────────────────────────────────────────────
+if sub_choice == "Pathway Advisor":
+    section_header(
+        "Pathway Advisor",
+        "Answer a few questions to get personalized quantum \u00d7 HPC pathway recommendations."
+    )
+    callout(
+        "This tool recommends pathways based on real employer demand and program data from "
+        "the Chicago quantum ecosystem \u2014 not a generic algorithm. Every recommendation "
+        "cites the data source that drove it. Intake responses are not saved after you close this session."
+    )
+
+    # ── Session state keys used by this page ──────────────────────────────────
+    # advisor_education, advisor_experience, advisor_employment,
+    # advisor_interests (list), advisor_time, advisor_transportation,
+    # advisor_childcare, advisor_submitted (bool)
+
+    # ── Clear helper ──────────────────────────────────────────────────────────
+    def _clear_advisor_state():
+        for key in [
+            "advisor_education", "advisor_experience", "advisor_employment",
+            "advisor_interests", "advisor_time", "advisor_transportation",
+            "advisor_childcare", "advisor_food_security", "advisor_submitted",
+        ]:
+            if key in st.session_state:
+                del st.session_state[key]
+
+    # ── Route: intake form or results ─────────────────────────────────────────
+    if not st.session_state.get("advisor_submitted", False):
+
+        st.markdown(
+            f"<div style='background:{LGRAY};border:1px solid #e5e7eb;"
+            f"border-radius:8px;padding:20px 24px;margin:16px 0'>"
+            f"<p style='color:{NAVY};font-weight:600;margin:0 0 4px 0'>About this tool</p>"
+            f"<p style='color:{MGRAY};font-size:0.88rem;margin:0'>"
+            f"7 questions &nbsp;\u00b7&nbsp; takes about 2 minutes &nbsp;\u00b7&nbsp; "
+            f"no account required &nbsp;\u00b7&nbsp; responses stay in this browser session only"
+            f"</p></div>",
+            unsafe_allow_html=True
+        )
+
+        with st.form("advisor_intake_form"):
+            st.markdown(
+                f"<p style='color:{NAVY};font-weight:700;font-size:1rem;"
+                f"margin:8px 0 4px 0'>Background</p>",
+                unsafe_allow_html=True
+            )
+            education = st.selectbox(
+                "What is your highest level of education?",
+                options=[
+                    "Less than high school diploma",
+                    "High school diploma or GED",
+                    "Some college (no degree)",
+                    "Associate's degree",
+                    "Bachelor's degree",
+                    "Graduate degree (Master's or higher)",
+                ],
+                key="form_education"
+            )
+            experience = st.selectbox(
+                "What best describes your relevant work experience?",
+                options=[
+                    "No technical experience",
+                    "Adjacent trades or hands-on technical work",
+                    "Computer / IT / software experience",
+                    "Science or engineering background",
+                ],
+                key="form_experience"
+            )
+            employment = st.selectbox(
+                "What is your current employment status?",
+                options=[
+                    "Currently unemployed",
+                    "Employed part-time",
+                    "Employed full-time (looking to transition)",
+                ],
+                key="form_employment"
+            )
+
+            st.markdown(
+                f"<p style='color:{NAVY};font-weight:700;font-size:1rem;"
+                f"margin:16px 0 4px 0'>Interests</p>",
+                unsafe_allow_html=True
+            )
+            interests = st.multiselect(
+                "Which pathway areas interest you? (Select all that apply)",
+                options=[
+                    "Quantum hardware (devices, lab work)",
+                    "HPC systems / infrastructure",
+                    "Software, data, and programming",
+                    "Technician-level roles (hands-on)",
+                    "Community education and outreach",
+                ],
+                key="form_interests"
+            )
+
+            st.markdown(
+                f"<p style='color:{NAVY};font-weight:700;font-size:1rem;"
+                f"margin:16px 0 4px 0'>Constraints</p>",
+                unsafe_allow_html=True
+            )
+            time_avail = st.radio(
+                "How much time can you commit to upskilling right now?",
+                options=[
+                    "Full-time upskilling (10+ hrs/week)",
+                    "Part-time (under 10 hrs/week)",
+                ],
+                key="form_time"
+            )
+            transportation = st.radio(
+                "Is transportation a barrier for you?",
+                options=[
+                    "I have reliable transportation",
+                    "Transportation is a barrier for me",
+                ],
+                key="form_transportation"
+            )
+            childcare = st.radio(
+                "Is childcare a barrier for you?",
+                options=[
+                    "Childcare is not a barrier",
+                    "Childcare is a barrier for me",
+                ],
+                key="form_childcare"
+            )
+            food_security = st.radio(
+                "Is access to food a barrier for you?",
+                options=[
+                    "Food access is not a barrier",
+                    "Food access is a barrier for me",
+                ],
+                key="form_food_security"
+            )
+
+            submitted = st.form_submit_button(
+                "\u00bb Get my pathway recommendations",
+                use_container_width=True
+            )
+
+        if submitted:
+            st.session_state["advisor_education"]     = education
+            st.session_state["advisor_experience"]    = experience
+            st.session_state["advisor_employment"]    = employment
+            st.session_state["advisor_interests"]     = interests
+            st.session_state["advisor_time"]          = time_avail
+            st.session_state["advisor_transportation"] = transportation
+            st.session_state["advisor_childcare"]     = childcare
+            st.session_state["advisor_food_security"] = food_security
+            st.session_state["advisor_submitted"]     = True
+            st.rerun()
+
+    else:
+        intake = {
+            "education":      st.session_state.get("advisor_education", ""),
+            "experience":     st.session_state.get("advisor_experience", ""),
+            "employment":     st.session_state.get("advisor_employment", ""),
+            "interests":      st.session_state.get("advisor_interests", []),
+            "time":           st.session_state.get("advisor_time", ""),
+            "transportation": st.session_state.get("advisor_transportation", ""),
+            "childcare":      st.session_state.get("advisor_childcare", ""),
+            "food_security":  st.session_state.get("advisor_food_security", ""),
+        }
+
+        result = match_pathways(
+            intake, EMPLOYER_DATA, CREDENTIAL_DATA, SKILLS_DATA, SUPPORT_RESOURCES
+        )
+        pathways        = result["pathways"]
+        support_flags   = result["support_flags"]
+        confidence      = result["confidence"]
+        confidence_note = result["confidence_note"]
+
+        section_header(
+            "Your Pathway Recommendations",
+            "Based on your answers, matched against real program and employer data."
+        )
+
+        # ── Confidence note — always shown, prominent ──────────────────────────
+        _confidence_colors = {"high": TEAL, "moderate": GOLD, "low": RED}
+        _confidence_labels = {
+            "high": "HIGH CONFIDENCE",
+            "moderate": "MODERATE CONFIDENCE",
+            "low": "LOW CONFIDENCE — LIMITED DATA MATCH",
+        }
+        _conf_color = _confidence_colors.get(confidence, GOLD)
+        _conf_label = _confidence_labels.get(confidence, "CONFIDENCE")
+        st.markdown(
+            f"<div style='background:{_conf_color}15;border-left:4px solid {_conf_color};"
+            f"border-radius:6px;padding:14px 18px;margin:12px 0 20px 0'>"
+            f"<div style='font-size:0.72rem;font-weight:700;color:{_conf_color};"
+            f"letter-spacing:0.04em;margin-bottom:4px'>{_conf_label}</div>"
+            f"<div style='font-size:0.88rem;color:{NAVY}'>{confidence_note}</div>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+
+        # ── Ranked pathway cards ────────────────────────────────────────────────
+        if pathways:
+            _rank_colors = {1: TEAL, 2: NAVY, 3: GOLD}
+            for p in pathways:
+                rc = _rank_colors.get(p["rank"], TEAL)
+                if p.get("url"):
+                    title_html = (
+                        f"<a href='{p['url']}' target='_blank' rel='noopener' "
+                        f"style='font-weight:700;font-size:1.02rem;color:{NAVY};"
+                        f"text-decoration:none;border-bottom:1.5px dotted {rc}'>"
+                        f"{p['pathway_name']} \u2197</a>"
+                    )
+                else:
+                    title_html = (
+                        f"<span style='font-weight:700;font-size:1.02rem;"
+                        f"color:{NAVY}'>{p['pathway_name']}</span>"
+                    )
+                st.markdown(
+                    f"<div style='background:white;border:1.5px solid {rc}55;"
+                    f"border-left:5px solid {rc};border-radius:8px;padding:16px;margin:10px 0'>"
+                    f"<div style='display:flex;align-items:center;gap:10px;margin-bottom:6px'>"
+                    f"<div style='background:{rc};color:white;font-weight:700;font-size:0.75rem;"
+                    f"border-radius:20px;padding:2px 12px'>#{p['rank']}</div>"
+                    f"<div>{title_html}</div>"
+                    f"</div>"
+                    f"<div style='font-size:0.82rem;color:{MGRAY};margin-bottom:6px'>"
+                    f"{p['description']} &nbsp;\u00b7&nbsp; {p['on_ramp']} &nbsp;\u00b7&nbsp; {p['cost']}</div>"
+                    f"<div style='font-size:0.88rem;color:{NAVY};margin-bottom:8px'>{p['why_it_fits']}</div>"
+                    f"<div style='font-size:0.78rem;color:{MGRAY};font-style:italic;"
+                    f"border-top:1px solid {LGRAY};padding-top:8px;margin-top:4px'>"
+                    f"Source: {p['source_citation']}</div>"
+                    f"</div>",
+                    unsafe_allow_html=True
+                )
+        else:
+            st.markdown(
+                f"<div style='background:{LGRAY};border-radius:8px;padding:20px;"
+                f"text-align:center;color:{MGRAY};margin:16px 0'>"
+                f"No matching pathways found for this profile in the current dataset. "
+                f"See the note above for why, and consider contacting Chicago WHPC directly."
+                f"</div>",
+                unsafe_allow_html=True
+            )
+
+        # ── Support resource flags ──────────────────────────────────────────────
+        if support_flags:
+            st.markdown(
+                f"<div style='font-weight:700;color:{NAVY};font-size:0.95rem;"
+                f"margin:24px 0 8px 0'>Support Resources That May Help</div>",
+                unsafe_allow_html=True
+            )
+            for r in support_flags:
+                if r.get("url"):
+                    resource_title_html = (
+                        f"<a href='{r['url']}' target='_blank' rel='noopener' "
+                        f"style='font-weight:700;font-size:0.88rem;color:{NAVY};"
+                        f"text-decoration:none;border-bottom:1.5px dotted {GREEN}'>"
+                        f"{r['name']} \u2197</a>"
+                    )
+                else:
+                    resource_title_html = (
+                        f"<span style='font-weight:700;font-size:0.88rem;"
+                        f"color:{NAVY}'>{r['name']}</span>"
+                    )
+                st.markdown(
+                    f"<div style='background:{GREEN}10;border:1.5px solid {GREEN}55;"
+                    f"border-radius:8px;padding:12px 16px;margin:8px 0'>"
+                    f"<div>{resource_title_html}</div>"
+                    f"<div style='font-size:0.82rem;color:{MGRAY};margin:4px 0'>{r['provider']}</div>"
+                    f"<div style='font-size:0.82rem;color:{NAVY}'>"
+                    f"<strong>Eligibility:</strong> {r['eligibility']}</div>"
+                    f"<div style='font-size:0.82rem;color:{NAVY}'>"
+                    f"<strong>Cost:</strong> {r['cost_to_participant']}</div>"
+                    f"<div style='font-size:0.82rem;color:{NAVY}'>"
+                    f"<strong>Contact:</strong> {r['contact']}</div>"
+                    f"<div style='font-size:0.75rem;color:{MGRAY};font-style:italic;"
+                    f"margin-top:6px'>Source: {r['source']}</div>"
+                    f"</div>",
+                    unsafe_allow_html=True
+                )
+
+        st.markdown("---")
+        if st.button("\u21ba Start over", key="advisor_restart"):
+            _clear_advisor_state()
+            st.rerun()
 
 # ─── FOOTER ───────────────────────────────────────────────────────────────────
 st.markdown("---")
