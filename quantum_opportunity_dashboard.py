@@ -2487,19 +2487,10 @@ if sub_choice == "Quantum Learning Resources":
         },
         {
             "tier": "Intermediate",
-            "subtitle": "Writing your own programs — SDKs across hardware providers",
+            "subtitle": "Ready to go deeper than self-study",
             "color": GOLD,
             "items": [
-                ("Qiskit Documentation", "Full API reference and guides for IBM's SDK.", "https://quantum.cloud.ibm.com/docs/en/guides"),
-                ("Qiskit Tutorial Catalog", "Curated, runnable notebooks covering algorithms, hardware, and applications.", "https://quantum.cloud.ibm.com/docs/en/tutorials"),
-                ("PennyLane (Xanadu)", "Cross-platform Python library for differentiable quantum programming — works across IBM, Google, Rigetti, and more.", "https://pennylane.ai/"),
-                ("Cirq (Google)", "Google's open-source framework for writing, running, and analyzing quantum circuits.", "https://github.com/quantumlib/Cirq"),
-                ("Amazon Braket SDK", "AWS's quantum SDK — one interface across IonQ, Rigetti, IQM, and QuEra hardware.", "https://aws.amazon.com/braket/"),
-                ("D-Wave Ocean SDK", "Free, open-source (Apache 2.0) Python tools for programming D-Wave's quantum annealers, built for optimization problems.", "https://github.com/dwavesystems/dwave-ocean-sdk"),
-                ("CUDA-Q Tutorials (NVIDIA)", "Official runnable tutorials for CUDA-Q, NVIDIA's QPU-agnostic hybrid quantum-classical platform — the same SDK used in Chicago WHPC's Lakeshore benchmarking work.", "https://nvidia.github.io/cuda-quantum/latest/using/tutorials.html"),
-                ("CUDA-Q Academic (NVIDIA)", "Free, structured learning path with cloud notebooks (Colab/qBraid/Braket) preloaded — no local install needed.", "https://nvidia.github.io/cuda-q-academic/learningpath.html"),
-                ("Microsoft Quantum Development Kit (Q#)", "Microsoft's quantum programming language and tools, integrated with Azure Quantum.", "https://www.microsoft.com/en-us/quantum/development-kit"),
-                ("UChicago Professional: Quantum Science, Networking, and Communications", "A paid, 8-week instructor-led course (CQE-affiliated) for those ready to go deeper than self-study — recommended background: bachelor's degree in a related field. Worth comparing against free options first.", "https://professional.uchicago.edu/find-your-fit/courses/quantum-science-networking-and-communications"),
+                ("UChicago Professional: Quantum Science, Networking, and Communications", "A paid, 8-week instructor-led course (CQE-affiliated) — recommended background: bachelor's degree in a related field. Worth comparing against the free SDKs and tutorials below first.", "https://professional.uchicago.edu/find-your-fit/courses/quantum-science-networking-and-communications"),
             ],
         },
         {
@@ -2536,6 +2527,38 @@ if sub_choice == "Quantum Learning Resources":
 
     st.markdown("---")
     section_header(
+        "Software & Simulators (SDKs)",
+        "The programming frameworks used to write and simulate quantum circuits — separate from the "
+        "hardware they can optionally connect to. All of these are free to install and run locally or "
+        "in the cloud as simulators; connecting them to real QPU hardware is covered separately below."
+    )
+
+    _sdk_data = [
+        ("Qiskit Documentation (IBM)", "Full API reference and guides for IBM's SDK.", "https://quantum.cloud.ibm.com/docs/en/guides"),
+        ("Qiskit Tutorial Catalog (IBM)", "Curated, runnable notebooks covering algorithms, hardware, and applications.", "https://quantum.cloud.ibm.com/docs/en/tutorials"),
+        ("PennyLane (Xanadu)", "Cross-platform Python library for differentiable quantum programming — works across IBM, Google, Rigetti, and more.", "https://pennylane.ai/"),
+        ("Cirq (Google)", "Google's open-source framework for writing, running, and analyzing quantum circuits.", "https://github.com/quantumlib/Cirq"),
+        ("Amazon Braket SDK", "AWS's quantum SDK — one interface across IonQ, Rigetti, IQM, and QuEra hardware and simulators.", "https://aws.amazon.com/braket/"),
+        ("D-Wave Ocean SDK", "Free, open-source (Apache 2.0) Python tools for programming D-Wave's quantum annealers, built for optimization problems.", "https://github.com/dwavesystems/dwave-ocean-sdk"),
+        ("CUDA-Q (NVIDIA)", "Official runnable tutorials for CUDA-Q, NVIDIA's QPU-agnostic hybrid quantum-classical platform — the same SDK used in Chicago WHPC's Lakeshore benchmarking work.", "https://nvidia.github.io/cuda-quantum/latest/using/tutorials.html"),
+        ("CUDA-Q Academic (NVIDIA)", "Free, structured learning path with cloud notebooks (Colab/qBraid/Braket) preloaded — no local install needed.", "https://nvidia.github.io/cuda-q-academic/learningpath.html"),
+        ("PsiQDK / Construct (PsiQuantum)", "PsiQuantum's free, open-access SDK for designing and simulating fault-tolerant quantum algorithms — includes a visual circuit designer and resource estimator, no install required to start.", "https://construct.psiquantum.com/"),
+        ("Microsoft Quantum Development Kit (Q#)", "Microsoft's quantum programming language and tools, integrated with Azure Quantum.", "https://www.microsoft.com/en-us/quantum/development-kit"),
+    ]
+
+    for name, desc, url in _sdk_data:
+        st.markdown(
+            f"<div style='border-left:3px solid {GOLD};padding:6px 0 6px 14px;margin:4px 0'>"
+            f"<a href='{url}' target='_blank' rel='noopener' "
+            f"style='font-weight:700;font-size:0.92rem;color:{NAVY};text-decoration:none;"
+            f"border-bottom:1px dotted {GOLD}'>{name} \u2197</a>"
+            f"<div style='font-size:0.82rem;color:{MGRAY};margin-top:2px'>{desc}</div>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+    section_header(
         "Free QPU Access",
         "Ways to run programs on real quantum hardware — not simulators — at no cost."
     )
@@ -2555,6 +2578,10 @@ if sub_choice == "Quantum Learning Resources":
          "Free, uncapped access to real superconducting quantum hardware (Tuna-17, 17 qubits) and simulators up to 31 qubits — "
          "no usage limits, open globally to researchers, students, and educators.",
          "https://www.quantum-inspire.com/"),
+        ("IQM Resonance", "#0B7285",
+         "Free Starter account with 30 credits per month on real superconducting hardware (Emerald 54-qubit or Garnet "
+         "20-qubit systems). Credits do not expire, and free IQM Academy learning materials are included.",
+         "https://resonance.iqm.tech/"),
         ("D-Wave Leap", GOLD,
          "Free real-time access to D-Wave's quantum annealer for signup (historically ~1 minute/month); "
          "qualified applicants can also apply for the Leap Quantum LaunchPad program, a 3-month free trial with expanded access and expert support.",
@@ -2563,10 +2590,6 @@ if sub_choice == "Quantum Learning Resources":
          "1 hour of free quantum circuit simulation per month. Real QPU access (IonQ, Rigetti, IQM, QuEra) is pay-per-shot, "
          "not free — but eligible researchers can apply for AWS Cloud Credit for Research.",
          "https://aws.amazon.com/braket/"),
-        ("Azure Quantum", "#8E44AD",
-         "New accounts automatically receive $500 in free Azure Quantum Credits, usable toward IonQ, Rigetti, Pasqal, or "
-         "Quantinuum hardware access. Qualified research teams can apply for up to $10,000 in additional credits.",
-         "https://learn.microsoft.com/en-us/azure/quantum/pricing"),
     ]
 
     for name, color, desc, url in _qpu_data:
@@ -2583,9 +2606,54 @@ if sub_choice == "Quantum Learning Resources":
 
     st.markdown("---")
     section_header(
+        "Paid / Enterprise Hardware Access",
+        "For a complete picture: some leading trapped-ion providers do not currently offer a free real-hardware tier. "
+        "Listed here for reference, not as free resources."
+    )
+    callout(
+        "These require payment, an approved research/startup application, or an institutional allocation — "
+        "included so residents and researchers evaluating the quantum hardware landscape see the full picture, "
+        "not just the free options above."
+    )
+
+    _paid_qpu_data = [
+        ("Azure Quantum", "#8E44AD",
+         "Access to IonQ, Quantinuum, Rigetti, and Pasqal hardware via a unified portal. Requires upgrading to a "
+         "pay-as-you-go Azure subscription (payment method required) — once upgraded, new workspaces receive "
+         "$500 in Azure Quantum Credits per hardware provider, expiring after 6 months. This is a real discount, "
+         "not a no-strings-attached free tier: a payment method must be on file and charges apply once credits "
+         "are exhausted.",
+         "https://learn.microsoft.com/en-us/azure/quantum/pricing"),
+        ("IonQ Quantum Compute Cloud", "#B7791F",
+         "Trapped-ion systems (Forte, Forte Enterprise, #AQ 36) accessed via direct API, AWS Braket, or Azure Quantum — "
+         "pay-per-task and pay-per-shot (e.g. ~$0.30/task + $0.08/shot for Forte on Braket). A free noise-modeled "
+         "simulator is available. IonQ also offers application-based credit programs for startups and academic institutions.",
+         "https://www.ionq.com/quantum-cloud"),
+        ("Quantinuum Nexus", "#5C4033",
+         "Trapped-ion H-Series systems (H2, Helios) accessed via the Nexus portal and API. Real hardware runs on "
+         "purchased Hardware Quantum Credits (HQCs) — no public free tier. Nexus registration and access to the "
+         "H-Series emulators (noiseless and noisy) is available at no cost to sign up for, subject to a fair-use queue.",
+         "https://docs.quantinuum.com/"),
+    ]
+
+    for name, color, desc, url in _paid_qpu_data:
+        st.markdown(
+            f"<div style='background:{LGRAY};border:1.5px solid {color}55;border-left:5px solid {color};"
+            f"border-radius:8px;padding:14px 18px;margin:8px 0'>"
+            f"<a href='{url}' target='_blank' rel='noopener' "
+            f"style='font-weight:700;font-size:0.95rem;color:{NAVY};text-decoration:none;"
+            f"border-bottom:1px dotted {color}'>{name} \u2197</a>"
+            f"<div style='font-size:0.85rem;color:{MGRAY};margin-top:4px'>{desc}</div>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+    section_header(
         "Community, Events, and Career Pathways",
         "Where to connect with the local and national quantum community."
     )
+
 
     _community_data = [
         ("CQE Member and Partner Collaboration Opportunities", "https://chicagoquantum.org/member-and-partner-collaboration-opportunities"),
