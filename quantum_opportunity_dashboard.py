@@ -13,6 +13,7 @@ import plotly.graph_objects as go
 import pandas as pd
 import json
 from io import BytesIO
+from datetime import datetime
 
 # ─── PAGE CONFIG ──────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -1168,9 +1169,19 @@ with st.sidebar:
     if st.button("\u2192 Pathway Advisor", key="sidebar_nav_advisor", use_container_width=True):
         st.session_state["mobile_nav"] = "Pathway Advisor"
         st.rerun()
+    st.markdown(
+        f"<div style='font-size:0.74rem;color:{MGRAY};margin:-4px 0 10px 4px'>"
+        f"Answer a few questions, get a personalized quantum/HPC career pathway.</div>",
+        unsafe_allow_html=True
+    )
     if st.button("\u2192 Quantum Learning Resources", key="sidebar_nav_learning", use_container_width=True):
         st.session_state["mobile_nav"] = "Quantum Learning Resources"
         st.rerun()
+    st.markdown(
+        f"<div style='font-size:0.74rem;color:{MGRAY};margin:-4px 0 10px 4px'>"
+        f"Free self-study tools, courses, and hardware access, by skill level.</div>",
+        unsafe_allow_html=True
+    )
 
 tabs = [None] * 20
 audience = "Overview"  # kept for backward compat
@@ -2522,16 +2533,17 @@ if sub_choice == "Quantum Learning Resources":
             f"</div>",
             unsafe_allow_html=True
         )
-        for name, desc, url in tier["items"]:
-            st.markdown(
-                f"<div style='border-left:3px solid {tier['color']};padding:6px 0 6px 14px;margin:4px 0'>"
-                f"<a href='{url}' target='_blank' rel='noopener' "
-                f"style='font-weight:700;font-size:0.92rem;color:{NAVY};text-decoration:none;"
-                f"border-bottom:1px dotted {tier['color']}'>{name} \u2197</a>"
-                f"<div style='font-size:0.82rem;color:{MGRAY};margin-top:2px'>{desc}</div>"
-                f"</div>",
-                unsafe_allow_html=True
-            )
+        with st.expander(f"View {len(tier['items'])} resources", expanded=False):
+            for name, desc, url in tier["items"]:
+                st.markdown(
+                    f"<div style='border-left:3px solid {tier['color']};padding:6px 0 6px 14px;margin:4px 0'>"
+                    f"<a href='{url}' target='_blank' rel='noopener' "
+                    f"style='font-weight:700;font-size:0.92rem;color:{NAVY};text-decoration:none;"
+                    f"border-bottom:1px dotted {tier['color']}'>{name} \u2197</a>"
+                    f"<div style='font-size:0.82rem;color:{MGRAY};margin-top:2px'>{desc}</div>"
+                    f"</div>",
+                    unsafe_allow_html=True
+                )
 
     st.markdown("---")
     section_header(
@@ -2554,16 +2566,17 @@ if sub_choice == "Quantum Learning Resources":
         ("Microsoft Quantum Development Kit (Q#)", "Microsoft's quantum programming language and tools, integrated with Azure Quantum.", "https://www.microsoft.com/en-us/quantum/development-kit"),
     ]
 
-    for name, desc, url in _sdk_data:
-        st.markdown(
-            f"<div style='border-left:3px solid {GOLD};padding:6px 0 6px 14px;margin:4px 0'>"
-            f"<a href='{url}' target='_blank' rel='noopener' "
-            f"style='font-weight:700;font-size:0.92rem;color:{NAVY};text-decoration:none;"
-            f"border-bottom:1px dotted {GOLD}'>{name} \u2197</a>"
-            f"<div style='font-size:0.82rem;color:{MGRAY};margin-top:2px'>{desc}</div>"
-            f"</div>",
-            unsafe_allow_html=True
-        )
+    with st.expander(f"View {len(_sdk_data)} SDKs and simulators", expanded=False):
+        for name, desc, url in _sdk_data:
+            st.markdown(
+                f"<div style='border-left:3px solid {GOLD};padding:6px 0 6px 14px;margin:4px 0'>"
+                f"<a href='{url}' target='_blank' rel='noopener' "
+                f"style='font-weight:700;font-size:0.92rem;color:{NAVY};text-decoration:none;"
+                f"border-bottom:1px dotted {GOLD}'>{name} \u2197</a>"
+                f"<div style='font-size:0.82rem;color:{MGRAY};margin-top:2px'>{desc}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
 
     st.markdown("---")
     section_header(
@@ -2600,17 +2613,18 @@ if sub_choice == "Quantum Learning Resources":
          "https://aws.amazon.com/braket/"),
     ]
 
-    for name, color, desc, url in _qpu_data:
-        st.markdown(
-            f"<div style='background:white;border:1.5px solid {color}55;border-left:5px solid {color};"
-            f"border-radius:8px;padding:14px 18px;margin:8px 0'>"
-            f"<a href='{url}' target='_blank' rel='noopener' "
-            f"style='font-weight:700;font-size:0.95rem;color:{NAVY};text-decoration:none;"
-            f"border-bottom:1px dotted {color}'>{name} \u2197</a>"
-            f"<div style='font-size:0.85rem;color:{MGRAY};margin-top:4px'>{desc}</div>"
-            f"</div>",
-            unsafe_allow_html=True
-        )
+    with st.expander(f"View {len(_qpu_data)} free QPU access options", expanded=False):
+        for name, color, desc, url in _qpu_data:
+            st.markdown(
+                f"<div style='background:white;border:1.5px solid {color}55;border-left:5px solid {color};"
+                f"border-radius:8px;padding:14px 18px;margin:8px 0'>"
+                f"<a href='{url}' target='_blank' rel='noopener' "
+                f"style='font-weight:700;font-size:0.95rem;color:{NAVY};text-decoration:none;"
+                f"border-bottom:1px dotted {color}'>{name} \u2197</a>"
+                f"<div style='font-size:0.85rem;color:{MGRAY};margin-top:4px'>{desc}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
 
     st.markdown("---")
     section_header(
@@ -2644,17 +2658,18 @@ if sub_choice == "Quantum Learning Resources":
          "https://docs.quantinuum.com/"),
     ]
 
-    for name, color, desc, url in _paid_qpu_data:
-        st.markdown(
-            f"<div style='background:{LGRAY};border:1.5px solid {color}55;border-left:5px solid {color};"
-            f"border-radius:8px;padding:14px 18px;margin:8px 0'>"
-            f"<a href='{url}' target='_blank' rel='noopener' "
-            f"style='font-weight:700;font-size:0.95rem;color:{NAVY};text-decoration:none;"
-            f"border-bottom:1px dotted {color}'>{name} \u2197</a>"
-            f"<div style='font-size:0.85rem;color:{MGRAY};margin-top:4px'>{desc}</div>"
-            f"</div>",
-            unsafe_allow_html=True
-        )
+    with st.expander(f"View {len(_paid_qpu_data)} paid/enterprise options", expanded=False):
+        for name, color, desc, url in _paid_qpu_data:
+            st.markdown(
+                f"<div style='background:{LGRAY};border:1.5px solid {color}55;border-left:5px solid {color};"
+                f"border-radius:8px;padding:14px 18px;margin:8px 0'>"
+                f"<a href='{url}' target='_blank' rel='noopener' "
+                f"style='font-weight:700;font-size:0.95rem;color:{NAVY};text-decoration:none;"
+                f"border-bottom:1px dotted {color}'>{name} \u2197</a>"
+                f"<div style='font-size:0.85rem;color:{MGRAY};margin-top:4px'>{desc}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
 
     st.markdown("---")
     section_header(
@@ -2670,14 +2685,15 @@ if sub_choice == "Quantum Learning Resources":
         ("CQE: Meet the Researchers", "https://chicagoquantum.org/about/meet-researchers"),
         ("Quantum Coalition — Learning Resources and Hackathons", "https://www.quantumcoalition.io/"),
     ]
-    for name, url in _community_data:
-        st.markdown(
-            f"<div style='padding:4px 0'>"
-            f"<a href='{url}' target='_blank' rel='noopener' "
-            f"style='font-size:0.88rem;color:{TEAL}'>{name} \u2197</a>"
-            f"</div>",
-            unsafe_allow_html=True
-        )
+    with st.expander(f"View {len(_community_data)} community links", expanded=False):
+        for name, url in _community_data:
+            st.markdown(
+                f"<div style='padding:4px 0'>"
+                f"<a href='{url}' target='_blank' rel='noopener' "
+                f"style='font-size:0.88rem;color:{TEAL}'>{name} \u2197</a>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
 
 
 if sub_choice == "Community Profiles":
@@ -6707,12 +6723,10 @@ if sub_choice == "Pathway Advisor":
 st.markdown("---")
 st.markdown(
     f"""<div style='text-align:center;color:{MGRAY};font-size:0.8rem;padding:12px'>
-    Quantum × HPC Pathways | Chicago Women in High Performance Computing (Chicago WHPC) |
-    Ana Marija Sokovic, PhD, MBA | 2026 Change Collective Fellow<br>
-    Data: ACS 2023 · CPS To&Through 2024 · ISTC 2026 · BCG/CQE 2024 · IBM 2026 ·
-    Chicago WHPC survey 2026 (N=181)<br>
-    <a href="https://www.chicagowhpc.org" style="color:{TEAL}">chicagowhpc.org</a> |
-    <a href="https://www.chicagowhpc.org/mentorship" style="color:{TEAL}">Mentorship Program</a>
+    <span style='font-size:0.72rem'>
+    &copy; {datetime.now().year} <a href="https://www.chicagowhpc.org" style="color:{TEAL}">Chicago Women in High Performance Computing</a>
+    is a 501(c)(3) nonprofit organization. EIN: 41-3931189.
+    </span>
     </div>""",
     unsafe_allow_html=True
 )
