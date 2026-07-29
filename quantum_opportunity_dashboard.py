@@ -24,6 +24,11 @@ st.set_page_config(
 )
 
 # ─── COLORS ───────────────────────────────────────────────────────────────────
+# ── SIGN-UP FORM LINKS ──────────────────────────────────────────────────────
+# TODO: replace these with your actual Google Form URLs once created.
+AMBASSADOR_SIGNUP_FORM_URL = "https://forms.gle/KzY798GbsbMM7gr3A"
+FUNDER_PARTNER_SIGNUP_FORM_URL = "https://forms.gle/mR2PkgELejc78vZT6"
+
 NAVY = "#1B3A6B"
 TEAL = "#1A7A6E"
 GOLD = "#B07D2A"
@@ -1154,7 +1159,7 @@ with st.sidebar:
         f"<a href='https://www.chicagowhpc.org' style='color:{TEAL}'>chicagowhpc.org</a><br>"
         f"<a href='https://forms.gle/DTnxNhTB3yxJr5eh8' style='color:{TEAL}'>Sign up for updates</a><br>"
         f"<a href='https://forms.gle/2Lnv7LGsN3uUtNuu8' style='color:{TEAL}'>Mentorship Program</a><br>"
-        f"<a href='https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view' style='color:{TEAL}'>Civic Action Plan</a><br><br>"
+        f"<a href='https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view' style='color:{TEAL}'>Original Fellowship Proposal</a><br><br>"
         f"chicagowhpc@gmail.com"
         f"</div>",
         unsafe_allow_html=True
@@ -1166,6 +1171,15 @@ with st.sidebar:
         f"</div>",
         unsafe_allow_html=True
     )
+    if st.button("\u2192 Executive Summary", key="sidebar_nav_execsummary", use_container_width=True):
+        st.session_state["mobile_nav"] = "Executive Summary"
+        st.rerun()
+    st.markdown(
+        f"<div style='font-size:0.74rem;color:{MGRAY};margin:-4px 0 10px 4px'>"
+        f"Start here: the problem, the platform, and how it all fits together.</div>",
+        unsafe_allow_html=True
+    )
+    st.link_button("\u2192 Sign Up as a Funder or Partner", FUNDER_PARTNER_SIGNUP_FORM_URL, use_container_width=True)
     if st.button("\u2192 Pathway Advisor", key="sidebar_nav_advisor", use_container_width=True):
         st.session_state["mobile_nav"] = "Pathway Advisor"
         st.rerun()
@@ -1180,6 +1194,22 @@ with st.sidebar:
     st.markdown(
         f"<div style='font-size:0.74rem;color:{MGRAY};margin:-4px 0 10px 4px'>"
         f"Free self-study tools, courses, and hardware access, by skill level.</div>",
+        unsafe_allow_html=True
+    )
+    if st.button("\u2192 Ambassador Program", key="sidebar_nav_ambassador", use_container_width=True):
+        st.session_state["mobile_nav"] = "Ambassador Program"
+        st.rerun()
+    st.markdown(
+        f"<div style='font-size:0.74rem;color:{MGRAY};margin:-4px 0 10px 4px'>"
+        f"How this is delivered on the ground, and by whom.</div>",
+        unsafe_allow_html=True
+    )
+    if st.button("\u2192 Sustainability Model", key="sidebar_nav_sustainability", use_container_width=True):
+        st.session_state["mobile_nav"] = "Sustainability Model"
+        st.rerun()
+    st.markdown(
+        f"<div style='font-size:0.74rem;color:{MGRAY};margin:-4px 0 10px 4px'>"
+        f"The funding ask: five-year phased budget and revenue plan.</div>",
         unsafe_allow_html=True
     )
 
@@ -1203,6 +1233,7 @@ st.markdown(
 
 # Mobile navigation selectbox - always visible on page
 all_pages_mobile = [
+    "Executive Summary",
     "Why Now?",
     "Pathway Advisor",
     "Latest Developments",
@@ -1223,6 +1254,7 @@ all_pages_mobile = [
     "Quantum Learning Resources",
     "Pathway Ladder",
     "Program Architecture",
+    "Ambassador Program",
     "Participant Deliverables",
     "Scaling Pathway",
     "Winter 2026 Pilot Metrics",
@@ -1239,6 +1271,14 @@ all_pages_mobile = [
     "Limitations",
     "Community Readiness Profile (Appendix)",
 ]
+
+# Deferred navigation: buttons inside page bodies run AFTER the selectbox below
+# is already instantiated, so they cannot write st.session_state["mobile_nav"]
+# directly (Streamlit forbids modifying a widget's own state key post-instantiation).
+# Instead, such buttons set "_pending_nav" and call st.rerun(); on the next run,
+# this block resolves it into mobile_nav BEFORE the selectbox is created.
+if "_pending_nav" in st.session_state:
+    st.session_state["mobile_nav"] = st.session_state.pop("_pending_nav")
 
 sub_choice = st.selectbox(
     "Navigate to page",
@@ -1364,7 +1404,7 @@ if sub_choice == "Workforce Bridge":
 
         callout(
             "\"The organization does not need to create a new pipeline. It needs to open existing ones.\" "
-            "- <a href='https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view?usp=drive_link' target='_blank'>Quantum x HPC Pathways Civic Action Plan, 2026</a>"
+            "- <a href='https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view?usp=drive_link' target='_blank'>Quantum x HPC Pathways 2026 Change Collective Fellowship Proposal</a>"
         )
 
         st.markdown("#### Why HPC and quantum belong together")
@@ -1469,6 +1509,125 @@ if sub_choice == "Workforce Bridge":
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 5: ILLINOIS OPPORTUNITY
 # ══════════════════════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════════════════════
+# EXECUTIVE SUMMARY
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Executive Summary":
+    st.markdown(
+        f"""<div style='background:linear-gradient(135deg,{NAVY} 0%,{TEAL} 100%);
+        border-radius:12px;padding:36px 40px;margin-bottom:24px'>
+        <div style='font-size:1.5rem;font-weight:700;color:white;line-height:1.4;margin-bottom:16px'>
+        Quantum x HPC Pathways
+        </div>
+        <div style='font-size:1.05rem;color:#B8D4E8;line-height:1.7'>
+        A civic workforce bridge connecting South Side Chicago residents to Illinois's
+        emerging quantum and HPC economy, built and led by Chicago Women in HPC.
+        </div>
+        </div>""",
+        unsafe_allow_html=True
+    )
+
+    metric_row([
+        ("projected IL-WI-IN quantum economic impact by 2035", "$80B", "BCG/CQE 2024", TEAL),
+        ("quantum-relevant IL postsecondary completions in 2024", "33,441", "+33% since 2018 (ISTC 2026)", GOLD),
+        ("projected quantum jobs in IL-WI-IN region by 2035", "191,000", "CQE/BCG, cited in ISTC 2026", NAVY),
+        ("Quantum Meets HPC event attendees; 56% never ran a quantum circuit", "200+", "Chicago WHPC, 2026 (N=181)", TEAL),
+    ])
+
+    st.markdown("---")
+    section_header("The Problem", "Proximity without access.")
+    st.markdown(f"""
+    <div style='font-size:0.98rem;color:{NAVY};line-height:1.7'>
+    IQMP is being built on the South Side lakefront, within transit distance of tens of
+    thousands of residents. Illinois has the talent pipeline: a growing, well-documented
+    supply of quantum-relevant credentials and completions. What's missing is not opportunity
+    or ability, it's the connective tissue: plain-language awareness, a clear map of pathways,
+    mentorship, and warm introductions to the institutions where opportunity is created.
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("---")
+    section_header("What Makes This Different")
+    col_a, col_b = st.columns(2)
+    with col_a:
+        st.markdown(
+            f"<div style='background:{LGRAY};border-radius:8px;padding:18px 20px;height:100%'>"
+            f"<div style='font-weight:700;color:{NAVY};margin-bottom:8px'>Regional strategy asks:</div>"
+            f"<div style='font-size:1.05rem;color:{MGRAY};font-style:italic'>"
+            f"\u201cWhat should Illinois build?\u201d</div></div>",
+            unsafe_allow_html=True
+        )
+    with col_b:
+        st.markdown(
+            f"<div style='background:{TEAL}15;border:1.5px solid {TEAL};border-radius:8px;padding:18px 20px;height:100%'>"
+            f"<div style='font-weight:700;color:{TEAL};margin-bottom:8px'>Quantum x HPC Pathways asks:</div>"
+            f"<div style='font-size:1.05rem;color:{NAVY};font-style:italic'>"
+            f"\u201cGiven who I am, how do I become part of what Illinois is building?\u201d</div></div>",
+            unsafe_allow_html=True
+        )
+    callout(
+        "Regional initiatives like the Chicago Quantum Exchange build programs, partnerships, "
+        "and workforce strategy at the ecosystem level. Quantum x HPC Pathways operates at the "
+        "individual level: navigation, personalization, and community access. The two are "
+        "complementary, not duplicative."
+    )
+
+    st.markdown("---")
+    section_header("How This Platform Works", "Six pieces, one pathway.")
+
+    nav_cards = [
+        ("Pathway Advisor", "Answer a few questions, get a personalized, cited recommendation.", TEAL, "Pathway Advisor"),
+        ("Quantum Learning Resources", "Free self-study tools and courses, by skill level.", GOLD, "Quantum Learning Resources"),
+        ("Ambassador Program", "How the pathway is actually delivered, and by whom.", "#8E44AD", "Ambassador Program"),
+        ("Program Architecture", "The six-stage curriculum, from awareness to career transition.", NAVY, "Program Architecture"),
+        ("Theory of Change", "The evidence-based logic linking activities to outcomes.", RED, "Theory of Change"),
+        ("Sustainability Model", "The five-year funding plan and revenue diversification.", GREEN, "Sustainability Model"),
+    ]
+    ncols = st.columns(3)
+    for i, (title, desc, color, target) in enumerate(nav_cards):
+        with ncols[i % 3]:
+            st.markdown(
+                f"<div style='background:white;border:1.5px solid {color}55;border-top:4px solid {color};"
+                f"border-radius:8px;padding:16px;margin-bottom:12px;min-height:110px'>"
+                f"<div style='font-weight:700;color:{NAVY};font-size:0.95rem;margin-bottom:6px'>{title}</div>"
+                f"<div style='font-size:0.8rem;color:{MGRAY}'>{desc}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+            if st.button(f"Open \u2192", key=f"exec_nav_{target}", use_container_width=True):
+                st.session_state["_pending_nav"] = target
+                st.rerun()
+
+    st.markdown("---")
+    st.markdown(
+        f"<div style='background:{GOLD}15;border:2px solid {GOLD};border-radius:8px;"
+        f"padding:20px 20px 8px 20px;margin-top:24px'>"
+        f"<h3 style='color:{GOLD};margin:0 0 12px 0'>What we need from Funders, Partners, and Institutions</h3>"
+        f"</div>",
+        unsafe_allow_html=True
+    )
+    fp_col1, fp_col2 = st.columns(2)
+    with fp_col1:
+        if st.button("\u2192 Sustainability Model \u2014 current funding ask and phased budget", key="fp_link_sustainability", use_container_width=True):
+            st.session_state["_pending_nav"] = "Sustainability Model"
+            st.rerun()
+    with fp_col2:
+        if st.button("\u2192 Ambassador Program \u2014 how paid community instructors deliver this work", key="fp_link_ambassador", use_container_width=True):
+            st.session_state["_pending_nav"] = "Ambassador Program"
+            st.rerun()
+    st.markdown(
+        f"<div style='background:{GOLD}15;border-left:2px solid {GOLD};border-right:2px solid {GOLD};"
+        f"border-bottom:2px solid {GOLD};border-radius:0 0 8px 8px;padding:4px 20px 20px 20px'>"
+        f"<div style='margin:8px 0;color:{NAVY}'>&#9744; Explore Why Now? for the full case on "
+        f"Illinois's quantum investment and timing</div>"
+        f"<div style='margin:8px 0;color:{NAVY}'>&#9744; "
+        f"<a href='{FUNDER_PARTNER_SIGNUP_FORM_URL}' target='_blank' style='color:{GOLD};font-weight:700'>"
+        f"Sign up as a Funder or Partner \u2197</a> or email chicagowhpc@gmail.com directly</div>"
+        f"</div>",
+        unsafe_allow_html=True
+    )
+
+
 if sub_choice == "Why Now?":
     # ── EXECUTIVE SUMMARY HERO ────────────────────────────────────────────────
     st.markdown(
@@ -1572,7 +1731,7 @@ if sub_choice == "Why Now?":
         """)
 
         callout(
-            "The organization does not need to create a new pipeline. It needs to open existing ones. - <a href=\"https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view\" target=\"_blank\">Quantum x HPC Pathways Civic Action Plan, 2026</a>"
+            "The organization does not need to create a new pipeline. It needs to open existing ones. - <a href=\"https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view\" target=\"_blank\">Quantum x HPC Pathways 2026 Change Collective Fellowship Proposal</a>"
         )
 
     with col_b:
@@ -4143,7 +4302,7 @@ if sub_choice == "Partnership Opportunities":
         f"<div style='margin-top:8px'>"
         f"<a href='https://www.chicagowhpc.org' style='color:{TEAL}'>chicagowhpc.org</a>"
         f" &nbsp;|&nbsp; "
-        f"<a href='https://www.chicagowhpc.org/mentorship' style='color:{TEAL}'>Mentorship Program</a> | "f"<a href='https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view?usp=drive_link' style='color:{TEAL}'>Civic Action Plan</a>"
+        f"<a href='https://www.chicagowhpc.org/mentorship' style='color:{TEAL}'>Mentorship Program</a> | "f"<a href='https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view?usp=drive_link' style='color:{TEAL}'>Original Fellowship Proposal</a>"
         f"</div></div>",
         unsafe_allow_html=True
     )
@@ -5827,6 +5986,118 @@ if sub_choice == "Workforce Baseline Analysis":
 # ══════════════════════════════════════════════════════════════════════════════
 # SUSTAINABILITY MODEL
 # ══════════════════════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════════════════════
+# AMBASSADOR PROGRAM
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Ambassador Program":
+    section_header(
+        "Community Ambassador Program",
+        "How Quantum x HPC Pathways is actually delivered, and by whom."
+    )
+    callout(
+        "The Program Architecture page describes six curriculum stages, from Awareness "
+        "through Outcomes. This page answers a different question: who delivers each stage, "
+        "and how are they supported to do it well and consistently."
+    )
+
+    st.markdown("---")
+    section_header("Two Tracks, One Ladder")
+    col_a, col_b = st.columns(2)
+    with col_a:
+        st.markdown(
+            f"<div style='background:{TEAL}12;border:1.5px solid {TEAL};border-radius:8px;"
+            f"padding:18px 20px;height:100%'>"
+            f"<div style='font-weight:700;color:{TEAL};margin-bottom:8px'>Track A: Residents</div>"
+            f"<div style='font-size:0.88rem;color:{NAVY}'>South Side residents entering the "
+            f"program with little to no prior technical background. Progress through the six "
+            f"stages in Program Architecture: Awareness, Preparation, Practice, Navigation, "
+            f"Exposure, Outcomes.</div></div>",
+            unsafe_allow_html=True
+        )
+    with col_b:
+        st.markdown(
+            f"<div style='background:#8E44AD12;border:1.5px solid #8E44AD;border-radius:8px;"
+            f"padding:18px 20px;height:100%'>"
+            f"<div style='font-weight:700;color:#8E44AD;margin-bottom:8px'>Track B: Ambassadors</div>"
+            f"<div style='font-size:0.88rem;color:{NAVY}'>Chicago WHPC members, typically drawn "
+            f"from our existing university-affiliated technical network, recruited and trained "
+            f"to deliver the program's early stages directly in South Side communities.</div></div>",
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+    section_header("Who Delivers Each Stage")
+
+    delivery = [
+        ("01", "Awareness", TEAL, "Community Ambassador", "Plain-language quantum/HPC sessions, delivered in libraries, schools, and community spaces."),
+        ("02", "Preparation", NAVY, "Community Ambassador", "Linux, HPC system navigation, foundational literacy, no quantum content yet."),
+        ("03", "Practice", GOLD, "Technical Instructor", "GPU computing, scientific workflows, first exposure to Qiskit/PennyLane as tools layered on the HPC foundation."),
+        ("04", "Navigation", GREEN, "Mentor", "One-on-one mentorship match, career pathway mapping, professional skills."),
+        ("05", "Exposure", "#8E44AD", "Mentor + Partner Institutions", "Facility tours, guest speakers, employer panels via IQMP, Argonne, Fermilab partners."),
+        ("06", "Outcomes", RED, "Partner Institutions / Employers", "Credential enrollment, internship or apprenticeship application, career transition."),
+    ]
+    for num, name, color, role, desc in delivery:
+        st.markdown(
+            f"<div style='display:flex;align-items:center;gap:14px;background:{color}0D;"
+            f"border-left:4px solid {color};border-radius:6px;padding:10px 16px;margin:6px 0'>"
+            f"<div style='font-weight:700;color:{color};font-size:1rem;min-width:24px'>{num}</div>"
+            f"<div style='flex:1'>"
+            f"<div style='font-weight:700;color:{NAVY};font-size:0.9rem'>{name} "
+            f"<span style='font-weight:400;color:{MGRAY};font-size:0.8rem'>&nbsp;&mdash;&nbsp;{desc}</span></div>"
+            f"</div>"
+            f"<div style='background:{color};color:white;font-size:0.72rem;font-weight:700;"
+            f"border-radius:12px;padding:3px 12px;white-space:nowrap'>{role}</div>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+    section_header("This Is Not Volunteer Labor")
+    st.markdown(f"""
+    <div style='font-size:0.95rem;color:{NAVY};line-height:1.7'>
+    Sustained, high-quality community outreach requires paid instructor time. A program that
+    depends on unpaid goodwill tends to erode after the first cohort, right when consistency
+    matters most. Quantum x HPC Pathways is designed around compensating the people who deliver
+    it directly.
+    </div>
+    """, unsafe_allow_html=True)
+
+    roles_data = [
+        ("Community Ambassador", "Stages 01-02: plain-language awareness sessions, foundational HPC literacy", TEAL),
+        ("Technical Instructor", "Stage 03: CUDA-Q, PennyLane, and Qiskit workshops, specialized skill-building", GOLD),
+        ("Mentor", "Stages 04-05: one-on-one career navigation, professional introductions", GREEN),
+    ]
+    for role, desc, color in roles_data:
+        st.markdown(
+            f"<div style='background:white;border:1.5px solid {color}55;border-left:5px solid {color};"
+            f"border-radius:8px;padding:14px 18px;margin:8px 0'>"
+            f"<div style='font-weight:700;color:{NAVY};font-size:0.92rem'>{role}</div>"
+            f"<div style='font-size:0.85rem;color:{MGRAY};margin-top:4px'>{desc}</div>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+    callout(
+        "Securing dedicated funding for Ambassador and Instructor compensation is a Year 1 "
+        "priority. See the Sustainability Model for the phased budget, including the Ambassador "
+        "stipend line item.",
+        color="#8E44AD"
+    )
+    if st.button("\u2192 View Sustainability Model", key="ambassador_to_sustainability", use_container_width=False):
+        st.session_state["_pending_nav"] = "Sustainability Model"
+        st.rerun()
+
+    st.markdown("---")
+    cta_box("Prospective Ambassadors", [
+        "Relevant technical background in HPC, quantum computing, software, data science, or a related STEM field, Chicago WHPC membership not required",
+        "Comfortable teaching plain-language content to a general audience, not just technical peers",
+        "Available for at least one South Side session per quarter",
+        f"<a href='{AMBASSADOR_SIGNUP_FORM_URL}' target='_blank' style='color:#8E44AD;font-weight:700'>"
+        f"Sign up as an Ambassador \u2197</a> or email chicagowhpc@gmail.com with questions",
+    ], color="#8E44AD")
+
+
 if sub_choice == "Sustainability Model":
     section_header("Sustainability Model",
                    "What happens after the grant? How does this program sustain itself?")
@@ -5849,6 +6120,7 @@ if sub_choice == "Sustainability Model":
             "funding_sources": ["Foundation pilot grants (Chicago Community Trust, CFW, Seabury Foundation)",
                                  "Individual donors", "In-kind contributions from institutional partners"],
             "outputs": ["15-20 participants complete program", "5+ mentor matches",
+                        "Paid Community Ambassador and Technical Instructor stipends (Stages 01-03)",
                         "South Side Quantum Opportunity Guide published",
                         "Evaluation data collected", "2-3 institutional partnerships formalized"],
             "unlocks": "Year 1 outcome data unlocks credibility for larger institutional funders",
@@ -5863,6 +6135,7 @@ if sub_choice == "Sustainability Model":
                                  "IBM or NVIDIA education program grants",
                                  "City Colleges institutional partnership funding"],
             "outputs": ["Quarterly workshop series (40-60 participants/cohort)", "20+ active mentors",
+                        "Expanded Ambassador cohort with tiered per-session compensation",
                         "CPS Network 17 pipeline formalized", "City Colleges credit-bearing pathway aligned",
                         "First cohort alumni as peer facilitators"],
             "unlocks": "Documented outcomes unlock DOE and state workforce program funding",
