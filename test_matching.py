@@ -87,3 +87,45 @@ print(f"\n{'='*55}")
 print(f"Results: {PASS} passed, {FAIL} failed")
 if FAIL:
     sys.exit(1)
+
+print("\n[Additional] CCC-IBM Apprenticeship prerequisite resolution (IQMP confirmation)")
+intake_no_hs = {
+    "education": "Less than high school diploma", "experience": "Computer / IT / software experience",
+    "employment": "Currently unemployed", "interests": ["Software, data, and programming"],
+    "time": "Full-time upskilling (10+ hrs/week)", "transportation": "I have reliable transportation",
+    "childcare": "Childcare is not a barrier",
+}
+cands_no_hs = score_opportunity(intake_no_hs, EMPLOYER_DATA, CREDENTIAL_DATA, SKILLS_DATA)
+names_no_hs = [c["program"] for c in cands_no_hs]
+check("CCC-IBM Apprenticeship excluded for 'Less than high school diploma'",
+      "CCC\u2013IBM Apprenticeship" not in names_no_hs, f"got {names_no_hs}")
+
+intake_hs = dict(intake_no_hs, education="High school diploma or GED")
+cands_hs = score_opportunity(intake_hs, EMPLOYER_DATA, CREDENTIAL_DATA, SKILLS_DATA)
+names_hs = [c["program"] for c in cands_hs]
+check("CCC-IBM Apprenticeship included for 'High school diploma or GED'",
+      "CCC\u2013IBM Apprenticeship" in names_hs, f"got {names_hs}")
+
+appren_row = [c for c in cands_hs if c["program"] == "CCC\u2013IBM Apprenticeship"]
+check("CCC-IBM Apprenticeship unspecified_prereq is now False",
+      len(appren_row) == 1 and appren_row[0]["unspecified_prereq"] is False)
+
+print("\n[Additional] CQuEST (Chicago State University) entry")
+cquest = CREDENTIAL_DATA[CREDENTIAL_DATA["program"].str.contains("CQuEST")].iloc[0]
+check("CQuEST is tagged quantum", "quantum" in cquest["pathway_tags"])
+check("CQuEST is South Side accessible", cquest["south_side_accessible"] == True)
+intake_quantum = {
+    "education": "Bachelor's degree", "experience": "Science or engineering background",
+    "employment": "Currently unemployed", "interests": ["Quantum hardware (devices, lab work)"],
+    "time": "Full-time upskilling (10+ hrs/week)", "transportation": "I have reliable transportation",
+    "childcare": "Childcare is not a barrier",
+}
+cands_q = score_opportunity(intake_quantum, EMPLOYER_DATA, CREDENTIAL_DATA, SKILLS_DATA)
+names_q = [c["program"] for c in cands_q]
+check("CQuEST appears for quantum hardware interest",
+      any("CQuEST" in n for n in names_q), f"got {names_q}")
+
+print(f"\n{'='*55}")
+print(f"Final results: {PASS} passed, {FAIL} failed")
+if FAIL:
+    sys.exit(1)
