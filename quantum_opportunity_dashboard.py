@@ -12,6 +12,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 import json
+import os
 from io import BytesIO
 from datetime import datetime
 
@@ -38,6 +39,9 @@ RED = "#C0392B"
 GREEN = "#27AE60"
 LIGHT_TEAL = "#E8F4F3"
 LIGHT_NAVY = "#EEF2F8"
+# Approximated from the Chicago WHPC brand banner logo (orange leaf accent).
+# Verify against the actual logo file with a color picker and adjust if needed.
+CORAL = "#E85D2F"
 
 
 # ─── FORCE LIGHT THEME + MOBILE RESPONSIVE ───────────────────────────────────
@@ -393,15 +397,16 @@ CREDENTIAL_DATA = pd.DataFrame([
         "duration":              "Year-long",
         "cost":                  "Paid directly to apprentice (philanthropy-funded; goal $7M for first 2\u20133 yrs)",
         "credential_type":       "Apprenticeship",
-        "prerequisite":          "Entry requirements not specified (flagged gap in research report)",
+        "prerequisite":          "High school diploma or equivalent",
         "target_group":          "General adult learner",
         "pathway_tags":          ["software", "hpc", "data"],
         "south_side_accessible": True,
-        "source":                "colleges.ccc.edu (primary, April 2026); CCC newsroom; Chicago Sun-Times; Crain\u2019s Chicago Business (April 2026)",
+        "source":                "colleges.ccc.edu (primary, April 2026); CCC newsroom; Chicago Sun-Times; Crain\u2019s Chicago Business "
+                                  "(April 2026); iqmp.org/careers (primary, current) confirms entry requirement",
         "url":                    "https://colleges.ccc.edu/2026/04/29/gov-pritzker-and-ibm-collaborate-to-bring-750-new-jobs-to-the-illinois-quantum-and-microelectronics-park-hire-city-colleges-of-chicago-students/",
     },
     {
-        "program":               "Per Scholas at Xchange Chicago (Grand Crossing)",
+        "program":               "Per Scholas at Xchange Chicago (Greater Grand Crossing)",
         "provider":              "Per Scholas / Xchange Chicago (Comer Science & Education Foundation, P33, SDI Presence)",
         "duration":              "Not specified for this cohort",
         "cost":                  "Free (no-cost)",
@@ -414,6 +419,22 @@ CREDENTIAL_DATA = pd.DataFrame([
                                   "at Gary Comer Youth Center, Greater Grand Crossing; first cohort ~20 learners, "
                                   "second cohort expected later in 2026",
         "url":                    "https://xchangechicago.org",
+    },
+    {
+        "program":               "CQuEST (Chicago State University)",
+        "provider":              "Chicago State University, Quantum Education, Science & Technology Center",
+        "duration":              "Not specified",
+        "cost":                  "Not specified",
+        "credential_type":       "Certificates (Semiconductor Technology and Manufacturing; Quantum Information "
+                                  "Science & Engineering); paid internships; research and training starting at "
+                                  "the high school level",
+        "prerequisite":          "Not specified",
+        "target_group":          "High school students through bachelor's/master's level; IQMP educational partner",
+        "pathway_tags":          ["quantum", "hardware", "technician"],
+        "south_side_accessible": True,
+        "source":                "iqmp.org/careers (primary, current); CSU is a designated IQMP educational partner "
+                                  "developing paid internships for IBM FutureNow Chicago",
+        "url":                    "https://www.csu.edu/quantum/",
     },
     {
         "program":               "Project Evolve (CCC WEI)",
@@ -771,18 +792,21 @@ _EDU_PREREQ_ACCESS = {
         "18+ adult learner; registered user",
         "None",
         "Open admission",
+        "High school diploma or equivalent",
     },
     "Some college (no degree)": {
         "18+ adult learner; registered user",
         "None",
         "Open admission",
         "Community college enrollment",
+        "High school diploma or equivalent",
     },
     "Associate's degree": {
         "18+ adult learner; registered user",
         "None",
         "Open admission",
         "Community college enrollment",
+        "High school diploma or equivalent",
     },
     "Bachelor's degree":                    None,
     "Graduate degree (Master's or higher)": None,
@@ -1209,6 +1233,14 @@ with st.sidebar:
         f"</div>",
         unsafe_allow_html=True
     )
+    if st.button("\u2192 Overview", key="sidebar_nav_overview", use_container_width=True):
+        st.session_state["mobile_nav"] = "Overview"
+        st.rerun()
+    st.markdown(
+        f"<div style='font-size:0.74rem;color:{MGRAY};margin:-4px 0 10px 4px'>"
+        f"See everything this platform offers, organized by what you need.</div>",
+        unsafe_allow_html=True
+    )
     if st.button("\u2192 Executive Summary", key="sidebar_nav_execsummary", use_container_width=True):
         st.session_state["mobile_nav"] = "Executive Summary"
         st.rerun()
@@ -1257,20 +1289,15 @@ audience = "Overview"  # kept for backward compat
 # ─── MAIN CONTENT ─────────────────────────────────────────────────────────────
 
 # PAGE TITLE
-st.markdown(
-    f"""<div style='background:linear-gradient(135deg,{NAVY},{TEAL});
-    padding:32px 32px 24px 32px;border-radius:10px;margin-bottom:24px'>
-    <h1 style='color:white;margin:0;font-size:2rem'>Quantum x HPC Pathways</h1>
-    <p style='color:#B8D4E8;margin:8px 0 4px 0;font-size:1.1rem'>
-    South Side Advanced Technology Workforce Strategy</p>
-    <p style='color:#8BB8CC;margin:0;font-size:0.85rem'>
-    Chicago Women in High Performance Computing (Chicago WHPC) | Ana Marija Sokovic, PhD, MBA | 2026 Change Collective Fellow</p>
-    </div>""",
-    unsafe_allow_html=True
-)
+_BRAND_BANNER_PATH = "whpc_header_banner_final.png"
+if os.path.exists(_BRAND_BANNER_PATH):
+    st.image(_BRAND_BANNER_PATH, use_container_width=True)
+else:
+    st.warning(f"Header image not found at: {_BRAND_BANNER_PATH}")
 
 # Mobile navigation selectbox - always visible on page
 all_pages_mobile = [
+    "Overview",
     "Executive Summary",
     "Why Now?",
     "Pathway Advisor",
@@ -1553,21 +1580,80 @@ if sub_choice == "Workforce Bridge":
 # ══════════════════════════════════════════════════════════════════════════════
 # EXECUTIVE SUMMARY
 # ══════════════════════════════════════════════════════════════════════════════
-if sub_choice == "Executive Summary":
+# ══════════════════════════════════════════════════════════════════════════════
+# OVERVIEW (landing page — first entry in navigation)
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Overview":
     st.markdown(
-        f"""<div style='background:linear-gradient(135deg,{NAVY} 0%,{TEAL} 100%);
-        border-radius:12px;padding:36px 40px;margin-bottom:24px'>
-        <div style='font-size:1.5rem;font-weight:700;color:white;line-height:1.4;margin-bottom:16px'>
-        Quantum x HPC Pathways
-        </div>
-        <div style='font-size:1.05rem;color:#B8D4E8;line-height:1.7'>
-        A civic workforce bridge connecting South Side Chicago residents to Illinois's
-        emerging quantum and HPC economy, built and led by Chicago Women in HPC.
-        </div>
-        </div>""",
+        f"<p style='color:{MGRAY};font-size:0.95rem;margin:0 0 20px 0'>"
+        f"Choose a section below based on what brought you here.</p>",
         unsafe_allow_html=True
     )
 
+    _overview_sections = [
+        ("Start here", TEAL, [
+            ("Executive summary", "The problem, the platform, the evidence.", "Executive Summary"),
+            ("Why now?", "The timing case for this investment.", "Why Now?"),
+            ("Workforce bridge", "How regional investment becomes local opportunity.", "Workforce Bridge"),
+        ]),
+        ("Explore the evidence", NAVY, [
+            ("Ecosystem map", "Institutions, employers, and infrastructure.", "Ecosystem Map"),
+            ("Community profiles", "South Side neighborhood-level data.", "Community Profiles"),
+            ("Workforce baseline", "Where the talent pipeline stands today.", "Workforce Baseline Analysis"),
+            ("Skills map", "What the industry needs, who provides it.", "Quantum Skills Map"),
+        ]),
+        ("Find your path", GOLD, [
+            ("Pathway advisor", "Answer a few questions, get a personalized recommendation.", "Pathway Advisor"),
+            ("Pathway ladder", "The full resident journey, step by step.", "Pathway Ladder"),
+            ("Learning resources", "Free self-study tools, by skill level.", "Quantum Learning Resources"),
+        ]),
+        ("Build the program", GREEN, [
+            ("Program architecture", "The six-stage curriculum design.", "Program Architecture"),
+            ("Ambassador program", "Who delivers this, and how they're paid.", "Ambassador Program"),
+            ("Deliverables", "What every participant walks away with.", "Participant Deliverables"),
+            ("Pilot metrics", "Winter 2026 cohort targets.", "Winter 2026 Pilot Metrics"),
+        ]),
+        ("Partner and invest", RED, [
+            ("Partnership opportunities", "Specific, low-burden ways to get involved.", "Partnership Opportunities"),
+            ("Sustainability model", "The five-year funding plan.", "Sustainability Model"),
+            ("Evaluation framework", "How success gets measured.", "Evaluation Framework"),
+            ("Launch status", "Where the program actually stands today.", "Launch Status"),
+        ]),
+    ]
+
+    for section_title, color, tiles in _overview_sections:
+        st.markdown(
+            f"<div style='margin:22px 0 10px 0'>"
+            f"<span style='background:{color};color:white;font-weight:700;font-size:0.78rem;"
+            f"letter-spacing:0.03em;border-radius:14px;padding:5px 16px'>{section_title.upper()}</span>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+        cols = st.columns(len(tiles))
+        for col, (label, desc, target) in zip(cols, tiles):
+            with col:
+                st.markdown(
+                    f"<div style='background:white;border:1.5px solid {color}55;border-top:4px solid {color};"
+                    f"border-radius:8px;padding:14px;margin-bottom:8px;min-height:100px'>"
+                    f"<div style='font-weight:700;color:{NAVY};font-size:0.92rem;margin-bottom:6px'>{label}</div>"
+                    f"<div style='font-size:0.78rem;color:{MGRAY}'>{desc}</div>"
+                    f"</div>",
+                    unsafe_allow_html=True
+                )
+                if st.button("Open", key=f"overview_nav_{target}", use_container_width=True):
+                    st.session_state["_pending_nav"] = target
+                    st.rerun()
+
+    st.markdown("---")
+    st.markdown(
+        f"<div style='font-size:0.82rem;color:{MGRAY};text-align:center'>"
+        f"Looking for something specific? Every page above is also available in the "
+        f"<strong>Navigate to page</strong> dropdown and the sidebar.</div>",
+        unsafe_allow_html=True
+    )
+
+
+if sub_choice == "Executive Summary":
     metric_row([
         ("projected IL-WI-IN quantum economic impact by 2035", "$80B", "BCG/CQE 2024", TEAL),
         ("quantum-relevant IL postsecondary completions in 2024", "33,441", "+33% since 2018 (ISTC 2026)", GOLD),
@@ -4334,21 +4420,25 @@ if sub_choice == "Partnership Opportunities":
             )
 
     st.markdown("---")
-    st.markdown(
-        f"<div style='background:{TEAL}15;border:2px solid {TEAL};border-radius:10px;"
-        f"padding:24px;text-align:center;margin-top:16px'>"
-        f"<div style='font-size:1.2rem;font-weight:700;color:{NAVY};margin-bottom:8px'>"
-        f"Ready to participate?</div>"
-        f"<div style='color:{MGRAY};margin-bottom:12px'>"
-        f"Contact Ana Marija Sokovic, PhD, MBA - Founder and Chair, Chicago WHPC</div>"
-        f"<div style='font-size:1.1rem;font-weight:600;color:{TEAL}'>chicagowhpc@gmail.com</div>"
-        f"<div style='margin-top:8px'>"
-        f"<a href='https://www.chicagowhpc.org' style='color:{TEAL}'>chicagowhpc.org</a>"
-        f" &nbsp;|&nbsp; "
-        f"<a href='https://www.chicagowhpc.org/mentorship' style='color:{TEAL}'>Mentorship Program</a> | "f"<a href='https://drive.google.com/file/d/159AwW3Hso4aAdoUL485qzhfV81VM0IeJ/view?usp=drive_link' style='color:{TEAL}'>Original Fellowship Proposal</a>"
-        f"</div></div>",
-        unsafe_allow_html=True
-    )
+    _pad_l, _pad_center, _pad_r = st.columns([1, 3, 1])
+    with _pad_center:
+        st.markdown(
+            f"<div style='background:white;border:2px solid {TEAL};border-radius:14px;"
+            f"padding:32px 36px;text-align:center;box-shadow:0 2px 12px {TEAL}22'>"
+            f"<div style='font-size:1.35rem;font-weight:700;color:{NAVY};margin-bottom:14px'>"
+            f"Ready to participate?</div>"
+            f"<div style='color:{MGRAY};font-size:0.92rem;margin-bottom:4px'>"
+            f"Contact Ana Marija Sokovic, PhD, MBA</div>"
+            f"<div style='color:{MGRAY};font-size:0.85rem;margin-bottom:16px'>"
+            f"Founder and Chair, Chicago WHPC &nbsp;\u00b7&nbsp; "
+            f"<a href='mailto:chicagowhpc@gmail.com' style='color:{TEAL};font-weight:600'>chicagowhpc@gmail.com</a></div>"
+            f"<a href='{FUNDER_PARTNER_SIGNUP_FORM_URL}' target='_blank' style='text-decoration:none'>"
+            f"<div style='background:{TEAL};color:white;font-weight:700;font-size:1rem;"
+            f"border-radius:8px;padding:14px 24px;margin-top:8px;display:inline-block'>"
+            f"Sign Up as a Funder or Partner \u2197</div></a>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
 
 
 
@@ -5290,7 +5380,7 @@ if sub_choice == "Building the Ecosystem":
     )
     comparable_models = [
         ("Per Scholas", "National nonprofit tech training provider; new South Side satellite campus (July 2026)"),
-        ("Xchange Chicago", "South Side tech workforce hub, Grand Crossing; Per Scholas satellite site host"),
+        ("Xchange Chicago", "South Side tech workforce hub, Greater Grand Crossing; Per Scholas satellite site host"),
         ("SDI Presence", "Chicago IT consultancy; founding employer partner shaping Xchange Chicago's curriculum"),
         ("P33 Chicago", "Chicago tech ecosystem nonprofit; co-founder of Xchange Chicago"),
     ]
