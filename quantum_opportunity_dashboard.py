@@ -249,8 +249,8 @@ SKILLS_DATA = pd.DataFrame([
     {"category": "Software",    "subcategory": "S2 Applications and Algorithms",
      "skill": "Hybrid quantum-classical workflows",
      "credential_min": "BS / MS", "whpc_provides": True,
-     "whpc_note": "Taught as the core bridge concept connecting HPC and quantum - not offered locally elsewhere",
-     "local_provider": "Chicago WHPC (fills critical gap)"},
+     "whpc_note": "Taught as the core bridge concept connecting HPC and quantum. I did not identify this specific combination in other locally reviewed program offerings.",
+     "local_provider": "Chicago WHPC (addresses a gap between separate HPC and quantum offerings)"},
     {"category": "Software",    "subcategory": "S2 Applications and Algorithms",
      "skill": "Quantum machine learning (QML)",
      "credential_min": "MS / BS", "whpc_provides": True,
@@ -699,6 +699,29 @@ def cta_box(audience_name, items, color=GOLD):
         f"<div style='background:{color}15;border:2px solid {color};border-radius:8px;padding:20px;margin-top:24px'>"
         f"<h3 style='color:{color};margin:0 0 12px 0'>What we need from {audience_name}</h3>"
         f"{rows}</div>",
+        unsafe_allow_html=True
+    )
+
+# Status labels distinguishing what's live/tested from what's planned or proposed.
+# Prevents a reader from mistaking a funding ask or a fall-2026 program for
+# something already operating.
+_STATUS_STYLES = {
+    "Available Now":    GREEN,
+    "Recruiting":       GOLD,
+    "Planned":          NAVY,
+    "In Development":   TEAL,
+    "Proposed Model":   MGRAY,
+    "Funding Needed":   RED,
+}
+
+def status_badge(label, note=""):
+    color = _STATUS_STYLES.get(label, MGRAY)
+    note_html = f"<span style='color:{MGRAY};font-size:0.8rem;margin-left:10px'>{note}</span>" if note else ""
+    st.markdown(
+        f"<div style='margin:4px 0 16px 0'>"
+        f"<span style='background:{color};color:white;font-weight:700;font-size:0.72rem;"
+        f"letter-spacing:0.04em;border-radius:12px;padding:4px 14px'>{label.upper()}</span>"
+        f"{note_html}</div>",
         unsafe_allow_html=True
     )
 
@@ -1343,11 +1366,12 @@ if audience != "Overview":
 
     elif audience == "Funders and Foundations":
         st.markdown("""
-        **Why this matters for funders:** This initiative generates something that doesn't
-        currently exist: one of the few community-level datasets tracking who actually participates in
-        quantum workforce pipeline. Year 1 produces documented participants, progression
-        metrics, a replicable toolkit, and 2–3 institutional partnerships - the evidence
-        base for scaling.
+        **Why this matters for funders:** This initiative is building a proposed
+        community-level dataset tracking who actually participates in quantum workforce
+        pipeline programs, a layer of data that regional workforce strategy documents
+        (including CQE's own Advancing Together report) identify as a gap. Year 1 produces
+        documented participants, progression metrics, a replicable toolkit, and 2-3
+        institutional partnerships, the evidence base for scaling.
         """)
         cta_box("Funders", [
             "Fund Year 1 pilot: $25K–$50K covers instructional coordination, stipends, curriculum, and evaluation",
@@ -1359,10 +1383,12 @@ if audience != "Overview":
 
     elif audience == "Employers and Industry":
         st.markdown("""
-        **Why this matters for employers:** The South Side is full of technically capable
-        young people who don't know your jobs exist or that they qualify. Our program
-        builds that awareness - and gives you a structured, low-lift way to reach them
-        before your competitors do.
+        **Why this matters for employers:** Our Quantum Meets HPC event drew 200+ registrants;
+        of 181 survey respondents, 56% had never used a quantum computing tool and 76% wanted
+        to better understand how quantum and HPC connect, despite self-selecting into a
+        quantum-focused event. The demand exists; the gap is awareness of the roles that
+        exist and eligibility to apply. Our program builds that awareness, and gives you a
+        structured, low-lift way to reach this audience before your competitors do.
         """)
         cta_box("Employers", [
             "Participate as a guest speaker in one community session (60 min)",
@@ -2625,6 +2651,7 @@ if sub_choice == "Quantum Learning Resources":
         "Quantum Learning Resources",
         "Free, self-directed resources organized by difficulty level — for exploring quantum computing before or alongside a formal program."
     )
+    status_badge("Available Now")
     callout(
         "These are free, publicly available resources, not Chicago WHPC programs. "
         "Verify current availability directly with each provider, since free-tier offers "
@@ -3743,8 +3770,9 @@ if sub_choice == "Community Impact Dashboard":
 
     callout(
         "<strong>Why this matters:</strong> IQMP has faced questions about who benefits locally. "
-        "Chicago WHPC is building the community-level participation data that no other organization "
-        "is currently collecting. This tracker documents what reaches residents - not just what is announced."
+        "Chicago WHPC is building community-level participation data, a layer I did not identify "
+        "another organization currently collecting in the reviewed sources. This tracker documents "
+        "what reaches residents, not just what is announced."
     )
 
     st.markdown("#### Year 1 Targets vs. Progress")
@@ -4500,6 +4528,7 @@ if sub_choice == "Talent Retention":
 if sub_choice == "Program Architecture":
     section_header("Program Architecture",
                    "A structured, deliverable-based learning pathway for Winter 2026 pilot.")
+    status_badge("Planned", "Winter 2026 pilot cohort")
 
     callout(
         "Program design is inspired by the Penn State workforce intermediary framework: "
@@ -4706,6 +4735,7 @@ if sub_choice == "Scaling Pathway":
 if sub_choice == "Winter 2026 Pilot Metrics":
     section_header("Winter 2026 Pilot Metrics",
                    "Cohort 1 targets, deliverables, and outcome tracking framework.")
+    status_badge("Planned", "targets shown below, not yet-achieved results")
 
     metric_row([
         ("target participants", "15-20", "Cohort 1, Winter 2026", TEAL),
@@ -5478,8 +5508,9 @@ if sub_choice == "Stakeholder Map Overview":
 
     callout(
         "Policy makers think in systems, not programs. This stakeholder map positions "
-        "Quantum x HPC Pathways as a connector in an existing ecosystem - not a standalone initiative. "
-        "Chicago WHPC's role is to create the civic navigation layer that no other organization currently provides."
+        "Quantum x HPC Pathways as a connector in an existing ecosystem, not a standalone initiative. "
+        "Chicago WHPC's role is to build a civic navigation layer addressing a gap I did not see "
+        "filled elsewhere in the reviewed regional landscape."
     )
 
 
@@ -5994,6 +6025,7 @@ if sub_choice == "Ambassador Program":
         "Community Ambassador Program",
         "How Quantum x HPC Pathways is actually delivered, and by whom."
     )
+    status_badge("Recruiting", "sign-up form is live; paid stipends pending funding")
     callout(
         "The Program Architecture page describes six curriculum stages, from Awareness "
         "through Outcomes. This page answers a different question: who delivers each stage, "
@@ -6101,6 +6133,7 @@ if sub_choice == "Ambassador Program":
 if sub_choice == "Sustainability Model":
     section_header("Sustainability Model",
                    "What happens after the grant? How does this program sustain itself?")
+    status_badge("Funding Needed", "Year 1 budget below is an active ask, not secured funding")
 
     callout(
         "Foundations consistently ask: what is the sustainability model? "
@@ -6717,6 +6750,7 @@ if sub_choice == "Pathway Advisor":
         "Pathway Advisor",
         "Answer a few questions to get personalized quantum \u00d7 HPC pathway recommendations."
     )
+    status_badge("Available Now")
     callout(
         "This tool recommends pathways based on real employer demand and program data from "
         "the Chicago quantum ecosystem \u2014 not a generic algorithm. Every recommendation "
