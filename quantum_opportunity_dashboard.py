@@ -401,6 +401,21 @@ CREDENTIAL_DATA = pd.DataFrame([
         "url":                    "https://colleges.ccc.edu/2026/04/29/gov-pritzker-and-ibm-collaborate-to-bring-750-new-jobs-to-the-illinois-quantum-and-microelectronics-park-hire-city-colleges-of-chicago-students/",
     },
     {
+        "program":               "Per Scholas at Xchange Chicago (Grand Crossing)",
+        "provider":              "Per Scholas / Xchange Chicago (Comer Science & Education Foundation, P33, SDI Presence)",
+        "duration":              "Not specified for this cohort",
+        "cost":                  "Free (no-cost)",
+        "credential_type":       "Technical training (first cohort: cybersecurity)",
+        "prerequisite":          "Not specified for this cohort",
+        "target_group":          "Adult learners, general public",
+        "pathway_tags":          ["technician", "software"],
+        "south_side_accessible": True,
+        "source":                "Per Scholas / PR Newswire, July 20, 2026 (primary, current); satellite campus "
+                                  "at Gary Comer Youth Center, Greater Grand Crossing; first cohort ~20 learners, "
+                                  "second cohort expected later in 2026",
+        "url":                    "https://xchangechicago.org",
+    },
+    {
         "program":               "Project Evolve (CCC WEI)",
         "provider":              "Olive-Harvey College (City Colleges of Chicago)",
         "duration":              "Short-term",
@@ -5267,6 +5282,37 @@ if sub_choice == "Building the Ecosystem":
                 f"margin:2px 0'>v</div>",
                 unsafe_allow_html=True
             )
+
+    st.markdown("---")
+    section_header(
+        "Comparable Regional Models (Potential Partners)",
+        "Not part of Illinois's quantum ecosystem stack above, general technology workforce training. Included as models to learn from and potential partners, not confirmed collaborators."
+    )
+    comparable_models = [
+        ("Per Scholas", "National nonprofit tech training provider; new South Side satellite campus (July 2026)"),
+        ("Xchange Chicago", "South Side tech workforce hub, Grand Crossing; Per Scholas satellite site host"),
+        ("SDI Presence", "Chicago IT consultancy; founding employer partner shaping Xchange Chicago's curriculum"),
+        ("P33 Chicago", "Chicago tech ecosystem nonprofit; co-founder of Xchange Chicago"),
+    ]
+    st.markdown(
+        "<div style='display:flex;flex-wrap:wrap;gap:8px;margin-top:10px'>"
+        + "".join(
+            f"<div style='background:white;border:1px solid {MGRAY}44;border-radius:6px;"
+            f"padding:5px 10px;font-size:0.78rem'>"
+            f"<div style='font-weight:600;color:{NAVY}'>{org}</div>"
+            f"<div style='color:{MGRAY}'>{desc}</div></div>"
+            for org, desc in comparable_models
+        )
+        + "</div>",
+        unsafe_allow_html=True
+    )
+    callout(
+        "One structural lesson from this model: Xchange Chicago's curriculum was shaped by a "
+        "founding employer partner (SDI Presence) from the outset, not brought in after the fact. "
+        "Chicago WHPC is applying the same principle: employer input on curriculum design, not just "
+        "guest speaking after content is finalized.",
+        color=MGRAY
+    )
 
 
 

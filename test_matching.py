@@ -28,12 +28,19 @@ contractual_names = EMPLOYER_DATA.loc[
 appren      = CREDENTIAL_DATA[CREDENTIAL_DATA["program"].str.contains("IBM Apprenticeship")].iloc[0]
 skillsbuild = CREDENTIAL_DATA[CREDENTIAL_DATA["program"].str.contains("SkillsBuild")].iloc[0]
 evolve      = CREDENTIAL_DATA[CREDENTIAL_DATA["program"].str.contains("Project Evolve")].iloc[0]
+perscholas  = CREDENTIAL_DATA[CREDENTIAL_DATA["program"].str.contains("Per Scholas")].iloc[0]
 appren_c = _has_pipeline_connection(appren["program"], contractual_names)
 skills_c = _has_pipeline_connection(skillsbuild["program"], contractual_names)
 evolve_c = _has_pipeline_connection(evolve["program"], contractual_names)
+perscholas_c = _has_pipeline_connection(perscholas["program"], contractual_names)
 check("Pre-check: CCC-IBM Apprenticeship IS contractual", appren_c is True)
 check("Pre-check: IBM SkillsBuild is NOT contractual", skills_c is False)
 check("Pre-check: Project Evolve is NOT contractual", evolve_c is False)
+check("Pre-check: Per Scholas is NOT contractual (not in employer-demand data)", perscholas_c is False)
+check("Per Scholas is NOT tagged quantum", "quantum" not in perscholas["pathway_tags"])
+check("Per Scholas IS tagged technician", "technician" in perscholas["pathway_tags"])
+check("Per Scholas IS tagged software", "software" in perscholas["pathway_tags"])
+check("Per Scholas is South Side accessible", perscholas["south_side_accessible"] == True)
 
 true_count = 0
 for _, row in CREDENTIAL_DATA.iterrows():
@@ -53,6 +60,17 @@ check("Returns at least 1 pathway", len(r1["pathways"]) >= 1)
 check("Confidence is 'high'", r1["confidence"] == "high")
 check("Top pathway is CCC-IBM Apprenticeship",
       r1["pathways"][0]["pathway_name"] == "CCC\u2013IBM Apprenticeship")
+
+intake_technician = {
+    "education": "Some college (no degree)", "experience": "No technical experience",
+    "employment": "Currently unemployed", "interests": ["Technician-level roles (hands-on)"],
+    "time": "Full-time upskilling (10+ hrs/week)", "transportation": "I have reliable transportation",
+    "childcare": "Childcare is not a barrier",
+}
+r_tech = match_pathways(intake_technician, EMPLOYER_DATA, CREDENTIAL_DATA, SKILLS_DATA, SUPPORT_RESOURCES)
+tech_names = [p["pathway_name"] for p in r_tech["pathways"]]
+check("Per Scholas appears in technician-interest results",
+      any("Per Scholas" in n for n in tech_names), f"got {tech_names}")
 
 intake_zero = {
     "education": "Some college (no degree)", "experience": "No technical experience",
