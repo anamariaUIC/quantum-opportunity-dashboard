@@ -2777,6 +2777,7 @@ if sub_choice == "Quantum Learning Resources":
                 ("Quirk", "A drag-and-drop visual quantum circuit simulator in your browser. No installation, no account.", "https://algassert.com/quirk"),
                 ("IBM Quantum Composer", "Build circuits by dragging gates onto a graphical interface — IBM's official beginner tool.", "https://quantum.cloud.ibm.com/composer"),
                 ("IBM Quantum Composer Guide", "Interactive intro guide to the Composer's drag-and-drop interface, gate reference, and how to run circuits on real hardware.", "https://quantum.cloud.ibm.com/docs/en/guides/composer"),
+                ("D-Wave: Introduction to Quantum Computing", "Free, ~2-3 hour self-paced course covering classical vs. quantum computing, quantum computer types, and where quantum fits real problems. No prerequisites.", "https://training.dwavequantum.com/product?catalog=IntroductionQuantumComputing"),
             ],
         },
         {
@@ -2850,6 +2851,7 @@ if sub_choice == "Quantum Learning Resources":
         ("CUDA-Q (NVIDIA)", "Official runnable tutorials for CUDA-Q, NVIDIA's QPU-agnostic hybrid quantum-classical platform — the same SDK used in Chicago WHPC's Lakeshore benchmarking work.", "https://nvidia.github.io/cuda-quantum/latest/using/tutorials.html"),
         ("CUDA-Q Academic (NVIDIA)", "Free, structured learning path with cloud notebooks (Colab/qBraid/Braket) preloaded — no local install needed.", "https://nvidia.github.io/cuda-q-academic/learningpath.html"),
         ("PsiQDK / Construct (PsiQuantum)", "PsiQuantum's free, open-access SDK for designing and simulating fault-tolerant quantum algorithms — includes a visual circuit designer and resource estimator, no install required to start.", "https://construct.psiquantum.com/"),
+        ("Qrisp", "Free, open-source (Eclipse Public License) high-level quantum programming framework — typed quantum variables instead of raw qubits and gates. IQM's new default SDK, also compatible with IBM and AQT hardware.", "https://qrisp.eu/"),
         ("Microsoft Quantum Development Kit (Q#)", "Microsoft's quantum programming language and tools, integrated with Azure Quantum.", "https://www.microsoft.com/en-us/quantum/development-kit"),
     ]
 
@@ -2898,6 +2900,12 @@ if sub_choice == "Quantum Learning Resources":
          "1 hour of free quantum circuit simulation per month. Real QPU access (IonQ, Rigetti, IQM, QuEra) is pay-per-shot, "
          "not free — but eligible researchers can apply for AWS Cloud Credit for Research.",
          "https://aws.amazon.com/braket/"),
+        ("Open Quantum (qBraid)", GREEN,
+         "New (July 2026): every free account gets $50 of quantum compute credit, refreshed every 90 days, usable across "
+         "four hardware providers through one unified API — Rigetti (108-qubit superconducting), IonQ (trapped-ion), "
+         "IQM (superconducting), and AQT (trapped-ion). Supports Qiskit and PennyLane directly, making it a strong single "
+         "starting point for comparing circuit behavior across architectures.",
+         "https://www.openquantum.com/"),
     ]
 
     with st.expander(f"View {len(_qpu_data)} free QPU access options", expanded=False):
@@ -2964,6 +2972,19 @@ if sub_choice == "Quantum Learning Resources":
         "Where to connect with the local and national quantum community."
     )
 
+    status_badge("Planned", "August 25-27, 2026 — register before this date")
+    st.markdown(
+        f"<div style='background:white;border:1.5px solid {GOLD}55;border-left:5px solid {GOLD};"
+        f"border-radius:8px;padding:14px 18px;margin:8px 0 16px 0'>"
+        f"<a href='https://schools.iqmacademy.com/' target='_blank' rel='noopener' "
+        f"style='font-weight:700;font-size:0.95rem;color:{NAVY};text-decoration:none;"
+        f"border-bottom:1px dotted {GOLD}'>IQM Quantum Summer School 2026 \u2197</a>"
+        f"<div style='font-size:0.85rem;color:{MGRAY};margin-top:4px'>"
+        f"Free, live, online, August 25-27, 2026. Hands-on sessions running real circuits on IQM's Resonance "
+        f"cloud platform, no prior quantum experience needed. Signing up gives 100 bonus credits toward a free "
+        f"IQM Resonance account.</div></div>",
+        unsafe_allow_html=True
+    )
 
     _community_data = [
         ("CQE Member and Partner Collaboration Opportunities", "https://chicagoquantum.org/member-and-partner-collaboration-opportunities"),
