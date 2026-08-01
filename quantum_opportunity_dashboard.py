@@ -2790,6 +2790,7 @@ if sub_choice == "Quantum Learning Resources":
                 ("Qiskit (IBM)", "The most widely used open-source quantum SDK — official homepage and install docs.", "https://www.ibm.com/quantum/qiskit"),
                 ("Quantum Inspire Learning Materials", "QuTech's (TU Delft) free tutorials paired with real free hardware access — see Free QPU Access below.", "https://www.quantum-inspire.com/"),
                 ("PennyLane Demos (Xanadu)", "Hands-on quantum machine learning and quantum computing demos with runnable code.", "https://pennylane.ai/qml"),
+                ("IQM Academy", "Free, structured curriculum from Beginner through Advanced (9 modules): quantum foundations, algorithms, a dedicated Qrisp-on-IQM module, circuit design, error correction, and a glossary. Modules link out to hands-on practice on IQM Resonance.", "https://www.iqmacademy.com/"),
             ],
         },
         {
