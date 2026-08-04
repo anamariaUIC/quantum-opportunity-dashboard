@@ -2798,6 +2798,7 @@ if sub_choice == "Quantum Learning Resources":
             "subtitle": "Ready to go deeper than self-study",
             "color": GOLD,
             "items": [
+                ("Workbench Quantum Katas (PsiQuantum)", "Free, open-source (Apache-2.0) self-paced Jupyter notebook tutorials and coding problems, progressing from single-qubit basics through Grover's, QFT/QPE, Shor's algorithm, and quantum chemistry. Requires installing PsiQDK (free, see Software & Simulators above).", "https://github.com/PsiQ/workbench-quantum-katas"),
                 ("UChicago Professional: Quantum Science, Networking, and Communications", "A paid, 8-week instructor-led course (CQE-affiliated) — recommended background: bachelor's degree in a related field. Worth comparing against the free SDKs and tutorials below first.", "https://professional.uchicago.edu/find-your-fit/courses/quantum-science-networking-and-communications"),
             ],
         },
