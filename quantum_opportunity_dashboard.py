@@ -2799,6 +2799,7 @@ if sub_choice == "Quantum Learning Resources":
             "color": GOLD,
             "items": [
                 ("Workbench Quantum Katas (PsiQuantum)", "Free, open-source (Apache-2.0) self-paced Jupyter notebook tutorials and coding problems, progressing from single-qubit basics through Grover's, QFT/QPE, Shor's algorithm, and quantum chemistry. Requires installing PsiQDK (free, see Software & Simulators above).", "https://github.com/PsiQ/workbench-quantum-katas"),
+                ("qBook (qBraid, Chicago-based)", "Free, structured, autograded interactive curriculum — runs in the browser via qBraid Lab, no install needed. Progresses from single-qubit gates and superposition through Deutsch-Jozsa, Grover's search, VQE, and QAOA. Used at 35+ universities.", "https://qbraid.com/qbook"),
                 ("UChicago Professional: Quantum Science, Networking, and Communications", "A paid, 8-week instructor-led course (CQE-affiliated) — recommended background: bachelor's degree in a related field. Worth comparing against the free SDKs and tutorials below first.", "https://professional.uchicago.edu/find-your-fit/courses/quantum-science-networking-and-communications"),
             ],
         },
@@ -2854,6 +2855,7 @@ if sub_choice == "Quantum Learning Resources":
         ("CUDA-Q Academic (NVIDIA)", "Free, structured learning path with cloud notebooks (Colab/qBraid/Braket) preloaded — no local install needed.", "https://nvidia.github.io/cuda-q-academic/learningpath.html"),
         ("PsiQDK / Construct (PsiQuantum)", "PsiQuantum's free, open-access SDK for designing and simulating fault-tolerant quantum algorithms — includes a visual circuit designer and resource estimator, no install required to start.", "https://construct.psiquantum.com/"),
         ("Qrisp", "Free, open-source (Eclipse Public License) high-level quantum programming framework — typed quantum variables instead of raw qubits and gates. IQM's new default SDK, also compatible with IBM and AQT hardware.", "https://qrisp.eu/"),
+        ("qBraid Lab (Chicago-based)", "Free, no-install cloud IDE — JupyterLab in your browser with Qiskit, Cirq, PennyLane, Braket, and CUDA-Q pre-installed. Free to start, no credit card. Note: distinct from Open Quantum in Free QPU Access, which is qBraid's real-hardware credit program — both are free but serve different purposes.", "https://qbraid.com/lab"),
         ("Microsoft Quantum Development Kit (Q#)", "Microsoft's quantum programming language and tools, integrated with Azure Quantum.", "https://www.microsoft.com/en-us/quantum/development-kit"),
     ]
 
