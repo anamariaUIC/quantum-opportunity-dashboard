@@ -1346,6 +1346,7 @@ all_pages_mobile = [
     "Scaling Pathway",
     "Winter 2026 Pilot Metrics",
     "Sustainability Model",
+    "Growth Roadmap",
     "What Success Looks Like",
     "Illinois Alignment",
     "Stakeholder Map Overview",
@@ -1563,7 +1564,7 @@ if sub_choice == "Workforce Bridge":
         stages = [
             (" Community Awareness", "Chi-Craft · SMQ* · DPI", GREEN, "EXISTS"),
             (" Plain-Language Education","What is quantum? What jobs exist?", TEAL, "← WE PROVIDE"),
-            (" HPC Technical On-Ramp", "Linux · GPU · Quantum simulation", TEAL, "← WE PROVIDE"),
+            (" Foundations & Guided First Look", "Concepts · Programming basics · Guided tool demo", TEAL, "← WE PROVIDE"),
             (" Mentorship & Navigation","5+ matches · Opportunity Guide", TEAL, "← WE PROVIDE"),
             (" Certificates & Degrees","City Colleges · University partners", GREEN, "EXISTS"),
             (" Internship & Research", "Argonne · IBM · IQMP tenants", GREEN, "EXISTS"),
@@ -1617,26 +1618,48 @@ if sub_choice == "Overview":
             ("Executive summary", "The problem, the platform, the evidence.", "Executive Summary"),
             ("Why now?", "The timing case for this investment.", "Why Now?"),
             ("Workforce bridge", "How regional investment becomes local opportunity.", "Workforce Bridge"),
+            ("Latest developments", "Current status, updated regularly.", "Latest Developments"),
+            ("Why Chicago WHPC?", "What makes this effort distinct.", "Why Chicago WHPC?"),
         ]),
         ("Explore the evidence", NAVY, [
             ("Ecosystem map", "Institutions, employers, and infrastructure.", "Ecosystem Map"),
             ("Community profiles", "South Side neighborhood-level data.", "Community Profiles"),
             ("Workforce baseline", "Where the talent pipeline stands today.", "Workforce Baseline Analysis"),
             ("Skills map", "What the industry needs, who provides it.", "Quantum Skills Map"),
+            ("South Side strengths and assets", "Existing STEM talent and institutional assets.", "South Side Strengths and Assets"),
+            ("Geographic proximity", "How close residents actually are to IQMP.", "Geographic Proximity"),
+            ("Community opportunity landscape", "Observable indicators, unweighted.", "Community Opportunity Landscape"),
+            ("Why HPC?", "The conceptual case for HPC as the entry point.", "Why HPC?"),
         ]),
-        ("Find your path", GOLD, [
+        ("Ecosystem, methodology, and limits", GOLD, [
+            ("Building the ecosystem", "Every institutional layer, mapped.", "Building the Ecosystem"),
+            ("Illinois alignment", "How this fits the state's quantum strategy.", "Illinois Alignment"),
+            ("Stakeholder map overview", "The six-sector regional map, summarized.", "Stakeholder Map Overview"),
+            ("Public value framework", "The public-interest case for this work.", "Public Value Framework"),
+            ("Methodology and data sources", "Where every number in this platform comes from.", "Methodology and Data Sources"),
+            ("Limitations", "What this platform doesn't claim to know.", "Limitations"),
+            ("Community readiness profile (appendix)", "A planning heuristic, not a primary analysis.", "Community Readiness Profile (Appendix)"),
+        ]),
+        ("Find your path", GREEN, [
             ("Pathway advisor", "Answer a few questions, get a personalized recommendation.", "Pathway Advisor"),
             ("Pathway ladder", "The full resident journey, step by step.", "Pathway Ladder"),
             ("Learning resources", "Free self-study tools, by skill level.", "Quantum Learning Resources"),
+            ("Emerging workforce roles", "Real roles, real credential requirements.", "Emerging Workforce Roles"),
+            ("Talent retention", "Why residents leave, and what keeps them.", "Talent Retention"),
         ]),
-        ("Build the program", GREEN, [
+        ("Build the program", "#8E44AD", [
             ("Program architecture", "The six-stage curriculum design.", "Program Architecture"),
             ("Ambassador program", "Who delivers this, and how they're paid.", "Ambassador Program"),
             ("Deliverables", "What every participant walks away with.", "Participant Deliverables"),
             ("Pilot metrics", "Winter 2026 cohort targets.", "Winter 2026 Pilot Metrics"),
+            ("Theory of change", "The evidence-based logic linking activities to outcomes.", "Theory of Change"),
+            ("Scaling pathway", "How this grows past the first cohort.", "Scaling Pathway"),
+            ("What success looks like", "Concrete, named indicators of impact.", "What Success Looks Like"),
+            ("Community impact dashboard", "Tracking real outcomes as they happen.", "Community Impact Dashboard"),
         ]),
         ("Partner and invest", RED, [
             ("Partnership opportunities", "Specific, low-burden ways to get involved.", "Partnership Opportunities"),
+            ("Growth roadmap", "How outreach capability matures, Phase I to IV.", "Growth Roadmap"),
             ("Sustainability model", "The five-year funding plan.", "Sustainability Model"),
             ("Evaluation framework", "How success gets measured.", "Evaluation Framework"),
             ("Launch status", "Where the program actually stands today.", "Launch Status"),
@@ -1651,20 +1674,23 @@ if sub_choice == "Overview":
             f"</div>",
             unsafe_allow_html=True
         )
-        cols = st.columns(len(tiles))
-        for col, (label, desc, target) in zip(cols, tiles):
-            with col:
-                st.markdown(
-                    f"<div style='background:white;border:1.5px solid {color}55;border-top:4px solid {color};"
-                    f"border-radius:8px;padding:14px;margin-bottom:8px;min-height:100px'>"
-                    f"<div style='font-weight:700;color:{NAVY};font-size:0.92rem;margin-bottom:6px'>{label}</div>"
-                    f"<div style='font-size:0.78rem;color:{MGRAY}'>{desc}</div>"
-                    f"</div>",
-                    unsafe_allow_html=True
-                )
-                if st.button("Open", key=f"overview_nav_{target}", use_container_width=True):
-                    st.session_state["_pending_nav"] = target
-                    st.rerun()
+        _ROW_WIDTH = 4
+        for row_start in range(0, len(tiles), _ROW_WIDTH):
+            row_tiles = tiles[row_start:row_start + _ROW_WIDTH]
+            cols = st.columns(_ROW_WIDTH)
+            for col, (label, desc, target) in zip(cols, row_tiles):
+                with col:
+                    st.markdown(
+                        f"<div style='background:white;border:1.5px solid {color}55;border-top:4px solid {color};"
+                        f"border-radius:8px;padding:14px;margin-bottom:8px;min-height:100px'>"
+                        f"<div style='font-weight:700;color:{NAVY};font-size:0.92rem;margin-bottom:6px'>{label}</div>"
+                        f"<div style='font-size:0.78rem;color:{MGRAY}'>{desc}</div>"
+                        f"</div>",
+                        unsafe_allow_html=True
+                    )
+                    if st.button("Open", key=f"overview_nav_{target}", use_container_width=True):
+                        st.session_state["_pending_nav"] = target
+                        st.rerun()
 
     st.markdown("---")
     st.markdown(
@@ -1755,7 +1781,7 @@ if sub_choice == "Executive Summary":
         f"</div>",
         unsafe_allow_html=True
     )
-    fp_col1, fp_col2 = st.columns(2)
+    fp_col1, fp_col2, fp_col3 = st.columns(3)
     with fp_col1:
         if st.button("\u2192 Sustainability Model \u2014 current funding ask and phased budget", key="fp_link_sustainability", use_container_width=True):
             st.session_state["_pending_nav"] = "Sustainability Model"
@@ -1763,6 +1789,10 @@ if sub_choice == "Executive Summary":
     with fp_col2:
         if st.button("\u2192 Ambassador Program \u2014 how paid community instructors deliver this work", key="fp_link_ambassador", use_container_width=True):
             st.session_state["_pending_nav"] = "Ambassador Program"
+            st.rerun()
+    with fp_col3:
+        if st.button("\u2192 Growth Roadmap \u2014 how outreach capability matures over time", key="fp_link_growth", use_container_width=True):
+            st.session_state["_pending_nav"] = "Growth Roadmap"
             st.rerun()
     st.markdown(
         f"<div style='background:{GOLD}15;border-left:2px solid {GOLD};border-right:2px solid {GOLD};"
@@ -1803,8 +1833,8 @@ if sub_choice == "Why Now?":
 
     # ── KEY FACTS ROW ─────────────────────────────────────────────────────────
     metric_row([
-        ("federal + state quantum investment at IQMP companies", "$2.7B+",
-         "Federal $1.2B (May 2026) + Illinois $500M state + company investments", RED),
+        ("federal + state investment tied to IQMP and its tenant companies", "$2.7B+",
+         "Federal $1.2B in 4 IQMP tenants (May 2026, part of $2B/9-company national CHIPS Act program) + Illinois $500M state + company investments", RED),
         ("projected quantum jobs in IL-WI-IN region by 2035", "191,000",
          "CQE/BCG analysis cited in ISTC May 2026 report", TEAL),
         ("IBM jobs + apprenticeships announced at IQMP", "1,250",
@@ -1819,7 +1849,7 @@ if sub_choice == "Why Now?":
     section_header("The Story in Six Steps")
     flow_steps = [
         ("Bipartisan Public Investment",
-         "Illinois $500M+ state + Federal $1.2B federal (May 2026) in IQMP companies IBM, PsiQuantum, Infleqtion, Diraq.",
+         "Illinois $500M+ state investment in IQMP infrastructure + Federal $1.2B (May 2026) in IQMP tenant companies IBM, PsiQuantum, Infleqtion, Diraq.",
          NAVY),
         ("IQMP: Operating Now",
          "On-Ramp program active at mHUB and UChicago Science Incubator. memQ, Bluefors, Quantum Machines, stac12 operating today.",
@@ -1930,7 +1960,7 @@ if sub_choice == "Why Now?":
          "South Side Strengths and Assets, Geographic Proximity, Community Opportunity Landscape",
          TEAL),
         ("What evidence suggests these communities contain potential participants?",
-         "ACS 2023 data shows 5,900+ existing STEM workers in study communities. "
+         "ACS 2023 data shows 5,600+ existing STEM workers in study communities. "
          "Chicago WHPC's Quantum Meets HPC event drew 200+ registrants with 76% wanting "
          "to understand the HPC-quantum connection. Demonstrated demand exists.",
          "South Side Strengths and Assets, Community Profiles",
@@ -2377,10 +2407,10 @@ if sub_choice == "Pathway Ladder":
             "color": TEAL,
         },
         {
-            "step": "2. HPC Technical On-Ramp",
-            "what": "Hands-on: Linux, HPC systems, GPU computing, introductory quantum simulation",
+            "step": "2. Foundations & Guided First Look",
+            "what": "Core quantum/HPC concepts in plain language, basic programming logic, math orientation, a guided, facilitator-led first look at real tools",
             "who": "Participants from community sessions + self-referrals",
-            "provider": "Quantum × HPC Pathways (4–6 workshops, 15–20 participants)",
+            "provider": "Quantum × HPC Pathways (4–6 sessions, 15–20 participants)",
             "exists": False, "ours": True,
             "color": TEAL,
         },
@@ -2471,6 +2501,19 @@ if sub_choice == "Quantum Skills Map":
         "University of Colorado Boulder / RIT, November 2025 (arXiv:2511.11820). "
         "Skills cross-referenced with ISTC 2026 and CQE workforce reports. "
         "Chicago WHPC coverage based on current and planned curriculum as of June 2026."
+    )
+
+    callout(
+        "<strong>The on-ramp Chicago WHPC provides:</strong> most advanced quantum coursework, including the "
+        "free university courses listed in Quantum Learning Resources, assumes real prerequisite fluency, not "
+        "just familiarity. Our Foundations phase (see Program Architecture and Pathway Ladder) builds exactly "
+        "these building blocks from zero: "
+        "<strong>Linear algebra</strong> (matrix operations, addition, subtraction, and multiplication, working "
+        "toward eigenvectors and singular value decomposition), <strong>probability theory</strong> (calculating "
+        "conditional probabilities), and <strong>Python programming</strong> (reading, understanding, and writing "
+        "simple programs in Jupyter notebooks). This is deliberately staged over the full multi-stage program, "
+        "not compressed into a single pilot cohort, so residents arrive genuinely ready for intermediate and "
+        "advanced coursework, rather than being handed a reading list they aren't yet equipped to use."
     )
 
     skills_data = SKILLS_DATA.copy()
@@ -2800,6 +2843,7 @@ if sub_choice == "Quantum Learning Resources":
                 ("IBM Quantum Composer", "Build circuits by dragging gates onto a graphical interface — IBM's official beginner tool.", "https://quantum.cloud.ibm.com/composer"),
                 ("IBM Quantum Composer Guide", "Interactive intro guide to the Composer's drag-and-drop interface, gate reference, and how to run circuits on real hardware.", "https://quantum.cloud.ibm.com/docs/en/guides/composer"),
                 ("D-Wave: Introduction to Quantum Computing", "Free, ~2-3 hour self-paced course covering classical vs. quantum computing, quantum computer types, and where quantum fits real problems. No prerequisites.", "https://training.dwavequantum.com/product?catalog=IntroductionQuantumComputing"),
+                ("QuEra: Quantum Computers Glossary", "Free reference webpage defining common quantum terms in plain language, useful to keep open while working through any course above.", "https://www.quera.com/glossary"),
             ],
         },
         {
@@ -2824,6 +2868,8 @@ if sub_choice == "Quantum Learning Resources":
             "items": [
                 ("Workbench Quantum Katas (PsiQuantum)", "Free, open-source (Apache-2.0) self-paced Jupyter notebook tutorials and coding problems, progressing from single-qubit basics through Grover's, QFT/QPE, Shor's algorithm, and quantum chemistry. Requires installing PsiQDK (free, see Software & Simulators above).", "https://github.com/PsiQ/workbench-quantum-katas"),
                 ("qBook (qBraid, Chicago-based)", "Free, structured, autograded interactive curriculum — runs in the browser via qBraid Lab, no install needed. Progresses from single-qubit gates and superposition through Deutsch-Jozsa, Grover's search, VQE, and QAOA. Used at 35+ universities.", "https://qbraid.com/qbook"),
+                ("DelftX: Fundamentals of Quantum Information (QuTech/TU Delft)", "Free, self-paced, ~4 weeks at 6-8 hrs/week. Quantum circuits, entanglement, teleportation, gate universality, NISQ devices. Assumes foundational quantum knowledge (e.g., completion of Getting Started/Beginner tiers above).", "https://www.edx.org/learn/quantum-computing/delft-university-of-technology-fundamentals-of-quantum-information"),
+                ("IBM: Quantum Computing in Practice", "Free. Realistic use cases and best practices for running circuits on 100+ qubit processors.", "https://quantum.cloud.ibm.com/learning/courses/quantum-computing-in-practice"),
                 ("UChicago Professional: Quantum Science, Networking, and Communications", "A paid, 8-week instructor-led course (CQE-affiliated, taught by UIUC and UChicago faculty) — recommended background: bachelor's degree in a related field. 232 students enrolled since 2022. Worth comparing against the free SDKs and tutorials below first.", "https://professional.uchicago.edu/find-your-fit/courses/quantum-science-networking-and-communications"),
             ],
         },
@@ -2835,6 +2881,10 @@ if sub_choice == "Quantum Learning Resources":
                 ("Quantum Algorithm Zoo", "A comprehensive, actively maintained catalog of known quantum algorithms and their speedups over classical methods.", "https://quantumalgorithmzoo.org/"),
                 ("Nielsen & Chuang, Quantum Computation and Quantum Information", "The standard graduate reference textbook. Check university library access or the publisher for a legitimate copy.", "https://www.cambridge.org/highereducation/books/quantum-computation-and-quantum-information/01E10196D0A682A6AEFFEA52D53BE9AE"),
                 ("arXiv quant-ph", "Preprint server for current quantum computing research papers.", "https://arxiv.org/list/quant-ph/recent"),
+                ("DelftX: Architecture, Algorithms, and Protocols of a Quantum Computer and Quantum Internet (QuTech/TU Delft)", "Free, self-paced. Quantum error correction, micro-architectures, compilers, programming languages, and quantum internet protocols.", "https://www.edx.org/learn/quantum-computing/delft-university-of-technology-architecture-algorithms-and-protocols-of-a-quantum-computer-and-quantum-internet"),
+                ("DelftX: Development and Applications of Germanium Quantum Technologies (QuTech/TU Delft)", "Free, self-paced. Physics of germanium qubits, fabrication, control, applications, machine-learning-assisted auto-tuning, and quantum error correction.", "https://www.edx.org/learn/quantum-computing/delft-university-of-technology-development-and-applications-of-germanium-quantum-technologies"),
+                ("IBM: Variational Algorithm Design", "Free. Hybrid quantum-classical algorithm design using Qiskit Runtime primitives, chemistry and optimization applications. Assumes some prior quantum computing experience.", "https://quantum.cloud.ibm.com/learning/courses/variational-algorithm-design"),
+                ("Purdue MicroMasters: Quantum Technology, Computing and Sensing", "Paid (~$4,275-$5,583), 8-9 months, 6-9 hrs/week, graduate-level. Quantum detectors, sensing, networking, and computing fundamentals. Credly-badged; credits may transfer toward Purdue's online MSECE.", "https://www.edx.org/micromasters/purduex-quantum-technology-computing"),
             ],
         },
     ]
@@ -3027,6 +3077,7 @@ if sub_choice == "Quantum Learning Resources":
         ("CQE Education and Training / Internships", "https://chicagoquantum.org/education-and-training"),
         ("CQE: Meet the Researchers", "https://chicagoquantum.org/about/meet-researchers"),
         ("Quantum Coalition — Learning Resources and Hackathons", "https://www.quantumcoalition.io/"),
+        ("QRISE — QuEra's Quantum Research Hackathon (past challenges archived on GitHub)", "https://github.com/QuEraComputing"),
         ("CaRCC Quantum Computing Interest Group (for research computing professionals)", "https://carcc.org/carcc-quantum-interest-group/"),
     ]
     with st.expander(f"View {len(_community_data)} community links", expanded=False):
@@ -3129,7 +3180,6 @@ if sub_choice == "Community Profiles":
     section_header("Logic Model: From Inputs to Outcomes",
                    "Borrowed from evaluation frameworks in Statchen et al. (2026) and standard workforce development practice.")
 
-    logic_cols = st.columns(5)
     stages = [
         ("Inputs", [
             "HPC workshops (4-6 sessions)",
@@ -3156,12 +3206,6 @@ if sub_choice == "Community Profiles":
             "Certificate program applications",
         ], GOLD),
     ]
-
-    for col, (label, items, color) in zip(logic_cols[:3] + [logic_cols[3], logic_cols[4]], [
-        stages[0], stages[2], stages[4],
-        ("arrow2","",""),("arrow3","","")
-    ]):
-        pass
 
     # Draw logic model as HTML
     logic_html = f"""
@@ -4427,6 +4471,7 @@ if sub_choice == "Partnership Opportunities":
             "color": GOLD,
             "opportunities": [
                 ("Career spotlight", "Provide 2-3 entry-level role descriptions for the South Side Quantum Opportunity Guide. One page, one-time."),
+                ("Curriculum co-design", "Shape workshop content directly, not just react to it after the fact. Tell us what skills your hiring pipeline actually needs, and help build that into the curriculum from the start, the same model Xchange Chicago used with its founding employer partner."),
                 ("Mentor participation", "One professional, one semester. Chicago WHPC provides structure, check-ins, and coordination."),
                 ("Internship information session", "Present your early-career or apprenticeship programs directly to motivated participants."),
                 ("Workforce guidance", "Join an advisory conversation about what skills and credentials you are actively seeking."),
@@ -4900,11 +4945,64 @@ if sub_choice == "Winter 2026 Pilot Metrics":
                    "Cohort 1 targets, deliverables, and outcome tracking framework.")
     status_badge("Planned", "targets shown below, not yet-achieved results")
 
+    callout(
+        "This pilot is Phase I of Chicago WHPC's Growth Roadmap: proving the program model with a "
+        "focused, well-served cohort before scaling. It is not a general awareness campaign, awareness is "
+        "one early component (Weeks 1-2 of 10); the rest builds foundational language, orientation, and "
+        "basic skills, plus a concrete bridge toward real employment pathways. Deep, independent HPC and "
+        "quantum technical proficiency is intentionally a later-phase outcome, not a Phase I promise, "
+        "matching the same foundational-first approach built for the CPS teacher curriculum."
+    )
+
+    callout(
+        "<strong>Who this pilot serves:</strong> women and underrepresented residents of Chicago's South Side, "
+        "ages 16-35, with priority given to residents of South Shore, South Chicago, East Side, and neighboring "
+        "communities closest to IQMP. No prior technical background required.",
+        color=TEAL
+    )
+
+    st.markdown("---")
+    section_header("What This Means for Participants", "Concrete benefits, not just exposure")
+    st.markdown(
+        f"<div style='background:{TEAL}0D;border:1.5px solid {TEAL}55;border-radius:10px;padding:16px 20px;margin:8px 0'>"
+        f"<ul style='margin:0;padding-left:20px'>"
+        f"<li style='font-size:0.9rem;color:{NAVY};margin:6px 0'><strong>A direct bridge to IQMP</strong>, understanding "
+        f"what's actually being built a few miles away, what kinds of jobs it will create, and what it takes to "
+        f"be a real candidate for those roles, not just awareness that construction is happening.</li>"
+        f"<li style='font-size:0.9rem;color:{NAVY};margin:6px 0'><strong>Direct exposure to what employers are actually "
+        f"hiring for</strong>, hearing from real companies and institutions about the specific skills, credentials, "
+        f"and experience they look for, grounded in this platform's own employer and skills data, not guesswork.</li>"
+        f"<li style='font-size:0.9rem;color:{NAVY};margin:6px 0'><strong>Guided, hands-on use of this platform itself</strong>, "
+        f"the Pathway Advisor, Learning Resources, and career pathway tools are meant to be actively taught and used "
+        f"with participants, not left as something to discover alone.</li>"
+        f"<li style='font-size:0.9rem;color:{NAVY};margin:6px 0'><strong>Real foundational literacy</strong>, quantum and "
+        f"HPC concepts in plain language, basic programming logic, and the math orientation needed to navigate this field "
+        f"confidently, the same foundational curriculum built for CPS teachers, adapted for residents starting from zero. "
+        f"This is Phase I: giving people the language and orientation to navigate this world, not yet independent HPC or "
+        f"quantum technical mastery, that comes in later phases as the program and each participant's readiness grow.</li>"
+        f"<li style='font-size:0.9rem;color:{NAVY};margin:6px 0'><strong>A guided first look at real tools</strong>, a "
+        f"shared, facilitator-led demonstration of what an HPC job or a simple quantum program actually looks like "
+        f"running, participants see and understand it happen, rather than being expected to build independent technical "
+        f"proficiency in a single 10-week pilot.</li>"
+        f"<li style='font-size:0.9rem;color:{NAVY};margin:6px 0'><strong>A structured relationship with a working "
+        f"professional</strong> in HPC, quantum, or a related field, prioritizing mentors who share relevant identity "
+        f"or community experience.</li>"
+        f"<li style='font-size:0.9rem;color:{NAVY};margin:6px 0'><strong>A tangible, shareable portfolio project</strong> "
+        f"and a personal, named next-step roadmap, concrete artifacts to bring to a job or program application.</li>"
+        f"<li style='font-size:0.9rem;color:{NAVY};margin:6px 0'><strong>Direct connections to South Side institutions</strong> "
+        f"already active in this ecosystem, Argonne, Fermilab, and Hyde Park Labs (soon home to IBM's Quantum System Two), "
+        f"turning \u201cthis institution exists\u201d into an actual professional relationship.</li>"
+        f"</ul></div>",
+        unsafe_allow_html=True
+    )
+
+    st.markdown("---")
+
     metric_row([
         ("target participants", "15-20", "Cohort 1, Winter 2026", TEAL),
         ("HPC workshops", "4", "Linux, GPU, HPC systems, quantum simulation", NAVY),
         ("mentor matches", "5", "Structured, semester-long", GOLD),
-        ("facility tours", "2", "Argonne, Fermilab, or IQMP site", GREEN),
+        ("facility tours", "2", "Argonne, Fermilab, IQMP site, or Hyde Park Labs", GREEN),
     ])
 
     st.markdown("---")
@@ -4913,8 +5011,9 @@ if sub_choice == "Winter 2026 Pilot Metrics":
     with col_pilot1:
         section_header("Cohort Deliverables", "What every participant receives")
         for item, desc in [
+            ("Guided Platform Walkthrough", "Ambassador-led, hands-on use of the Pathway Advisor and Learning Resources, not just a link"),
             ("South Side Quantum Ecosystem Guide", "Plain-language pathway map"),
-            ("Active HPC Account", "Documented first job submission"),
+            ("Guided First Look at Real Tools", "A shared, facilitator-led demonstration of an HPC job and a simple quantum program running, seeing it happen, not required independent technical build"),
             ("Portfolio Project", "Shareable technical artifact"),
             ("Mentor Connection", "Structured professional relationship"),
             ("Personal Career Roadmap", "Named next steps, specific to each participant"),
@@ -4932,9 +5031,9 @@ if sub_choice == "Winter 2026 Pilot Metrics":
         section_header("Outcome Tracking", "Measured at 3, 6, and 12 months")
         metrics = [
             ("Workshop completion rate", "70%+", TEAL),
-            ("Mentorship active at 90 days", "80%+", TEAL),
+            ("Mentorship active at 90 days (of the 5 matched pairs)", "80%+", TEAL),
             ("Documented next step (6 months)", "20%+", NAVY),
-            ("Certificate/degree applications", "5+", NAVY),
+            ("Committed to a next-step application (certificate/degree)", "5+", NAVY),
             ("Internship applications submitted", "5+", GOLD),
             ("Professional network growth", "10+ connections/participant", GOLD),
             ("Job or apprenticeship placement (12 months)", "1+ (stretch)", GREEN),
@@ -4952,11 +5051,11 @@ if sub_choice == "Winter 2026 Pilot Metrics":
     st.markdown("---")
     section_header("Program Schedule", "Winter 2026 cohort")
     schedule = [
-        ("Week 1-2", "Awareness", "Community sessions, ecosystem guide distribution, cohort orientation"),
-        ("Week 3-4", "Preparation", "Linux fundamentals, HPC account setup, first job submission"),
-        ("Week 5-6", "Practice", "GPU workflows, quantum simulation intro, portfolio project start"),
-        ("Week 7", "Navigation", "Mentor matching, career roadmap development, professional skills"),
-        ("Week 8", "Exposure", "Facility tour, employer panel, network introductions"),
+        ("Week 1-2", "Awareness", "Community sessions, ecosystem guide distribution, cohort orientation, Ambassador-led guided walkthrough of the Pathway Advisor and Learning Resources"),
+        ("Week 3-4", "Foundations", "Core quantum and HPC concepts in plain language (adapted from the CPS teacher curriculum), basic programming logic, math orientation, building the language and confidence to navigate this field"),
+        ("Week 5-6", "Guided First Look", "Basic Python practice; a shared, facilitator-led demonstration of a real HPC job and a simple quantum program running, portfolio project start (documenting what was learned, not requiring independent technical build)"),
+        ("Week 7", "Navigation", "Mentor matching, career roadmap development, professional skills, IQMP Bridge session: what's being built nearby, what jobs it creates, what it takes to be a candidate"),
+        ("Week 8", "Exposure", "Facility tour (Argonne, Fermilab, IQMP site, or Hyde Park Labs), Industry Skills Briefing (employers present the specific skills and credentials they're hiring for, grounded in this platform's own employer and skills data), network introductions"),
         ("Week 9-10", "Outcomes", "Portfolio completion, next step commitments, cohort showcase"),
     ]
     for week, stage, content_desc in schedule:
@@ -5638,23 +5737,6 @@ if sub_choice == "Methodology and Data Sources":
 
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# COMMUNITY READINESS PROFILE - APPENDIX
-# ══════════════════════════════════════════════════════════════════════════════
-if sub_choice == "Community Readiness Profile (Appendix)":
-    section_header("Community Readiness Profile",
-                   "Planning heuristic only. Moved to appendix. For primary analysis see Community Opportunity Landscape.")
-
-    callout(
-        "<strong>Important methodological note:</strong> This page presents a weighted planning heuristic "
-        "that combines educational attainment gap (45%), HS graduation strength (25%), college enrollment "
-        "culture (20%), and youth population reach (10%). These weights reflect program design priorities "
-        "and are NOT empirically derived or validated. This page is retained for transparency and "
-        "internal planning purposes only. "
-        "The primary community analysis is the <strong>Community Opportunity Landscape</strong> page, "
-        "which uses observable indicators without weighting."
-    )
-
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -5670,8 +5752,8 @@ if sub_choice == "Stakeholder Map Overview":
         "Government": (NAVY, ["State of Illinois (DCEO)", "City of Chicago", "Cook County BED", "Illinois General Assembly"]),
         "Research": (TEAL, ["Argonne National Laboratory", "Fermilab", "National Quantum Algorithm Center"]),
         "Universities": (GOLD, ["University of Chicago", "University of Illinois Chicago", "Northwestern University", "UIUC"]),
-        "Industry": (GREEN, ["IBM Quantum", "PsiQuantum", "Infleqtion", "EeroQ", "Quantum Machines"]),
-        "Education": ("#8E44AD", ["Chicago Public Schools", "City Colleges of Chicago", "Olive Harvey College"]),
+        "Industry": (GREEN, ["IBM Quantum", "PsiQuantum", "Infleqtion", "EeroQ", "Quantum Machines", "Diraq"]),
+        "Education": ("#8E44AD", ["Chicago Public Schools", "City Colleges of Chicago", "Olive Harvey College", "Chicago State University"]),
         "Civic Layer": (RED, ["Chicago WHPC", "South Side Libraries", "Community Organizations"]),
     }
 
@@ -6131,7 +6213,7 @@ if sub_choice == "Workforce Baseline Analysis":
         st.markdown("#### Key Observations")
         obs = [
             (TEAL, "Existing talent",
-             "South Side communities collectively have an estimated 5,900+ STEM workers. "
+             "South Side communities collectively have an estimated 5,600+ STEM workers. "
              "Calumet Heights (7.2%) and Woodlawn (6.8%) approach the Chicago average."),
             (NAVY, "The comparison gap",
              "Comparison communities like Logan Square (14.2%) and Hyde Park (18.3%) "
@@ -6350,6 +6432,7 @@ if sub_choice == "Sustainability Model":
                                  "Individual donors", "In-kind contributions from institutional partners"],
             "outputs": ["15-20 participants complete program", "5+ mentor matches",
                         "Paid Community Ambassador and Technical Instructor stipends (Stages 01-03)",
+                        "CPS teacher workshop series delivered (free to teachers; paid facilitator time)",
                         "South Side Quantum Opportunity Guide published",
                         "Evaluation data collected", "2-3 institutional partnerships formalized"],
             "unlocks": "Year 1 outcome data unlocks credibility for larger institutional funders",
@@ -6365,6 +6448,7 @@ if sub_choice == "Sustainability Model":
                                  "City Colleges institutional partnership funding"],
             "outputs": ["Quarterly workshop series (40-60 participants/cohort)", "20+ active mentors",
                         "Expanded Ambassador cohort with tiered per-session compensation",
+                        "CPS teacher program scaled to additional schools; explore CPS PD credit eligibility",
                         "CPS Network 17 pipeline formalized", "City Colleges credit-bearing pathway aligned",
                         "First cohort alumni as peer facilitators"],
             "unlocks": "Documented outcomes unlock DOE and state workforce program funding",
@@ -6491,6 +6575,115 @@ if sub_choice == "Sustainability Model":
 
 
 # ══════════════════════════════════════════════════════════════════════════════
+# GROWTH ROADMAP
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Growth Roadmap":
+    section_header("Growth Roadmap",
+                   "How Chicago WHPC's outreach capability and reach mature over time \u2014 distinct from the funding plan in Sustainability Model.")
+    status_badge("Planned", "Phase I is where the organization stands today")
+
+    callout(
+        "Sustainability Model answers how funding grows. Program Architecture answers what one participant's "
+        "journey looks like. This page answers a different question: how does Chicago WHPC's own outreach "
+        "capability mature as an organization, from early awareness-building toward a normalized, "
+        "self-sustaining regional presence? Adapted from a phased-maturity framework used in other sectors "
+        "preparing for emerging technology adoption."
+    )
+
+    st.markdown("---")
+
+    growth_phases = [
+        {
+            "phase": "Phase I",
+            "label": "Initiation",
+            "color": TEAL,
+            "status": "Where Chicago WHPC stands today",
+            "items": [
+                "Building awareness among South Side residents, CPS teachers, and community organizations",
+                "Forming initial institutional partnerships (NCSA, Washington and Lee, GSU, CQE, City Colleges)",
+                "Two parallel pilots, not one: the CPS teacher workshop series (indirect, capacity-building, "
+                "reaches students through trained teachers) and the Winter 2026 resident cohort (direct, "
+                "outcome-generating, reaches residents immediately)",
+                "Building foundational infrastructure: the Pathway Advisor, Learning Resources, the Ambassador Program design",
+            ],
+        },
+        {
+            "phase": "Phase II",
+            "label": "Early Adoption and Preparedness",
+            "color": NAVY,
+            "status": "Next",
+            "items": [
+                "Reliable, repeatable programming running across multiple cohorts, not just a single pilot",
+                "Mature, tested onboarding tools, refined curriculum based on real Phase I feedback",
+                "First paid Community Ambassadors recruited, trained, and actively delivering",
+                "Testing outreach approaches across distinct audiences: classrooms, community events, professional networks",
+            ],
+        },
+        {
+            "phase": "Phase III",
+            "label": "Integration and Capability Demonstration",
+            "color": GOLD,
+            "status": "Future",
+            "items": [
+                "A demonstrated track record across multiple South Side communities, not just one neighborhood",
+                "Comprehensive infrastructure: partnership network, evaluation framework, diversified funding",
+                "Expanded reach: district-wide CPS rollout, shared curriculum across institutional partners",
+            ],
+        },
+        {
+            "phase": "Phase IV",
+            "label": "Full Integration",
+            "color": "#8E44AD",
+            "status": "Long-term vision",
+            "items": [
+                "Quantum/HPC workforce navigation becomes a normalized, expected part of South Side workforce "
+                "development, not a novel pilot",
+                "Self-sustaining funding and partnership base",
+                "The alumni-as-mentors pipeline fully operational",
+                "The model potentially replicable by other WHPC chapters facing similar dynamics elsewhere",
+            ],
+        },
+    ]
+
+    for i, gp in enumerate(growth_phases):
+        st.markdown(
+            f"<div style='background:{gp['color']}12;border:1.5px solid {gp['color']};border-left:6px solid {gp['color']};"
+            f"border-radius:10px;padding:16px 20px;margin:10px 0'>"
+            f"<div style='display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap'>"
+            f"<div style='font-weight:700;color:{gp['color']};font-size:1.05rem'>{gp['phase']}: {gp['label']}</div>"
+            f"<div style='background:{gp['color']};color:white;font-size:0.72rem;font-weight:700;"
+            f"border-radius:12px;padding:3px 12px'>{gp['status']}</div>"
+            f"</div>"
+            f"<ul style='margin:10px 0 0 0;padding-left:20px'>"
+            + "".join(f"<li style='font-size:0.88rem;color:{NAVY};margin:4px 0'>{item}</li>" for item in gp["items"])
+            + "</ul></div>",
+            unsafe_allow_html=True
+        )
+        if i < len(growth_phases) - 1:
+            st.markdown(
+                f"<div style='text-align:center;font-size:1.2rem;color:{MGRAY};margin:2px 0'>\u2193</div>",
+                unsafe_allow_html=True
+            )
+
+    st.markdown("---")
+    section_header("A Necessary Caveat")
+    callout(
+        "This roadmap is not linear. Funding shifts, IQMP's own construction timeline, policy changes, or "
+        "partnership availability could all reshape it, unexpected breakthroughs or setbacks in any of these "
+        "areas may accelerate or delay a given phase. Organizations following a roadmap like this also need to "
+        "weigh ethical implications, risk mitigation, and workforce development deliberately at each stage, "
+        "not just chase speed of scaling.",
+        color=MGRAY
+    )
+    callout(
+        "One commitment held constant across every phase: equity and program quality do not get sacrificed "
+        "for speed of scaling. Growing reach faster than the organization can deliver it well would work "
+        "against the entire reason this platform exists.",
+        color=TEAL
+    )
+
+
+# ══════════════════════════════════════════════════════════════════════════════
 # LATEST DEVELOPMENTS (new page - added July 2026)
 # ══════════════════════════════════════════════════════════════════════════════
 if sub_choice == "Latest Developments":
@@ -6499,7 +6692,7 @@ if sub_choice == "Latest Developments":
 
     st.caption(
         "This page tracks significant announcements relevant to the Quantum x HPC Pathways program. "
-        "Last updated: July 2026. Sources linked for each item."
+        "Last updated: August 2026. Sources linked for each item."
     )
 
     developments = [
@@ -6525,19 +6718,24 @@ if sub_choice == "Latest Developments":
         },
         {
             "date": "May 21, 2026",
-            "title": "Federal Government: $1.2B in IQMP Companies via CHIPS Act",
+            "title": "Federal Government: $1.2B in IQMP Tenant Companies via CHIPS Act",
             "summary": (
-                "Four IQMP tenant companies — IBM ($1B for quantum foundry), "
-                "PsiQuantum ($100M), Infleqtion ($100M), and Diraq ($38M) — will receive "
-                "a combined $1.2B under the CHIPS and Science Act. "
+                "Four IQMP tenant companies — IBM ($1B), PsiQuantum ($100M), Infleqtion ($100M), "
+                "and Diraq ($38M) — are among nine companies receiving a combined $2B nationally under "
+                "the CHIPS and Science Act; the four IQMP tenants' share totals $1.2B. "
                 "The federal government takes minority, non-controlling equity stakes in each company. "
-                "Commerce Secretary Howard Lutnick: 'These strategic quantum technology investments "
-                "will build on our domestic industry, creating thousands of high-paying American jobs.'"
+                "Note: this is investment in the companies themselves, not necessarily sited at IQMP — "
+                "IBM's $1B specifically funds a new quantum foundry subsidiary (Anderon) in Albany, NY, "
+                "not at the Chicago site. Commerce Secretary Howard Lutnick: 'These strategic quantum "
+                "technology investments will build on our domestic industry, creating thousands of "
+                "high-paying American jobs.'"
             ),
             "relevance": (
-                "The four companies receiving federal investment are all IQMP tenants. "
-                "This dramatically increases the financial certainty of IQMP operations "
-                "and strengthens the workforce demand argument for Quantum x HPC Pathways."
+                "The four companies receiving federal investment are all IQMP tenants, which strengthens "
+                "their overall corporate stability and capacity, indirectly supporting their continued "
+                "IQMP presence, even though this specific funding isn't necessarily building IQMP "
+                "infrastructure directly. Worth citing precisely: strong signal of federal confidence in "
+                "these companies, not a direct capital injection into the Chicago site itself."
             ),
             "color": RED,
             "tag": "Federal Investment",
@@ -6841,19 +7039,25 @@ if sub_choice == "Launch Status":
 
     # ── TIMELINE ─────────────────────────────────────────────────────────────
     section_header("Winter 2026 Timeline")
+    st.caption(
+        "Dates below assume partner outreach is active now (August 2026). Confirm against actual "
+        "current status before external use — if outreach is ahead of or behind this schedule, "
+        "shift the remaining dates accordingly."
+    )
     timeline_items = [
-        ("July - August 2026", "Partner outreach and confirmation",
+        ("August - September 2026", "Partner outreach and confirmation",
          "Secure venue, mentors, and employer partner. Finalize seed funding.", TEAL),
-        ("September 2026", "Participant recruitment",
+        ("October 2026", "Participant recruitment",
          "Community outreach in South Shore, South Chicago, Woodlawn. Target 20-30 applicants for 15-20 spots.", NAVY),
-        ("October 2026", "Community education sessions",
+        ("November 2026", "Community education sessions",
          "3 plain-language sessions: What is quantum? What is HPC? What jobs exist at IQMP?", TEAL),
-        ("October - November 2026", "HPC workshop series",
-         "4-6 hands-on workshops: Linux, GPU computing, quantum simulation, portfolio project.", NAVY),
-        ("November 2026", "Mentorship matching",
+        ("November - December 2026", "Foundations workshop series",
+         "4-6 sessions: core quantum/HPC concepts in plain language, basic programming logic, math orientation, "
+         "a guided first look at real tools, portfolio project.", NAVY),
+        ("December 2026", "Mentorship matching",
          "5+ structured mentor matches. Career roadmap development. Professional introductions.", GOLD),
-        ("December 2026", "Exposure and cohort showcase",
-         "Facility tour. Employer panel. Participant showcase. Next step commitments documented.", GREEN),
+        ("January 2027", "Exposure and cohort showcase",
+         "Facility tour. Industry Skills Briefing. Participant showcase. Next step commitments documented.", GREEN),
     ]
     for period, title, desc, color in timeline_items:
         st.markdown(
