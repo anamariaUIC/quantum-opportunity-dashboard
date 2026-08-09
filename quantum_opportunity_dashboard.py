@@ -2813,6 +2813,8 @@ if sub_choice == "Quantum Learning Resources":
                 ("Quantum Inspire Learning Materials", "QuTech's (TU Delft) free tutorials paired with real free hardware access — see Free QPU Access below.", "https://www.quantum-inspire.com/"),
                 ("PennyLane Demos (Xanadu)", "Hands-on quantum machine learning and quantum computing demos with runnable code.", "https://pennylane.ai/qml"),
                 ("IQM Academy", "Free, structured curriculum from Beginner through Advanced (9 modules): quantum foundations, algorithms, a dedicated Qrisp-on-IQM module, circuit design, error correction, and a glossary. Modules link out to hands-on practice on IQM Resonance.", "https://www.iqmacademy.com/"),
+                ("Qiskit Global Summer School (IBM)", "Free, annual, 2-week virtual program with lectures, hands-on Qiskit labs, and a dedicated beginners-only track (no prior experience needed). The 2026 session (July 13-24) has closed; sign up for notifications ahead of next year's session.", "https://www.ibm.com/quantum/blog/qiskit-summer-school-2026"),
+                ("C2QA Quantum Computing Summer School (Brookhaven National Lab)", "Free, DOE-funded virtual program teaching Qiskit fundamentals, no cost to apply or attend, no prior quantum, math, or programming background required. Application windows typically open early in the year for a summer session.", "https://www.bnl.gov/quantumcenter/student-opportunities.php"),
             ],
         },
         {
@@ -2932,6 +2934,13 @@ if sub_choice == "Quantum Learning Resources":
          "IQM (superconducting), and AQT (trapped-ion). Supports Qiskit and PennyLane directly, making it a strong single "
          "starting point for comparing circuit behavior across architectures.",
          "https://www.openquantum.com/"),
+        ("ACCESS / CloudBank (NSF-funded)", "#8E44AD",
+         "Not open to the general public — this one requires a research or educational affiliation. Any U.S. researcher "
+         "or educator can apply for a free ACCESS allocation, which includes CloudBank credit usable on IBM Quantum, "
+         "Amazon Braket, and Google Quantum AI, at no cost to the applicant. Relevant for community college instructors, "
+         "university faculty and students, and anyone teaching or researching with an institutional tie, not for residents "
+         "without one.",
+         "https://support.access-ci.org/documentation/resources/cloudbank-research"),
     ]
 
     with st.expander(f"View {len(_qpu_data)} free QPU access options", expanded=False):
@@ -3018,6 +3027,7 @@ if sub_choice == "Quantum Learning Resources":
         ("CQE Education and Training / Internships", "https://chicagoquantum.org/education-and-training"),
         ("CQE: Meet the Researchers", "https://chicagoquantum.org/about/meet-researchers"),
         ("Quantum Coalition — Learning Resources and Hackathons", "https://www.quantumcoalition.io/"),
+        ("CaRCC Quantum Computing Interest Group (for research computing professionals)", "https://carcc.org/carcc-quantum-interest-group/"),
     ]
     with st.expander(f"View {len(_community_data)} community links", expanded=False):
         for name, url in _community_data:
