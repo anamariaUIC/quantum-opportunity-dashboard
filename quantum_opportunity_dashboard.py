@@ -218,6 +218,14 @@ SKILLS_DATA = pd.DataFrame([
      "credential_min": "MS / BS", "whpc_provides": False,
      "whpc_note": "", "local_provider": "Argonne, Fermilab (research roles only)"},
     {"category": "Hardware",    "subcategory": "H4 Technical Subsystem Specialists",
+     "skill": "Cryoplant operation and cryogenic technician work",
+     "credential_min": "HS Diploma / AS", "whpc_provides": False,
+     "whpc_note": "Distinct from the research-tier role above — cryoplant operators and technicians are "
+                   "typically accessible with a high school diploma or associate's degree, not a graduate degree. "
+                   "Demand expected to rise as Bluefors (dilution refrigerator manufacturer) expands its Chicago "
+                   "presence (mHUB, Hyde Park Labs) and IQMP's industrial-scale cryogenic plant comes online.",
+     "local_provider": "Not yet a local training pathway identified — flagged gap"},
+    {"category": "Hardware",    "subcategory": "H4 Technical Subsystem Specialists",
      "skill": "Electronics, fabrication, materials characterization",
      "credential_min": "BS / AS", "whpc_provides": False,
      "whpc_note": "", "local_provider": "Olive Harvey (IT certs), Kennedy-King"},
@@ -434,6 +442,20 @@ CREDENTIAL_DATA = pd.DataFrame([
         "south_side_accessible": True,
         "source":                "iqmp.org/careers (primary, current); CSU is a designated IQMP educational partner "
                                   "developing paid internships for IBM FutureNow Chicago",
+        "url":                    "https://www.csu.edu/quantum/",
+    },
+    {
+        "program":               "Quantum Sensing Summer Program (Chicago State University / NSF QuBBE)",
+        "provider":              "Chicago State University, in partnership with NSF Quantum Leap Challenge Institute QuBBE",
+        "duration":              "Two weeks",
+        "cost":                  "Free",
+        "credential_type":       "Hands-on lab immersion (atomic force microscopy and quantum sensing lab work)",
+        "prerequisite":          "High school enrollment",
+        "target_group":          "Chicago high school students",
+        "pathway_tags":          ["quantum", "hardware"],
+        "south_side_accessible": True,
+        "source":                "CQE 'Training and Education' newsletter (current); administered through NSF's "
+                                  "QuBBE Quantum Leap Challenge Institute, of which Chicago State University is part",
         "url":                    "https://www.csu.edu/quantum/",
     },
     {
@@ -2800,7 +2822,7 @@ if sub_choice == "Quantum Learning Resources":
             "items": [
                 ("Workbench Quantum Katas (PsiQuantum)", "Free, open-source (Apache-2.0) self-paced Jupyter notebook tutorials and coding problems, progressing from single-qubit basics through Grover's, QFT/QPE, Shor's algorithm, and quantum chemistry. Requires installing PsiQDK (free, see Software & Simulators above).", "https://github.com/PsiQ/workbench-quantum-katas"),
                 ("qBook (qBraid, Chicago-based)", "Free, structured, autograded interactive curriculum — runs in the browser via qBraid Lab, no install needed. Progresses from single-qubit gates and superposition through Deutsch-Jozsa, Grover's search, VQE, and QAOA. Used at 35+ universities.", "https://qbraid.com/qbook"),
-                ("UChicago Professional: Quantum Science, Networking, and Communications", "A paid, 8-week instructor-led course (CQE-affiliated) — recommended background: bachelor's degree in a related field. Worth comparing against the free SDKs and tutorials below first.", "https://professional.uchicago.edu/find-your-fit/courses/quantum-science-networking-and-communications"),
+                ("UChicago Professional: Quantum Science, Networking, and Communications", "A paid, 8-week instructor-led course (CQE-affiliated, taught by UIUC and UChicago faculty) — recommended background: bachelor's degree in a related field. 232 students enrolled since 2022. Worth comparing against the free SDKs and tutorials below first.", "https://professional.uchicago.edu/find-your-fit/courses/quantum-science-networking-and-communications"),
             ],
         },
         {
@@ -4522,6 +4544,7 @@ if sub_choice == "Emerging Workforce Roles":
             "color": GOLD,
             "roles": [
                 ("Fabrication Technician", "Certificate / AS", "Operate semiconductor manufacturing equipment. High demand as IQMP attracts fabrication tenants.", "City Colleges manufacturing programs"),
+                ("Cryogenic Technician / Cryoplant Operator", "HS Diploma / AS", "Maintain and operate dilution refrigerators and cryogenic systems that cool quantum hardware to near absolute zero. \u201cThe people that maintain cryogenic systems already are in high demand... a huge opportunity for the community\u201d \u2014 Emily Easton, CQE. Tied to Bluefors's expanding Chicago presence (mHUB, Hyde Park Labs) and IQMP's planned cryogenic plant.", "No confirmed local training pathway yet identified"),
                 ("Photonics Engineer", "BS", "Design and test optical components for quantum and telecom systems.", "University engineering programs"),
                 ("Precision Manufacturing Specialist", "Certificate", "High-accuracy manufacturing for quantum hardware components.", "CTE programs, City Colleges"),
             ]
@@ -5350,6 +5373,7 @@ if sub_choice == "Building the Ecosystem":
             ("Chicago Quantum Exchange (CQE)", "Ecosystem coordinator, EDA Tech Hub, NSF Engines"),
             ("Duality", "World's first quantum startup accelerator"),
             ("National Quantum Algorithm Center", "IBM + Illinois quantum algorithm development"),
+            ("Hyde Park Labs", "South Side commercial lab facility (opened 2025); will house IBM's Quantum System Two and the UChicago Science Incubator"),
         ], "Translates research into products, companies, and economic activity"),
         ("Industry Layer", GOLD, [
             ("IBM Quantum", "750 jobs + 500 apprenticeships at IQMP, FutureNow Chicago"),
@@ -5357,6 +5381,7 @@ if sub_choice == "Building the Ecosystem":
             ("Infleqtion", "Quantum sensing and computing, Chicago-based"),
             ("EeroQ", "Helium-3 quantum computing, Chicago startup"),
             ("Quantum Machines", "Quantum control systems"),
+            ("Bluefors", "World's leading dilution refrigerator manufacturer; first U.S. service location at mHUB, second Chicago facility at Hyde Park Labs"),
         ], "Creates jobs, demand for talent, and employer relationships"),
         ("Education Layer", GREEN, [
             ("City Colleges of Chicago", "1,000+ quantum-relevant completions, IBM pipeline, Chicago School of Engineering"),
