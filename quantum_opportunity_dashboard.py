@@ -2926,7 +2926,8 @@ if sub_choice == "Quantum Learning Resources":
         ("Amazon Braket SDK", "AWS's quantum SDK — one interface across IonQ, Rigetti, IQM, and QuEra hardware and simulators.", "https://aws.amazon.com/braket/"),
         ("D-Wave Ocean SDK", "Free, open-source (Apache 2.0) Python tools for programming D-Wave's quantum annealers, built for optimization problems.", "https://github.com/dwavesystems/dwave-ocean-sdk"),
         ("CUDA-Q (NVIDIA)", "Official runnable tutorials for CUDA-Q, NVIDIA's QPU-agnostic hybrid quantum-classical platform — the same SDK used in Chicago WHPC's Lakeshore benchmarking work.", "https://nvidia.github.io/cuda-quantum/latest/using/tutorials.html"),
-        ("CUDA-Q Academic (NVIDIA)", "Free, structured learning path with cloud notebooks (Colab/qBraid/Braket) preloaded — no local install needed.", "https://nvidia.github.io/cuda-q-academic/learningpath.html"),
+        ("CUDA-Q Academic (NVIDIA)", "Free, structured learning path with cloud notebooks (Colab/qBraid/Braket) preloaded — no local install needed. Creative Commons licensed, meaning the material can be freely incorporated into any course, including ours. Covers CUDA-Q's mgpu backend (combining multiple GPUs' memory into one virtual space to scale simulated qubit counts) and mqpu backend (running across multiple QPUs), a concrete illustration of quantum-HPC convergence in practice.", "https://nvidia.github.io/cuda-q-academic/learningpath.html"),
+        ("Quick Start to Quantum (NVIDIA CUDA-Q Academic)", "Free, hands-on introductory notebook, actual coding rather than a lecture or webinar. Recommended directly by NVIDIA's CUDA-Q Academic team as the place to start for hands-on basics.", "https://github.com/NVIDIA/cuda-q-academic/tree/main/quick-start-to-quantum"),
         ("PsiQDK / Construct (PsiQuantum)", "PsiQuantum's free, open-access SDK for designing and simulating fault-tolerant quantum algorithms — includes a visual circuit designer and resource estimator, no install required to start.", "https://construct.psiquantum.com/"),
         ("Qrisp", "Free, open-source (Eclipse Public License) high-level quantum programming framework — typed quantum variables instead of raw qubits and gates. IQM's new default SDK, also compatible with IBM and AQT hardware.", "https://qrisp.eu/"),
         ("qBraid Lab (Chicago-based)", "Free, no-install cloud IDE — JupyterLab in your browser with Qiskit, Cirq, PennyLane, Braket, and CUDA-Q pre-installed. Free to start, no credit card. Note: distinct from Open Quantum in Free QPU Access, which is qBraid's real-hardware credit program — both are free but serve different purposes.", "https://qbraid.com/lab"),
@@ -3068,6 +3069,21 @@ if sub_choice == "Quantum Learning Resources":
         f"Free, live, online, August 25-27, 2026. Hands-on sessions running real circuits on IQM's Resonance "
         f"cloud platform, no prior quantum experience needed. Signing up gives 100 bonus credits toward a free "
         f"IQM Resonance account.</div></div>",
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        f"<div style='background:white;border:1.5px solid {GREEN}55;border-left:5px solid {GREEN};"
+        f"border-radius:8px;padding:14px 18px;margin:8px 0 16px 0'>"
+        f"<a href='https://www.nvidia.com/en-us/events/cudaq-train-the-trainer-webinar/' target='_blank' rel='noopener' "
+        f"style='font-weight:700;font-size:0.95rem;color:{NAVY};text-decoration:none;"
+        f"border-bottom:1px dotted {GREEN}'>CUDA-Q Academic Train-the-Trainer Webinar (NVIDIA) \u2197</a>"
+        f"<div style='font-size:0.85rem;color:{MGRAY};margin-top:4px'>"
+        f"Free webinar for educators on building quantum computing courses with CUDA-Q Academic's open, modular "
+        f"curriculum. Confirmed 2026 sessions ran August 6 and August 18 — by the time you're reading this, those "
+        f"specific dates may have passed. Check the link for future sessions or a recording, this is directly "
+        f"relevant for anyone developing quantum curriculum for teachers, including our own CPS workshop series."
+        f"</div></div>",
         unsafe_allow_html=True
     )
 
