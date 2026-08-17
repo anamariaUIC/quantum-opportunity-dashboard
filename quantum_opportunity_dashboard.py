@@ -199,13 +199,16 @@ WHPC_SURVEY = pd.DataFrame([
 # Ecosystem asset map
 ECOSYSTEM_ASSETS = pd.DataFrame([
     {"org": "IQMP", "type": "Infrastructure", "lat": 41.737, "lon": -87.545, "focus": "Quantum & microelectronics campus", "community_access": "None yet", "has_community_nav": False},
+    {"org": "IBM FutureNow Chicago", "type": "Industry", "lat": 41.737, "lon": -87.545, "focus": "750-job hub, housed in IQMP's Quantum Works building", "community_access": "None yet", "has_community_nav": False},
+    {"org": "Infleqtion (Chicago Quantum Innovation Center)", "type": "Industry", "lat": 41.8788, "lon": -87.6365, "focus": "Neutral-atom quantum computing; ~25 local employees; future IQMP tenant", "community_access": "None yet", "has_community_nav": False},
+    {"org": "Hyde Park Labs", "type": "Infrastructure", "lat": 41.7996, "lon": -87.5865, "focus": "South Side commercial R&D lab (5207 S. Harper Ave.); will house IBM's Quantum System Two and UChicago Science Incubator", "community_access": "Limited", "has_community_nav": False},
     {"org": "Chicago Quantum Exchange", "type": "Research Hub", "lat": 41.789, "lon": -87.600, "focus": "Ecosystem coordination, education", "community_access": "Limited", "has_community_nav": False},
     {"org": "Argonne National Lab", "type": "National Lab", "lat": 41.716, "lon": -87.979, "focus": "Quantum research, computing", "community_access": "Limited", "has_community_nav": False},
-    {"org": "Fermilab", "type": "National Lab", "lat": 41.840, "lon": -88.258, "focus": "Quantum science, SMQ* program", "community_access": "Some", "has_community_nav": False},
+    {"org": "Fermilab", "type": "National Lab", "lat": 41.840, "lon": -88.258, "focus": "Quantum science; partners with Olive Harvey College to host SMQ* program", "community_access": "Some", "has_community_nav": False},
     {"org": "Research University HPC Center", "type": "University", "lat": 41.870, "lon": -87.650, "focus": "HPC infrastructure, quantum training", "community_access": "Some", "has_community_nav": False},
-    {"org": "Olive Harvey College", "type": "City College", "lat": 41.712, "lon": -87.591, "focus": "SMQ* host, IBM apprenticeship", "community_access": "Strong", "has_community_nav": False},
-    {"org": "SMQ* (Fermilab)", "type": "Program", "lat": 41.712, "lon": -87.591, "focus": "10-week quantum program, 37 students", "community_access": "Strong", "has_community_nav": False},
-    {"org": "DPI / Chi-Craft (CPS)", "type": "Program", "lat": 41.838, "lon": -87.627, "focus": "Teacher training, student awareness", "community_access": "Strong", "has_community_nav": False},
+    {"org": "Olive Harvey College", "type": "City College", "lat": 41.712, "lon": -87.591, "focus": "Hosts Fermilab's SMQ* program (10-week Saturday quantum program), IBM apprenticeship", "community_access": "Strong", "has_community_nav": False},
+    {"org": "Chi-Craft (CPS)", "type": "Program", "lat": 41.838, "lon": -87.627, "focus": "CPS Applied Computer Science Team, in partnership with IQMP; annual Minecraft-based quantum competition", "community_access": "Strong", "has_community_nav": False},
+    {"org": "DPI Demystifying Quantum (Discovery Partners Institute)", "type": "Program", "lat": 41.8788, "lon": -87.6359, "focus": "Separate from Chi-Craft; CPS teacher training workshop (~70 educators); HQ at 200 S. Wacker Dr.", "community_access": "Strong", "has_community_nav": False},
     {"org": "Chicago WHPC", "type": "Bridge Org", "lat": 41.762, "lon": -87.568, "focus": "Community nav, HPC workshops, mentorship","community_access": "Strong","has_community_nav": True},
 ])
 
@@ -2251,6 +2254,7 @@ if sub_choice == "Ecosystem Map":
                 "University": GOLD,
                 "City College": GREEN,
                 "Program": "#8E44AD",
+                "Industry": "#E67E22",
                 "Bridge Org": RED,
             },
             map_style="carto-positron",
@@ -2926,7 +2930,8 @@ if sub_choice == "Quantum Learning Resources":
         ("Amazon Braket SDK", "AWS's quantum SDK — one interface across IonQ, Rigetti, IQM, and QuEra hardware and simulators.", "https://aws.amazon.com/braket/"),
         ("D-Wave Ocean SDK", "Free, open-source (Apache 2.0) Python tools for programming D-Wave's quantum annealers, built for optimization problems.", "https://github.com/dwavesystems/dwave-ocean-sdk"),
         ("CUDA-Q (NVIDIA)", "Official runnable tutorials for CUDA-Q, NVIDIA's QPU-agnostic hybrid quantum-classical platform — the same SDK used in Chicago WHPC's Lakeshore benchmarking work.", "https://nvidia.github.io/cuda-quantum/latest/using/tutorials.html"),
-        ("CUDA-Q Academic (NVIDIA)", "Free, structured learning path with cloud notebooks (Colab/qBraid/Braket) preloaded — no local install needed.", "https://nvidia.github.io/cuda-q-academic/learningpath.html"),
+        ("CUDA-Q Academic (NVIDIA)", "Free, structured learning path with cloud notebooks (Colab/qBraid/Braket) preloaded — no local install needed. Creative Commons licensed, meaning the material can be freely incorporated into any course, including ours. Covers CUDA-Q's mgpu backend (combining multiple GPUs' memory into one virtual space to scale simulated qubit counts) and mqpu backend (running across multiple QPUs), a concrete illustration of quantum-HPC convergence in practice.", "https://nvidia.github.io/cuda-q-academic/learningpath.html"),
+        ("Quick Start to Quantum (NVIDIA CUDA-Q Academic)", "Free, hands-on introductory notebook, actual coding rather than a lecture or webinar. Recommended directly by NVIDIA's CUDA-Q Academic team as the place to start for hands-on basics.", "https://github.com/NVIDIA/cuda-q-academic/tree/main/quick-start-to-quantum"),
         ("PsiQDK / Construct (PsiQuantum)", "PsiQuantum's free, open-access SDK for designing and simulating fault-tolerant quantum algorithms — includes a visual circuit designer and resource estimator, no install required to start.", "https://construct.psiquantum.com/"),
         ("Qrisp", "Free, open-source (Eclipse Public License) high-level quantum programming framework — typed quantum variables instead of raw qubits and gates. IQM's new default SDK, also compatible with IBM and AQT hardware.", "https://qrisp.eu/"),
         ("qBraid Lab (Chicago-based)", "Free, no-install cloud IDE — JupyterLab in your browser with Qiskit, Cirq, PennyLane, Braket, and CUDA-Q pre-installed. Free to start, no credit card. Note: distinct from Open Quantum in Free QPU Access, which is qBraid's real-hardware credit program — both are free but serve different purposes.", "https://qbraid.com/lab"),
@@ -3068,6 +3073,21 @@ if sub_choice == "Quantum Learning Resources":
         f"Free, live, online, August 25-27, 2026. Hands-on sessions running real circuits on IQM's Resonance "
         f"cloud platform, no prior quantum experience needed. Signing up gives 100 bonus credits toward a free "
         f"IQM Resonance account.</div></div>",
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        f"<div style='background:white;border:1.5px solid {GREEN}55;border-left:5px solid {GREEN};"
+        f"border-radius:8px;padding:14px 18px;margin:8px 0 16px 0'>"
+        f"<a href='https://www.nvidia.com/en-us/events/cudaq-train-the-trainer-webinar/' target='_blank' rel='noopener' "
+        f"style='font-weight:700;font-size:0.95rem;color:{NAVY};text-decoration:none;"
+        f"border-bottom:1px dotted {GREEN}'>CUDA-Q Academic Train-the-Trainer Webinar (NVIDIA) \u2197</a>"
+        f"<div style='font-size:0.85rem;color:{MGRAY};margin-top:4px'>"
+        f"Free webinar for educators on building quantum computing courses with CUDA-Q Academic's open, modular "
+        f"curriculum. Confirmed 2026 sessions ran August 6 and August 18 — by the time you're reading this, those "
+        f"specific dates may have passed. Check the link for future sessions or a recording, this is directly "
+        f"relevant for anyone developing quantum curriculum for teachers, including our own CPS workshop series."
+        f"</div></div>",
         unsafe_allow_html=True
     )
 
@@ -5227,10 +5247,11 @@ if sub_choice == "Community Opportunity Landscape":
                 unsafe_allow_html=True
             )
         callout(
-            "<strong>Why not a composite score?</strong> The school closure research (Statchen et al. 2026) "
-            "and standard urban policy practice compare communities using observable indicators rather than "
-            "constructing weighted indices. This approach is more transparent, more defensible, and more "
-            "useful for planning decisions."
+            "<strong>Why not a composite score?</strong> Standard urban policy practice often favors comparing "
+            "communities using observable indicators rather than constructing weighted indices, an approach "
+            "also reflected in how recent Chicago-based research (Statchen et al. 2026) compares neighborhoods "
+            "using specific demographic covariates rather than a single blended score. This approach is more "
+            "transparent, more defensible, and more useful for planning decisions."
         )
 
     st.markdown("---")
@@ -5389,15 +5410,20 @@ if sub_choice == "Illinois Alignment":
          "Program data on South Side participation fills a gap CQE has identified in workforce research.",
          ["Direct implementation of CQE community strategy", "Data partner for CQE workforce research", "EDA Tech Hub workforce component"]),
         ("IBM FutureNow Chicago + Moonshot Apprenticeships", GREEN,
-         "IBM announced 750 full-time jobs at IQMP's Quantum Works center (2028) plus the 'Moonshot' paid apprenticeship program "
-         "launching in the next academic year with City Colleges. Internships also through Chicago State University and SIUE. "
-         "Job types: 250 app developers, 150 software developers, 80 data analysts, technical leaders, admin roles.",
+         "IBM signed a contract with the State of Illinois (April 2026) to create 750 full-time jobs by the end of 2030, "
+         "in exchange for an estimated $19 million in state income tax credits. Jobs will be housed at IQMP's Quantum Works "
+         "building, which is separately expected to open in 2028 (the building's completion date, not the job-creation deadline). "
+         "State records specify: at least 250 app developers, 150 software developers, 100 account technical leaders, "
+         "80 data analysts, and 20 corporate positions. IBM has committed to hiring qualified graduates of the City Colleges "
+         "'Moonshot' apprenticeship program for up to 180 of these full-time positions. Internships also through Chicago "
+         "State University and SIUE.",
          "Chicago WHPC can serve as a community feeder into the IBM/City Colleges pipeline. "
          "Program participants who complete HPC workshops are better positioned for IBM apprenticeship applications.",
          ["Community feeder for IBM apprenticeships", "Awareness pipeline for IBM job announcements", "South Side participant preparation"]),
         ("National Quantum Algorithm Center (NQAC)", GOLD,
-         "NQAC is a partnership between IBM and Illinois institutions designed to accelerate quantum algorithm development. "
-         "It represents Illinois's position at the national frontier of quantum research.",
+         "NQAC is led by IBM in collaboration with the University of Chicago, housed within IQMP's Quantum Works building "
+         "alongside DPI and other workforce programs. It develops quantum algorithms and applications, and will make IBM's "
+         "Quantum System Two available to startups selected through UChicago's Duality accelerator.",
          "Chicago WHPC communicates NQAC's existence and significance to community audiences who would otherwise not encounter it.",
          ["Public awareness of NQAC", "Career visibility for NQAC-adjacent roles"]),
         ("Illinois STEM Workforce Strategy", "#8E44AD",
@@ -5435,7 +5461,7 @@ if sub_choice == "Illinois Alignment":
         "Research": (TEAL, ["Argonne National Laboratory", "Fermilab", "National Quantum Algorithm Center"]),
         "Universities": (GOLD, ["University of Chicago", "University of Illinois Chicago", "Northwestern University", "UIUC"]),
         "Industry": (GREEN, ["IBM Quantum", "PsiQuantum", "Infleqtion", "EeroQ", "Quantum Machines", "Diraq"]),
-        "Education": ("#8E44AD", ["Chicago Public Schools", "City Colleges of Chicago", "Olive Harvey College", "Chicago State University"]),
+        "Education": ("#8E44AD", ["Chicago Public Schools", "Discovery Partners Institute (DPI)", "City Colleges of Chicago", "Olive Harvey College", "Chicago State University"]),
         "Civic Layer": (RED, ["Chicago WHPC", "South Side Libraries", "Community Organizations", "Park District"]),
     }
 
@@ -5494,7 +5520,8 @@ if sub_choice == "Building the Ecosystem":
         ], "Creates jobs, demand for talent, and employer relationships"),
         ("Education Layer", GREEN, [
             ("City Colleges of Chicago", "1,000+ quantum-relevant completions, IBM pipeline, Chicago School of Engineering"),
-            ("Chicago Public Schools", "Chi-Craft competition, DPI quantum teacher training"),
+            ("Chicago Public Schools", "Chi-Craft competition (CPS Applied Computer Science Team, in partnership with IQMP)"),
+            ("Discovery Partners Institute (DPI)", "Separate from CPS; University of Illinois System institute; runs its own Demystifying Quantum teacher training for CPS educators"),
             ("Olive Harvey College", "SMQ* host site, IBM apprenticeship anchor"),
         ], "Prepares students through formal credentials and structured programs"),
         ("Community Layer", RED, [
@@ -5635,6 +5662,27 @@ if sub_choice == "Methodology and Data Sources":
          ["N=181", "Self-selected, quantum-interested audience",
           "56% never used a quantum tool", "76% wanted to understand HPC-quantum connection"],
          "https://www.chicagowhpc.org", GOLD),
+        ("Boston Consulting Group / Chicago Quantum Exchange, \"Advancing Together\" Regional Workforce Strategy, 2026",
+         "Regional quantum and HPC jobs projection cited throughout this platform's workforce figures.",
+         ["191,000 projected quantum-adjacent jobs in the IL-WI-IN region by 2035",
+          "Projection, not a confirmed or guaranteed outcome"],
+         "https://chicagoquantum.org", TEAL),
+        ("State of Illinois / Illinois DCEO, IQMP capital investment announcements, 2024-2026",
+         "State funding commitment to IQMP infrastructure, cited in ecosystem investment figures.",
+         ["$500M+ in state capital investment", "Announced/committed, subject to appropriation timelines"],
+         "https://chicagoquantum.org", NAVY),
+        ("Highland Park Herald, \"Trump Administration Takes Equity Stakes in Four Illinois Quantum Campus Companies,\" June 2026",
+         "Federal CHIPS and Science Act investment in IQMP tenant companies, cited in ecosystem investment figures. "
+         "Note: this is investment in the companies themselves (IBM, PsiQuantum, Infleqtion, Diraq), not necessarily "
+         "sited at IQMP directly, part of a larger $2B/9-company national program.",
+         ["$1.2B combined across 4 IQMP tenant companies", "Federal government takes minority equity stakes"],
+         "https://www.hpherald.com", RED),
+        ("El-Adawy et al., \"Categorization of Roles in the Quantum Industry,\" University of Colorado Boulder / "
+         "Rochester Institute of Technology, Nov. 2025",
+         "Published quantum industry role taxonomy. Used to ground this platform's Pathway Advisor and Skills Map "
+         "in defensible, externally validated labor-market categories rather than internally invented ones.",
+         ["Peer-reviewed role categorization framework", "arXiv:2511.11820"],
+         "https://arxiv.org/abs/2511.11820", GOLD),
     ]
 
     for title, desc, notes, url, color in sources:
@@ -5753,7 +5801,7 @@ if sub_choice == "Stakeholder Map Overview":
         "Research": (TEAL, ["Argonne National Laboratory", "Fermilab", "National Quantum Algorithm Center"]),
         "Universities": (GOLD, ["University of Chicago", "University of Illinois Chicago", "Northwestern University", "UIUC"]),
         "Industry": (GREEN, ["IBM Quantum", "PsiQuantum", "Infleqtion", "EeroQ", "Quantum Machines", "Diraq"]),
-        "Education": ("#8E44AD", ["Chicago Public Schools", "City Colleges of Chicago", "Olive Harvey College", "Chicago State University"]),
+        "Education": ("#8E44AD", ["Chicago Public Schools", "Discovery Partners Institute (DPI)", "City Colleges of Chicago", "Olive Harvey College", "Chicago State University"]),
         "Civic Layer": (RED, ["Chicago WHPC", "South Side Libraries", "Community Organizations"]),
     }
 
