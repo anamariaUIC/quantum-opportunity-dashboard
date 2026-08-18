@@ -1536,7 +1536,7 @@ if sub_choice == "Workforce Bridge":
                 "CS, networking, cybersecurity certificates",
                 "Associate degrees in engineering tech, IT, manufacturing",
                 "Quantum physics, circuit basics (10 weeks)",
-                "Linux, HPC systems, GPU computing, quantum simulation, mentorship, pathway navigation",
+                "Plain-language concepts, programming basics, guided first look at real tools, mentorship, pathway navigation",
             ],
             "Gap": [
                 "No HPC or quantum exposure",
@@ -4325,7 +4325,7 @@ if sub_choice == "Why Chicago WHPC?":
             ], TEAL),
             ("What Chicago WHPC provides", [
                 "Plain-language community education on quantum and HPC",
-                "Hands-on HPC workshops (Linux, GPU, quantum simulation)",
+                "Foundational workshops (concepts, programming basics, guided first look at real tools)",
                 "Structured mentorship program",
                 "South Side Quantum Opportunity Guide",
                 "Professional introductions to ecosystem partners",
@@ -4411,9 +4411,10 @@ if sub_choice == "Why HPC?":
             ("Tools are transferable", "Linux, Python, GPU computing, data pipelines, cloud APIs - "
              "these skills are valuable across AI, scientific computing, data science, "
              "and quantum computing. Participants gain career flexibility."),
-            ("Infrastructure is available now", "Chicago WHPC has access to H100 NVL GPU clusters "
-             "and national HPC allocations through institutional partners. "
-             "Participants can use real systems from day one."),
+            ("Infrastructure is available when participants are ready", "Chicago WHPC has access to H100 NVL GPU clusters "
+             "and national HPC allocations through institutional partners for later stages of the program. "
+             "Early sessions focus on foundational literacy and orientation; hands-on technical work with "
+             "real systems comes as a later-phase outcome, not a first-day promise."),
         ]
         for title, desc in reasons:
             st.markdown(
@@ -4426,6 +4427,11 @@ if sub_choice == "Why HPC?":
 
     st.markdown("---")
     section_header("HPC Skills Taught - and Where They Lead")
+    st.caption(
+        "This reflects the full, multi-stage participant journey (see Program Architecture), not what's "
+        "covered in initial orientation sessions. Early stages focus on foundational literacy and language; "
+        "hands-on technical work with these tools is built up over time as participants progress."
+    )
     skills_path = [
         ("Linux command line", "Foundation for all HPC and cloud work", "Systems admin, DevOps, research computing"),
         ("Job scheduling (Slurm)", "Running jobs on HPC clusters", "Research computing staff, HPC operations"),
@@ -4774,17 +4780,17 @@ if sub_choice == "Program Architecture":
         },
         {
             "num": "02", "name": "Preparation", "color": NAVY,
-            "what": ["Linux command line fundamentals", "HPC system navigation and job submission",
-                     "AI and GPU computing foundations", "Introduction to scientific workflows"],
-            "deliverable": "Active HPC Account",
-            "deliverable_desc": "Participants receive a working account on institutional HPC infrastructure with documented first job submission."
+            "what": ["Core quantum and HPC concepts in plain language", "Basic programming logic",
+                     "Math orientation (algebra, exponents, basic probability)", "Building language and confidence to navigate this field"],
+            "deliverable": "Foundational Literacy",
+            "deliverable_desc": "Participants can explain core quantum and HPC concepts in plain language and navigate basic programming logic."
         },
         {
             "num": "03", "name": "Practice", "color": GOLD,
-            "what": ["Hands-on cluster usage projects", "GPU-accelerated workflow exercises",
-                     "Introductory quantum simulation (Qiskit or PennyLane)", "Portfolio artifact development"],
+            "what": ["Basic Python practice", "A shared, facilitator-led demonstration of a real HPC job and a simple quantum program running",
+                     "Portfolio artifact development (documenting what was learned)"],
             "deliverable": "Portfolio Project",
-            "deliverable_desc": "A documented technical project demonstrating HPC skills - shareable with employers and programs."
+            "deliverable_desc": "A documented reflection on the guided technical demonstration and foundational Python work - shareable with employers and programs, not a required independent technical build."
         },
         {
             "num": "04", "name": "Navigation", "color": GREEN,
@@ -4854,11 +4860,11 @@ if sub_choice == "Participant Deliverables":
         ("South Side Quantum Ecosystem Guide", TEAL,
          "A plain-language map of quantum-relevant certificates, degrees, employers, and programs accessible from the South Side. Published publicly and updated annually.",
          ["Know what opportunities exist", "Have a reference document to share with family and advisors", "Understand the ecosystem before applying anywhere"]),
-        ("Active HPC Account", NAVY,
-         "A working account on institutional GPU-accelerated HPC infrastructure, with documentation of first successful job submission.",
-         ["Demonstrate technical access", "Build on this account in future training", "Provide evidence of hands-on computing experience"]),
+        ("Foundational Literacy", NAVY,
+         "The ability to explain core quantum and HPC concepts in plain language, with basic programming logic and math orientation, the foundation everything else builds on.",
+         ["Explain quantum and HPC concepts confidently to family, employers, and program advisors", "Have the language and confidence to pursue further training", "Provide evidence of genuine conceptual readiness"]),
         ("Portfolio Project", GOLD,
-         "A documented technical artifact from the workshop series - a completed HPC workflow, a quantum simulation notebook, or a GPU-accelerated data analysis.",
+         "A documented reflection on the workshop series - a written account of the guided technical demonstration, foundational Python exercises, or a basic data analysis.",
          ["Show employers concrete work product", "Submit to certificate or degree programs as evidence", "Build on for future projects"]),
         ("Mentor Connection", GREEN,
          "A documented, structured relationship with a professional in HPC, quantum computing, or a related field through the Chicago WHPC mentorship program.",
@@ -5020,7 +5026,7 @@ if sub_choice == "Winter 2026 Pilot Metrics":
 
     metric_row([
         ("target participants", "15-20", "Cohort 1, Winter 2026", TEAL),
-        ("HPC workshops", "4", "Linux, GPU, HPC systems, quantum simulation", NAVY),
+        ("HPC workshops", "4", "Concepts, programming basics, guided first look at real tools", NAVY),
         ("mentor matches", "5", "Structured, semester-long", GOLD),
         ("facility tours", "2", "Argonne, Fermilab, IQMP site, or Hyde Park Labs", GREEN),
     ])
@@ -5296,9 +5302,9 @@ if sub_choice == "Theory of Change":
          "Quantum x HPC Pathways provides community education, HPC technical training, mentorship, "
          "and pathway navigation through Chicago WHPC - a trusted civic workforce intermediary.",
          ["IF: residents lack information about quantum/HPC careers",
-          "IF: HPC skills are the accessible entry point to the quantum ecosystem",
+          "IF: foundational literacy is the accessible entry point to the quantum ecosystem",
           "IF: mentorship increases navigation capacity",
-          "IF: institutional access (HPC accounts, facility tours) builds confidence"]),
+          "IF: institutional access (guided tool demonstrations, facility tours) builds confidence"]),
         ("Outputs", NAVY,
          "Participants complete workshops, receive deliverables, and make professional connections.",
          ["15-20 participants per cohort",
@@ -5309,7 +5315,7 @@ if sub_choice == "Theory of Change":
         ("Short-Term Outcomes", GOLD,
          "Participants demonstrate increased awareness, technical skills, and professional network growth.",
          ["Increased understanding of quantum/HPC careers (pre/post surveys)",
-          "Demonstrated HPC competency (portfolio artifacts)",
+          "Demonstrated foundational literacy (portfolio artifacts)",
           "Active mentorship relationships at 90 days",
           "Documented next step identified within 6 months"]),
         ("Long-Term Outcomes", GREEN,
@@ -5363,8 +5369,8 @@ if sub_choice == "Theory of Change":
         ("RQ1", "Can community-based pathway navigation increase awareness of quantum and HPC careers among underrepresented South Side residents?",
          "Pre/post survey measuring career awareness and knowledge of pathways",
          "TEAL"),
-        ("RQ2", "Can structured HPC workshops build foundational technical skills accessible to participants without prior computing experience?",
-         "Skills assessment: portfolio artifact completion, HPC account usage, self-reported competency",
+        ("RQ2", "Can structured foundational workshops build technical literacy accessible to participants without prior computing experience?",
+         "Skills assessment: portfolio artifact completion, ability to explain core concepts pre/post, self-reported competency",
          "NAVY"),
         ("RQ3", "Can mentorship increase participants' capacity to navigate the quantum ecosystem?",
          "90-day mentorship continuation rate, documented next steps, professional network growth",
@@ -5866,10 +5872,10 @@ if sub_choice == "Evaluation Framework":
          "Increase of 20+ percentage points in career awareness scores from pre to post session.",
          "Community education sessions (3-5 per cohort)"),
         ("RQ2", NAVY,
-         "Do structured HPC workshops build foundational technical skills accessible to participants without prior computing experience?",
-         "Portfolio artifact completion rate; HPC account activation and documented first job submission; self-reported competency survey at workshop completion.",
+         "Do structured foundational workshops build technical literacy accessible to participants without prior computing experience?",
+         "Portfolio artifact (reflection) completion rate; self-reported competency survey at workshop completion; ability to explain core concepts pre/post.",
          "70%+ of enrolled participants complete the full workshop series and submit a portfolio artifact.",
-         "HPC workshop series (4-6 sessions)"),
+         "Foundational workshop series (4-6 sessions)"),
         ("RQ3", GOLD,
          "Does structured mentorship increase participants' capacity to navigate the advanced technology ecosystem?",
          "90-day mentorship continuation rate; documented next steps (application submitted, program enrolled, interview scheduled); professional network size at 6 months vs. baseline.",
@@ -5916,7 +5922,7 @@ if sub_choice == "Evaluation Framework":
         ]),
         ("During Program (Weeks 2-10)", [
             "Workshop attendance tracking",
-            "HPC account activation confirmation",
+            "Concept comprehension check-ins",
             "Portfolio artifact submission",
             "Mentor match confirmation and 30-day check-in",
         ]),
@@ -6388,8 +6394,8 @@ if sub_choice == "Ambassador Program":
 
     delivery = [
         ("01", "Awareness", TEAL, "Community Ambassador", "Plain-language quantum/HPC sessions, delivered in libraries, schools, and community spaces."),
-        ("02", "Preparation", NAVY, "Community Ambassador", "Linux, HPC system navigation, foundational literacy, no quantum content yet."),
-        ("03", "Practice", GOLD, "Technical Instructor", "GPU computing, scientific workflows, first exposure to Qiskit/PennyLane as tools layered on the HPC foundation."),
+        ("02", "Preparation", NAVY, "Community Ambassador", "Core quantum/HPC concepts in plain language, basic programming logic, math orientation, foundational literacy, no independent technical build required yet."),
+        ("03", "Practice", GOLD, "Technical Instructor", "Basic Python practice, a shared, facilitator-led demonstration of a real HPC job and a simple quantum program running."),
         ("04", "Navigation", GREEN, "Mentor", "One-on-one mentorship match, career pathway mapping, professional skills."),
         ("05", "Exposure", "#8E44AD", "Mentor + Partner Institutions", "Facility tours, guest speakers, employer panels via IQMP, Argonne, Fermilab partners."),
         ("06", "Outcomes", RED, "Partner Institutions / Employers", "Credential enrollment, internship or apprenticeship application, career transition."),
@@ -6421,8 +6427,8 @@ if sub_choice == "Ambassador Program":
     """, unsafe_allow_html=True)
 
     roles_data = [
-        ("Community Ambassador", "Stages 01-02: plain-language awareness sessions, foundational HPC literacy", TEAL),
-        ("Technical Instructor", "Stage 03: CUDA-Q, PennyLane, and Qiskit workshops, specialized skill-building", GOLD),
+        ("Community Ambassador", "Stages 01-02: plain-language awareness sessions, foundational literacy", TEAL),
+        ("Technical Instructor", "Stage 03: basic Python practice and guided real-tool demonstrations", GOLD),
         ("Mentor", "Stages 04-05: one-on-one career navigation, professional introductions", GREEN),
     ]
     for role, desc, color in roles_data:
