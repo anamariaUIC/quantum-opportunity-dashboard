@@ -1953,6 +1953,30 @@ if sub_choice == "Why Now?":
 
     st.markdown("---")
 
+    # ── GLOBAL CONTEXT ───────────────────────────────────────────────────────
+    section_header("This Isn't a Local Bet on a Speculative Trend", "Global industry context")
+    callout(
+        "Illinois's investment sits inside a documented, accelerating global boom, not a speculative gamble. "
+        "The figures below are global and national context, distinct from the Illinois-specific figures above, "
+        "included to show the broader trend Illinois is positioning itself within."
+    )
+    metric_row([
+        ("new quantum-related job openings globally in 2025", "8,261",
+         "+11% vs. 2024, the highest number yet (QED-C 2026)", TEAL),
+        ("global pure-play quantum workforce growth", "+14%",
+         "16,482 professionals worldwide as of 2025 (QED-C 2026)", NAVY),
+        ("of 2025's new global job openings were in the U.S.", "3,002",
+         "More than any other single country (QED-C 2026)", GOLD),
+        ("U.S. pure-play quantum workers", "4,401",
+         "Second globally behind the EU's combined 6,420 (QED-C 2026)", GREEN),
+    ])
+    st.caption(
+        "Source: Quantum Economic Development Consortium (QED-C), State of the Global Quantum Industry 2026: "
+        "Industry Overview & Methodology, managed by SRI International, April 2026."
+    )
+
+    st.markdown("---")
+
     # ── FOUR KEY QUESTIONS ────────────────────────────────────────────────────
     section_header("Four Questions This Strategy Answers")
     qs = [
@@ -5689,6 +5713,15 @@ if sub_choice == "Methodology and Data Sources":
          "in defensible, externally validated labor-market categories rather than internally invented ones.",
          ["Peer-reviewed role categorization framework", "arXiv:2511.11820"],
          "https://arxiv.org/abs/2511.11820", GOLD),
+        ("Quantum Economic Development Consortium (QED-C), State of the Global Quantum Industry 2026: "
+         "Industry Overview & Methodology, April 2026",
+         "Global industry benchmark, managed by SRI International. Used only for global/national context figures "
+         "(clearly labeled as such on the Why Now? page), not for any Illinois-specific claim. Methodology combines "
+         "surveys (116 quantum computing respondents, 58 quantum sensing respondents), PitchBook venture capital "
+         "data, Minesoft Origin patent data, and QURECA government funding data.",
+         ["8,261 new global quantum job openings in 2025 (+11%)", "16,482 global pure-play workforce (+14%)",
+          "U.S.: 3,002 new openings, 4,401 pure-play workers"],
+         "https://quantumconsortium.org/publication/2026-state-of-the-global-quantum-industry-report/", TEAL),
     ]
 
     for title, desc, notes, url, color in sources:
@@ -6293,6 +6326,39 @@ if sub_choice == "Workforce Baseline Analysis":
             )
 
     st.markdown("---")
+    section_header("For Context: What Roles Make Up the Global Quantum Workforce?", "Global industry context, not local data")
+    callout(
+        "The data above is South Side-specific (ACS 2023). The breakdown below is different: it's the global "
+        "pure-play quantum industry's workforce composition (QED-C 2026), included only to show what kinds of "
+        "roles are actually growing in this field. It is not a direct map onto South Side entry-level roles, "
+        "but it is a useful corrective to the assumption that quantum careers are purely technical."
+    )
+    role_comp = pd.DataFrame([
+        {"role": "Engineering", "pct": 32.7},
+        {"role": "Operations", "pct": 14.0},
+        {"role": "Business Development", "pct": 13.0},
+        {"role": "Other (Program Mgmt, QA, Finance, Consulting, Marketing, etc.)", "pct": 12.5},
+        {"role": "Research", "pct": 8.7},
+        {"role": "Sales", "pct": 6.2},
+        {"role": "Information Technology", "pct": 3.0},
+    ]).sort_values("pct")
+    fig_roles = px.bar(
+        role_comp, x="pct", y="role", orientation="h",
+        color_discrete_sequence=[TEAL], text="pct",
+        labels={"pct": "Share of global pure-play quantum workforce (%)", "role": ""},
+        title="Global quantum industry workforce by role (QED-C 2026)"
+    )
+    fig_roles.update_traces(texttemplate="%{text:.1f}%", textposition="outside")
+    fig_roles.update_layout(height=340, margin=dict(l=10, r=10, t=40, b=10),
+                             plot_bgcolor="white", paper_bgcolor="white", font_color=MGRAY)
+    st.plotly_chart(fig_roles, use_container_width=True)
+    st.caption(
+        "Note: 'Other' spans 22 additional functions per QED-C's methodology. Engineering remains the largest "
+        "single category, but more than half of all roles are non-engineering, business development, operations, "
+        "sales, and other functions. Source: QED-C, State of the Global Quantum Industry 2026."
+    )
+
+    st.markdown("---")
     section_header("Occupation Breakdown: Study Areas vs. Comparison Communities")
 
     # Stacked bar comparing all communities across occupation types
@@ -6800,18 +6866,23 @@ if sub_choice == "Latest Developments":
             "date": "April 28-29, 2026",
             "title": "IBM FutureNow Chicago: 750 Jobs + 'Moonshot' Apprenticeship Program",
             "summary": (
-                "IBM announced 750 full-time jobs at IQMP's Quantum Works workforce center "
-                "(opening 2028) in exchange for $19M in state income tax credits. "
-                "Job breakdown: 250 app developers, 150 software developers, 80 data analysts, "
-                "plus technical leaders and administrative roles. "
+                "IBM signed a contract with the State of Illinois to create 750 full-time jobs by the end of 2030, "
+                "housed at IQMP's Quantum Works workforce center (the building itself is expected to open in 2028), "
+                "in exchange for an estimated $19M in state income tax credits. "
+                "State-specified job breakdown: at least 250 app developers, 150 software developers, "
+                "100 account technical leaders, 80 data analysts, and 20 corporate positions. "
                 "IBM also announced the 'Moonshot' paid City Colleges apprenticeship program "
-                "(launching next academic year, 5-year implementation) plus internships through "
-                "Chicago State University and Southern Illinois University Edwardsville."
+                "(launching next academic year, 5-year implementation, ~500 apprentices total), with IBM committing "
+                "to hire qualified graduates for up to 180 of the full-time positions above, plus internships through "
+                "Chicago State University and Southern Illinois University Edwardsville. "
+                "Forbes has since covered the City Colleges partnership directly; per IBM/IQMP's own account, "
+                "Moonshot spans IT, AI, cybersecurity, data science, and quantum computing, not quantum roles alone, "
+                "explicitly framed as reaching students who live in the surrounding communities."
             ),
             "relevance": (
                 "The Moonshot apprenticeship program is a direct pipeline from City Colleges — "
-                "including Olive Harvey — into IQMP careers. "
-                "Chicago WHPC's HPC on-ramp prepares South Side residents for exactly this pathway."
+                "including Olive Harvey — into IQMP careers, and explicitly targets surrounding-community residents. "
+                "Chicago WHPC's foundational on-ramp prepares South Side residents for exactly this pathway."
             ),
             "color": NAVY,
             "tag": "Jobs + Apprenticeships",
