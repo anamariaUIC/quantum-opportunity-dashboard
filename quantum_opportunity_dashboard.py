@@ -4751,7 +4751,15 @@ if sub_choice == "Emerging Workforce Roles":
     section_header("Emerging Workforce Roles",
                    "The quantum ecosystem needs people at every education level — not just PhDs.")
 
-    st.caption("Sources: IBM FutureNow Chicago (2026), IQMP workforce projections, CQE employer analysis 2024, BLS Standard Occupational Classifications.")
+    callout(
+        "Independent confirmation of this from outside our own ecosystem: The Quantum Insider's 2026 industry "
+        "salary survey found that a PhD increases earning potential and access to research-focused roles, but "
+        "isn't strictly required, their survey found Master's degree holders with strong software or hardware "
+        "backgrounds regularly land roles as quantum software engineers, hardware engineers, and applications "
+        "scientists. The roles below go further still, several accessible well below a Master's degree."
+    )
+
+    st.caption("Sources: IBM FutureNow Chicago (2026), IQMP workforce projections, CQE employer analysis 2024, BLS Standard Occupational Classifications, The Quantum Insider salary survey (May 2026, Quantum Technical Writer role).")
 
     roles = {
         "Computing and Data": {
@@ -4787,6 +4795,7 @@ if sub_choice == "Emerging Workforce Roles":
                 ("Program Manager", "BS", "Coordinate complex research and technology projects across institutions.", "MBA programs, PMP certification"),
                 ("Workforce Coordinator", "BS / Certificate", "Connect communities to technology career pathways. Chicago WHPC trains this role directly.", "Chicago WHPC program"),
                 ("Technical Sales / Customer Success", "BS", "Bridge technical products and customer needs for quantum and HPC companies.", "Business + technical background"),
+                ("Quantum Technical Writer", "BS", "Translate complex quantum concepts into documentation, tutorials, and educational content for developers and non-technical audiences. Degree doesn't need to be quantum-specific, physics, computer science, or technical writing all qualify. Lower starting pay than deep technical roles, but a genuinely accessible entry point into the industry.", "Science communication or technical writing background"),
             ]
         },
     }
