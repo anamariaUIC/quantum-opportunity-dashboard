@@ -201,6 +201,8 @@ ECOSYSTEM_ASSETS = pd.DataFrame([
     {"org": "IQMP", "type": "Infrastructure", "lat": 41.737, "lon": -87.545, "focus": "Quantum & microelectronics campus", "community_access": "None yet", "has_community_nav": False},
     {"org": "IBM FutureNow Chicago", "type": "Industry", "lat": 41.737, "lon": -87.545, "focus": "750-job hub, housed in IQMP's Quantum Works building", "community_access": "None yet", "has_community_nav": False},
     {"org": "Infleqtion (Chicago Quantum Innovation Center)", "type": "Industry", "lat": 41.8788, "lon": -87.6365, "focus": "Neutral-atom quantum computing; ~25 local employees; future IQMP tenant", "community_access": "None yet", "has_community_nav": False},
+    {"org": "Ability Engineering Technology", "type": "Industry", "lat": 41.737, "lon": -87.545, "focus": "IQMP tenant, welcomed to the Park per IQMP's own August 2026 newsletter", "community_access": "None yet", "has_community_nav": False},
+    {"org": "Zero Point Cryogenics", "type": "Industry", "lat": 41.737, "lon": -87.545, "focus": "IQMP tenant, cryogenic systems; welcomed to the Park per IQMP's own August 2026 newsletter", "community_access": "None yet", "has_community_nav": False},
     {"org": "Hyde Park Labs", "type": "Infrastructure", "lat": 41.7996, "lon": -87.5865, "focus": "South Side commercial R&D lab (5207 S. Harper Ave.); will house IBM's Quantum System Two and UChicago Science Incubator", "community_access": "Limited", "has_community_nav": False},
     {"org": "Chicago Quantum Exchange", "type": "Research Hub", "lat": 41.789, "lon": -87.600, "focus": "Ecosystem coordination, education", "community_access": "Limited", "has_community_nav": False},
     {"org": "Argonne National Lab", "type": "National Lab", "lat": 41.716, "lon": -87.979, "focus": "Quantum research, computing", "community_access": "Limited", "has_community_nav": False},
@@ -1341,6 +1343,7 @@ all_pages_mobile = [
     "Workforce Baseline Analysis",
     "Why HPC?",
     "Quantum Skills Map",
+    "Quantum Dictionary",
     "Quantum Learning Resources",
     "Pathway Ladder",
     "Program Architecture",
@@ -1352,6 +1355,7 @@ all_pages_mobile = [
     "Growth Roadmap",
     "What Success Looks Like",
     "Illinois Alignment",
+    "Myth vs. Fact: Understanding IQMP",
     "Stakeholder Map Overview",
     "Public Value Framework",
     "Launch Status",
@@ -1480,9 +1484,11 @@ if sub_choice == "Workforce Bridge":
     with col1:
         st.markdown(f"""
         Illinois is building one of the most significant quantum technology ecosystems in the world.
-        IQMP - located on the former U.S. Steel South Works site on the South Side lakefront - is
-        projected to generate **up to $80 billion** in regional economic impact by 2035.
-        IBM alone has committed **750 jobs and 500 apprenticeships** at the site.
+        IQMP - a 128-acre campus located on the former U.S. Steel South Works site on the South Side
+        lakefront - is projected to generate **up to $80 billion** in regional economic impact by 2035.
+        IBM alone has committed **750 jobs and 500 apprenticeships** at the site. Per IQMP's own CEO,
+        IQMP is not a data center and will not house one onsite, it's purpose-built for quantum computing
+        and microelectronics research and manufacturing.
 
         At the same time, a growing ecosystem of awareness programs is reaching South Side
         students and educators: CPS's Chi-Craft competition, DPI's Demystifying Quantum
@@ -1629,6 +1635,7 @@ if sub_choice == "Overview":
             ("Community profiles", "South Side neighborhood-level data.", "Community Profiles"),
             ("Workforce baseline", "Where the talent pipeline stands today.", "Workforce Baseline Analysis"),
             ("Skills map", "What the industry needs, who provides it.", "Quantum Skills Map"),
+            ("Quantum dictionary", "The vocabulary, organized by what it explains.", "Quantum Dictionary"),
             ("South Side strengths and assets", "Existing STEM talent and institutional assets.", "South Side Strengths and Assets"),
             ("Geographic proximity", "How close residents actually are to IQMP.", "Geographic Proximity"),
             ("Community opportunity landscape", "Observable indicators, unweighted.", "Community Opportunity Landscape"),
@@ -1637,6 +1644,7 @@ if sub_choice == "Overview":
         ("Ecosystem, methodology, and limits", GOLD, [
             ("Building the ecosystem", "Every institutional layer, mapped.", "Building the Ecosystem"),
             ("Illinois alignment", "How this fits the state's quantum strategy.", "Illinois Alignment"),
+            ("Myth vs. fact: understanding IQMP", "Straight answers, sourced from IQMP leadership.", "Myth vs. Fact: Understanding IQMP"),
             ("Stakeholder map overview", "The six-sector regional map, summarized.", "Stakeholder Map Overview"),
             ("Public value framework", "The public-interest case for this work.", "Public Value Framework"),
             ("Methodology and data sources", "Where every number in this platform comes from.", "Methodology and Data Sources"),
@@ -2834,13 +2842,132 @@ if sub_choice == "Quantum Skills Map":
     )
 
 
-# TAB 5: QUANTUM OPPORTUNITY INDEX
 # ══════════════════════════════════════════════════════════════════════════════
+# QUANTUM DICTIONARY
+# ══════════════════════════════════════════════════════════════════════════════
+if sub_choice == "Quantum Dictionary":
+    section_header("Quantum Dictionary",
+                   "The vocabulary of quantum technology, organized by what it actually explains, not alphabetically.")
+    callout(
+        "Base terms and definitions adapted from IQMP's own Quantum Dictionary, reorganized here into categories "
+        "so related concepts sit together, and cross-referenced to where these ideas actually show up elsewhere "
+        "on this platform. A handful of terms IQMP's version doesn't include, but that come up constantly across "
+        "this platform's own content, are added at the end."
+    )
 
-# ══════════════════════════════════════════════════════════════════════════════
-# QUANTUM LEARNING RESOURCES
-# ══════════════════════════════════════════════════════════════════════════════
-if sub_choice == "Quantum Learning Resources":
+    def dict_term(term, definition, xref=None):
+        st.markdown(
+            f"<div style='background:white;border-left:4px solid {TEAL};border-radius:6px;padding:10px 16px;margin-bottom:10px'>"
+            f"<div style='font-weight:700;color:{NAVY};font-size:0.98rem'>{term}</div>"
+            f"<div style='font-size:0.88rem;color:#333;margin-top:3px'>{definition}</div>"
+            + (f"<div style='font-size:0.78rem;color:{TEAL};margin-top:5px;font-style:italic'>{xref}</div>" if xref else "")
+            + "</div>",
+            unsafe_allow_html=True
+        )
+
+    st.markdown("### The Basics")
+    dict_term("Classical (or Conventional) Computing",
+              "The traditional way computers process information, using electrical signals represented as 0s and "
+              "1s to carry out tasks step by step. The foundation of laptops and smartphones, and the baseline "
+              "against which quantum computing's capabilities are measured.")
+    dict_term("Qubit (quantum bit)",
+              "The basic unit of information in quantum computing, equivalent to a classical bit. While a bit is "
+              "only ever 0 or 1, a qubit can exist in a combination of both at once (superposition), letting "
+              "quantum computers process many possibilities simultaneously.",
+              "See Quantum Skills Map for how this connects to real credential pathways.")
+    dict_term("Superposition",
+              "The principle that a particle can exist in multiple states at the same time. This lets quantum "
+              "computers process a vast number of possibilities simultaneously, part of why they may outperform "
+              "classical computers on certain problems.")
+    dict_term("Entanglement (Quantum Entanglement)",
+              "A phenomenon where two quantum particles become linked so that a change to one instantly affects "
+              "the other, no matter the distance between them. One of the most distinctive features of quantum "
+              "physics, and a key driver of quantum computing's potential.")
+    dict_term("Quantum Mechanics",
+              "The branch of physics studying the smallest building blocks of the universe, matter, energy, and "
+              "light, and how they interact. The underlying science behind lasers, transistors, and medical "
+              "imaging, technologies already in everyday use.")
+    dict_term("Quantum Computing",
+              "Uses the principles of quantum mechanics to solve certain complex problems faster than traditional "
+              "computers, using qubits instead of classical bits.")
+    dict_term("Quantum Algorithm",
+              "A set of instructions telling a quantum computer how to approach a problem and arrive at a "
+              "solution, the software side of quantum computing.")
+
+    st.markdown("### Hardware Approaches")
+    dict_term("Superconducting Circuits",
+              "Circuits made from metals that, when cooled to near absolute zero, lose all electrical resistance. "
+              "Engineered to behave like artificial atoms, with controllable energy levels that function as qubits. "
+              "Used by IBM, IQM, and Rigetti.")
+    dict_term("Trapped Ions",
+              "Charged atoms held in place with electric fields and controlled by precisely tuned lasers. Used by "
+              "IonQ and Quantinuum.")
+    dict_term("Neutral Atoms",
+              "Atoms with no electric charge, stable and controllable, used as qubits by companies like QuEra and "
+              "Pasqal.")
+    dict_term("Electron Spins in Silicon",
+              "Uses the intrinsic \"spin\" of electrons as qubits, leveraging existing industrial chip-fabrication "
+              "processes, a promising path toward manufacturable quantum hardware.")
+    dict_term("Photons",
+              "The smallest units of light. Used as a basis for photonic quantum computing (PsiQuantum's approach, "
+              "notably able to operate at room temperature, no dilution refrigerator required).",
+              "See the Myth vs. Fact page for how this specifically differs from data-center cooling assumptions.")
+    dict_term("Silicon Transistors",
+              "Semiconductor devices that control or amplify electrical current, the fundamental building block of "
+              "modern electronic circuits, present in nearly all of today's digital technology.")
+    dict_term("Microelectronics",
+              "The study, manufacture, and use of very small electronic components, most notably microchips. In "
+              "the quantum space, an enabling technology that helps build the hardware quantum computers depend on.")
+
+    st.markdown("### Making It Work")
+    dict_term("Cryotechnology",
+              "The study and application of extremely low temperatures, near \"absolute zero.\" Most quantum "
+              "computers need ultra-cold conditions, since even slight heat introduces errors.")
+    dict_term("Cryoplant",
+              "An industrial facility that cools gases like helium to extremely low temperatures, sometimes "
+              "converting the gas to liquid for storage and transport. Serves energy, manufacturing, and "
+              "healthcare industries too, and is critical infrastructure for large-scale quantum computing.",
+              "See Emerging Workforce Roles: Cryogenic Technician is one of the most accessible entry points into this ecosystem, HS diploma or associate's degree, no PhD required.")
+    dict_term("Noise",
+              "Unwanted disturbances that interfere with quantum systems and introduce computational errors. One "
+              "of the field's most significant engineering challenges, since even minor disruptions destabilize qubits.")
+    dict_term("Fault Tolerance",
+              "A system's ability to detect and correct hardware or software failures. A fault-tolerant quantum "
+              "computer can detect and correct qubit errors in real time, critical as the field moves toward "
+              "real-world deployment.")
+    dict_term("Scale-up",
+              "The process of growing a system from a small, controlled prototype into a full-scale, real-world "
+              "operation. One of quantum computing's defining challenges: moving from small prototypes to systems "
+              "powerful and stable enough for commercial use.")
+
+    st.markdown("### The Business Side")
+    dict_term("End Users",
+              "The individuals or organizations that ultimately use a technology in real-world situations, "
+              "essentially, the customers. In quantum, end users apply the technology to solve problems or "
+              "improve operations in their own industries.")
+
+    st.markdown("### Terms Used Throughout This Platform, Not in IQMP's Own Dictionary")
+    st.caption("Added here because they come up constantly across this platform's other pages.")
+    dict_term("HPC (High-Performance Computing)",
+              "The classical supercomputing layer underneath both AI training and quantum-classical hybrid work. "
+              "Quantum processors are increasingly imagined as specialized accelerators plugged into HPC systems, "
+              "similar to how GPUs accelerate AI today.",
+              "See Why HPC? for the full explanation of why this platform is built around HPC as the on-ramp.")
+    dict_term("QPU (Quantum Processing Unit)",
+              "The physical quantum hardware itself, the chip holding and manipulating qubits. A QPU cannot "
+              "operate alone; it always needs a classical computer alongside it to send instructions and read out results.")
+    dict_term("Simulator",
+              "Software that mimics quantum behavior on a regular computer. Most quantum programming happens on "
+              "simulators, not real QPUs, since real hardware access is limited, often queued, and often costs money.")
+    dict_term("Decoherence",
+              "The loss or scrambling of a qubit's information due to noise. Exactly why testing on a simulator "
+              "first matters, confirming a program's logic is correct before facing real hardware imperfections.")
+    dict_term("NISQ (Noisy Intermediate-Scale Quantum)",
+              "The current era of quantum computing: hardware that is real and useful but still limited and "
+              "error-prone. Most practical quantum programs today are hybrid, splitting work between classical "
+              "and quantum systems, because of this.")
+
+
     section_header(
         "Quantum Learning Resources",
         "Free, self-directed resources organized by difficulty level — for exploring quantum computing before or alongside a formal program."
@@ -5429,7 +5556,13 @@ if sub_choice == "Illinois Alignment":
         ("Illinois Quantum and Microelectronics Park (IQMP)", NAVY,
          "IQMP is the nation's first campus purpose-built for quantum commercialization, "
          "built on the former US Steel South Works site on Chicago's South Side. "
-         "The state has invested $500M+ in IQMP infrastructure.",
+         "The state has invested $500M+ in IQMP infrastructure. Led by CEO Dr. Harley Johnson and Managing "
+         "Director Dr. Rashid Bashir (also Dean, UIUC Grainger College of Engineering). On environmental impact, "
+         "per IQMP's own CEO: the campus will not use materials that pollute air, water, or soil; anchor tenant "
+         "PsiQuantum will produce essentially zero emissions; and water comes from Chicago's municipal system, "
+         "not Lake Michigan or the Calumet River, circulating in a closed-loop system that is never discharged. "
+         "Genuinely relevant given how often environmental and water-use concerns come up in community "
+         "conversations about the Park.",
          "Quantum x HPC Pathways builds community awareness and workforce readiness for IQMP's eventual hiring needs. "
          "Program participants are geographically proximate to IQMP and targeted for early pipeline development.",
          ["Community trust building for IQMP", "Local talent pipeline development", "Equity metrics for IQMP community benefits reporting"]),
@@ -5722,6 +5855,13 @@ if sub_choice == "Methodology and Data Sources":
          ["8,261 new global quantum job openings in 2025 (+11%)", "16,482 global pure-play workforce (+14%)",
           "U.S.: 3,002 new openings, 4,401 pure-play workers"],
          "https://quantumconsortium.org/publication/2026-state-of-the-global-quantum-industry-report/", TEAL),
+        ("IQMP newsletter, \"A Note from the IQMP CEO,\" August 20, 2026",
+         "First-party source direct from IQMP leadership. Used for the PsiQuantum $250K South Chicago STEM "
+         "investment, the 128-acre campus figure, the explicit 'not a data center' clarification, environmental "
+         "and water-use details, tenant list additions (Ability Engineering Technology, Zero Point Cryogenics), "
+         "and leadership names (CEO Dr. Harley Johnson, Managing Director Dr. Rashid Bashir).",
+         ["First-party organizational source", "Cross-referenced against Lawndale News and Forbes coverage cited within it"],
+         "https://iqmp.org", GOLD),
     ]
 
     for title, desc, notes, url, color in sources:
@@ -5827,9 +5967,126 @@ if sub_choice == "Methodology and Data Sources":
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# STAKEHOLDER MAP OVERVIEW
+# MYTH VS. FACT: UNDERSTANDING IQMP
 # ══════════════════════════════════════════════════════════════════════════════
-if sub_choice == "Stakeholder Map Overview":
+if sub_choice == "Myth vs. Fact: Understanding IQMP":
+    section_header("Myth vs. Fact: Understanding IQMP",
+                   "Straight answers to the questions we hear most from South Side neighbors, sourced directly "
+                   "from IQMP leadership.")
+    callout(
+        "This page draws on IQMP CEO Dr. Harley Johnson's own August 2026 \"Setting the Record Straight\" Q&A, "
+        "reorganized here as direct myth-vs-fact pairs with real comparison points, since a plain Q&A format "
+        "makes it easy for a specific claim to get lost in prose. Every fact below is IQMP's own stated position, "
+        "not Chicago WHPC's independent verification, treat this as what IQMP says about itself, and bring your "
+        "own questions to them directly for anything unresolved here."
+    )
+
+    def myth_fact(myth, fact, extra=None):
+        st.markdown(
+            f"<div style='background:white;border:1.5px solid #ddd;border-radius:10px;padding:16px 20px;margin-bottom:14px'>"
+            f"<div style='display:flex;gap:10px;margin-bottom:8px'>"
+            f"<span style='background:{RED};color:white;font-weight:700;font-size:0.75rem;border-radius:6px;"
+            f"padding:3px 10px;white-space:nowrap'>MYTH</span>"
+            f"<span style='font-weight:600;color:{NAVY}'>{myth}</span></div>"
+            f"<div style='display:flex;gap:10px'>"
+            f"<span style='background:{GREEN};color:white;font-weight:700;font-size:0.75rem;border-radius:6px;"
+            f"padding:3px 10px;white-space:nowrap'>FACT</span>"
+            f"<span style='color:#333'>{fact}</span></div>"
+            + (f"<div style='margin-top:8px;padding-top:8px;border-top:1px solid #eee;font-size:0.85rem;color:{MGRAY}'>{extra}</div>" if extra else "")
+            + "</div>",
+            unsafe_allow_html=True
+        )
+
+    st.markdown("### The Data Center Question")
+    st.caption(
+        "IQMP's own Q&A addresses this directly but in prose. Here it is as a side-by-side comparison instead, "
+        "the same one used in Chicago WHPC's CPS teacher curriculum, because a table makes the distinction "
+        "immediately visible in a way a paragraph doesn't."
+    )
+    dc_table = pd.DataFrame([
+        {"": "What's inside", "Classical Data Center": "Racks of classical computer chips (CPUs/GPUs)",
+         "IQMP / Quantum Facility": "QPUs, physically small, surrounded by complex support systems"},
+        {"": "Operating conditions", "Classical Data Center": "Room temperature, air/liquid cooling",
+         "IQMP / Quantum Facility": "Most approaches need extreme cooling or precision lasers; PsiQuantum's photonic approach is a notable exception, room temperature"},
+        {"": "Water use", "Classical Data Center": "Often very high, a major industry concern nationally",
+         "IQMP / Quantum Facility": "Minimal, more comparable to a hospital; municipal supply only, closed-loop, never discharged"},
+        {"": "Energy source", "Classical Data Center": "Grid electricity, often fossil-fuel-heavy depending on region",
+         "IQMP / Quantum Facility": "PsiQuantum: 100% carbon-free electricity via a dedicated onsite substation"},
+        {"": "Does it work alone?", "Classical Data Center": "Yes, self-contained",
+         "IQMP / Quantum Facility": "No, always needs classical computers alongside it"},
+    ])
+    st.table(dc_table.set_index(""))
+    st.caption("Source: IQMP CEO Dr. Harley Johnson, \"Setting the Record Straight\" Q&A, August 2026.")
+
+    st.markdown("### Environment and Infrastructure")
+    myth_fact(
+        "IQMP will pollute the air, water, or soil in the surrounding neighborhood.",
+        "IQMP will not use materials that pollute air, water, or soil. Anchor tenant PsiQuantum will produce "
+        "essentially zero emissions.",
+    )
+    myth_fact(
+        "A project this size must run on fossil fuels, coal, or gas.",
+        "PsiQuantum plans to use 100% carbon-free electricity during normal operations, no coal, no gas. "
+        "A dedicated onsite electrical substation, fueled entirely by renewable energy, will serve PsiQuantum's "
+        "power needs without drawing from or sharing electricity with the surrounding community.",
+        extra="The other two planned buildings (Quantum Works and the National Quantum Facility) are still in "
+              "conceptual design; renewable energy strategies for those are still being evaluated, not yet finalized."
+    )
+    myth_fact(
+        "Given its location on the lakefront, IQMP will draw from or discharge into Lake Michigan or the Calumet River.",
+        "IQMP will not draw water from or discharge into Lake Michigan or the Calumet River. Water comes from "
+        "Chicago's municipal system, the same source serving homes and businesses citywide, and circulates in a "
+        "closed-loop system that is never discharged. Water use is described as minimal, more comparable to a "
+        "hospital than an industrial facility.",
+    )
+
+    st.markdown("### Security and Purpose")
+    myth_fact(
+        "DARPA's involvement means IQMP is a military or weapons-development facility.",
+        "DARPA is not testing weapons or running defense programs at IQMP. Through the Illinois-DARPA Quantum "
+        "Proving Ground, DARPA is helping test, evaluate, and create prototype quantum computers, aimed at "
+        "real-world economic and commercial benefit, not weapons development.",
+    )
+    myth_fact(
+        "IQMP is a corporate-controlled facility, not a public or educational one.",
+        "IQMP is led by universities across Illinois and backed by the University of Illinois, which is investing "
+        "more capital and operating expense into the project than federal sources. Senior leaders are educators, "
+        "many from the University of Illinois System.",
+        extra="CEO: Dr. Harley Johnson. Managing Director: Dr. Rashid Bashir, also Dean of UIUC's Grainger College "
+              "of Engineering."
+    )
+
+    st.markdown("### Jobs and Access")
+    myth_fact(
+        "IQMP jobs will only be available to people with PhDs.",
+        "IQMP will need a wide range of roles: system operators, cryogenic plant technicians, site managers, "
+        "logistics workers, supply chain staff, HR, security, and program managers, alongside scientists and "
+        "engineers. Tenants have committed to over 1,000 jobs at the Park to date, a number expected to keep growing.",
+    )
+    myth_fact(
+        "This is a distant project with no real path for South Side residents to actually get involved.",
+        "PsiQuantum's community investment has grown from an initial $10,000 donation to Bowen High School "
+        "(virtual reality equipment, robotics, rockets, drones for engineering and science classes) to a total "
+        "commitment of $250,000 across South Chicago schools, higher education institutions, and community "
+        "organizations. IQMP also partners directly with CPS on quantum lesson plans, runs Fermilab's Saturday "
+        "Morning Quantum (its second cohort graduated Spring 2026), and Related Midwest's new Quantum Shore "
+        "Groundbreakers program offers paid summer positions for high school juniors and seniors exploring "
+        "development, architecture, and construction careers.",
+        extra="Also active: a Science Olympiad partnership with six elementary and high schools in the IQMP "
+              "community, and Chicago State University's new Quantum Information Science & Engineering minor, "
+              "paired with a Grainger College of Engineering pathway to a Master's in Engineering for physics students."
+    )
+
+    st.markdown("---")
+    st.caption(
+        "Have a question this page doesn't cover? IQMP's own team welcomes direct questions, visit iqmp.org. "
+        "Chicago WHPC is an independent nonprofit, not a spokesperson for IQMP, and cannot answer on their behalf."
+    )
+
+
+
+
+
     section_header("Stakeholder Map",
                    "The quantum ecosystem in Illinois spans six sectors. Chicago WHPC connects the civic layer to all others.")
 
@@ -6861,6 +7118,27 @@ if sub_choice == "Latest Developments":
             "tag": "Federal Investment",
             "url": "https://www.hpherald.com/evening_digest/trump-administration-takes-equity-stakes-in-four-illinois-quantum-campus-companies/article_d6a85bd7-659d-46ae-bf78-c8aee1a2c503.html",
             "source": "Highland Park Herald, June 20, 2026"
+        },
+        {
+            "date": "August 2026",
+            "title": "PsiQuantum Commits $250,000 to South Chicago Schools and STEM Programs",
+            "summary": (
+                "PsiQuantum, IQMP's photonic quantum computing anchor tenant, announced a $250,000 philanthropic "
+                "investment in schools, higher education institutions, and community organizations in South Chicago "
+                "and the communities surrounding the Park. Per IQMP's own newsletter, the investment supports STEM "
+                "curriculum, classroom technology, educator training, and hands-on learning opportunities. "
+                "Covered directly by Lawndale News."
+            ),
+            "relevance": (
+                "This is a direct, dollar-figure commitment from the same anchor tenant this platform already "
+                "features prominently, specifically targeted at the South Chicago community this platform serves. "
+                "Worth exploring whether Chicago WHPC's CPS teacher workshop or Winter 2026 cohort could align with "
+                "or draw on this investment, rather than operating as a fully separate track."
+            ),
+            "color": GOLD,
+            "tag": "Community Investment",
+            "url": "https://iqmp.org",
+            "source": "IQMP newsletter, August 20, 2026, citing Lawndale News"
         },
         {
             "date": "April 28-29, 2026",
