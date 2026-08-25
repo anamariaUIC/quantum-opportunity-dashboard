@@ -1484,7 +1484,8 @@ if sub_choice == "Workforce Bridge":
     with col1:
         st.markdown(f"""
         Illinois is building one of the most significant quantum technology ecosystems in the world.
-        IQMP - a 128-acre campus located on the former U.S. Steel South Works site on the South Side
+        IQMP - a 128-acre campus ready for immediate development, with more than 300 additional acres
+        available for future growth, located on the former U.S. Steel South Works site on the South Side
         lakefront - is projected to generate **up to $80 billion** in regional economic impact by 2035.
         IBM alone has committed **750 jobs and 500 apprenticeships** at the site. Per IQMP's own CEO,
         IQMP is not a data center and will not house one onsite, it's purpose-built for quantum computing
@@ -1982,6 +1983,16 @@ if sub_choice == "Why Now?":
         "Source: Quantum Economic Development Consortium (QED-C), State of the Global Quantum Industry 2026: "
         "Industry Overview & Methodology, managed by SRI International, April 2026."
     )
+
+    callout(
+        "The regional $80B figure itself is worth putting in scale: the Illinois-Wisconsin-Indiana region's quantum "
+        "economic impact today is roughly $50 million, growing to as much as $80 billion by 2035, roughly 1,600x "
+        "growth. Globally, total quantum economic value is projected to grow from about $3 billion today to "
+        "nearly $1 trillion by 2035. Quantum tech providers (companies building the technology, not just using "
+        "it) are expected to drive up to $60B of the region's $80B, capturing as much as 30% of that entire "
+        "global market, a genuinely ambitious regional share, not a rounding error."
+    )
+    st.caption("Source: Boston Consulting Group analysis for the Chicago Quantum Exchange, 2024 (chicagoquantum.org/economicimpactdata).")
 
     st.markdown("---")
 
@@ -2968,6 +2979,7 @@ if sub_choice == "Quantum Dictionary":
               "and quantum systems, because of this.")
 
 
+if sub_choice == "Quantum Learning Resources":
     section_header(
         "Quantum Learning Resources",
         "Free, self-directed resources organized by difficulty level — for exploring quantum computing before or alongside a formal program."
@@ -3014,6 +3026,11 @@ if sub_choice == "Quantum Dictionary":
                 ("IQM Academy", "Free, structured curriculum from Beginner through Advanced (9 modules): quantum foundations, algorithms, a dedicated Qrisp-on-IQM module, circuit design, error correction, and a glossary. Modules link out to hands-on practice on IQM Resonance.", "https://www.iqmacademy.com/"),
                 ("Qiskit Global Summer School (IBM)", "Free, annual, 2-week virtual program with lectures, hands-on Qiskit labs, and a dedicated beginners-only track (no prior experience needed). The 2026 session (July 13-24) has closed; sign up for notifications ahead of next year's session.", "https://www.ibm.com/quantum/blog/qiskit-summer-school-2026"),
                 ("C2QA Quantum Computing Summer School (Brookhaven National Lab)", "Free, DOE-funded virtual program teaching Qiskit fundamentals, no cost to apply or attend, no prior quantum, math, or programming background required. Application windows typically open early in the year for a summer session.", "https://www.bnl.gov/quantumcenter/student-opportunities.php"),
+                ("DelftX: The Quantum Internet and Quantum Computers, How Will They Change the World (QuTech/TU Delft)", "Free, self-paced, ~6 weeks at 6-8 hrs/week. No quantum background needed, just genuine curiosity. A broad, accessible introduction before the more technical DelftX courses in the tiers below.", "https://www.edx.org/learn/quantum-computing/delft-university-of-technology-the-quantum-internet-and-quantum-computers-how-will-they-change-the-world"),
+                ("IBM: The Cybersecurity Implications of Quantum Computing", "Free, just 1 hour, no background needed. A short, accessible companion to the encryption content in this platform's own CPS teacher curriculum.", "https://www.ibm.com/training/course/the-cybersecurity-implications-of-quantum-computing-SLA7206"),
+                ("Quantum Rings: Quantum101", "Free, self-paced video course, no background needed. Remains free even after its initial 14-week run.", "https://www.quantumrings.com/quantum101"),
+                ("Microsoft Quantum: Explore Concepts", "Free reference webpage, no background needed, quantum concepts explained in plain language.", "https://quantum.microsoft.com/en-us/explore/concepts"),
+                ("QuTube.nl", "Free webpage, no background needed, quantum computing explained visually.", "https://www.qutube.nl/"),
             ],
         },
         {
@@ -3024,6 +3041,8 @@ if sub_choice == "Quantum Dictionary":
                 ("Workbench Quantum Katas (PsiQuantum)", "Free, open-source (Apache-2.0) self-paced Jupyter notebook tutorials and coding problems, progressing from single-qubit basics through Grover's, QFT/QPE, Shor's algorithm, and quantum chemistry. Requires installing PsiQDK (free, see Software & Simulators above).", "https://github.com/PsiQ/workbench-quantum-katas"),
                 ("qBook (qBraid, Chicago-based)", "Free, structured, autograded interactive curriculum — runs in the browser via qBraid Lab, no install needed. Progresses from single-qubit gates and superposition through Deutsch-Jozsa, Grover's search, VQE, and QAOA. Used at 35+ universities.", "https://qbraid.com/qbook"),
                 ("DelftX: Fundamentals of Quantum Information (QuTech/TU Delft)", "Free, self-paced, ~4 weeks at 6-8 hrs/week. Quantum circuits, entanglement, teleportation, gate universality, NISQ devices. Assumes foundational quantum knowledge (e.g., completion of Getting Started/Beginner tiers above).", "https://www.edx.org/learn/quantum-computing/delft-university-of-technology-fundamentals-of-quantum-information"),
+                ("DelftX: The Hardware of a Quantum Computer (QuTech/TU Delft)", "Free, self-paced, ~6 weeks at 6-8 hrs/week. How real quantum hardware is actually built, the prerequisite course for the two Advanced-tier DelftX courses below.", "https://www.edx.org/learn/quantum-computing/delft-university-of-technology-the-hardware-of-a-quantum-computer"),
+                ("IBM: Practical Introduction to Quantum-Safe Cryptography", "Free, self-paced, includes provided pre-reading materials. Directly extends this platform's own CPS teacher curriculum content on post-quantum cryptography.", "https://learning.quantum.ibm.com/course/practical-introduction-to-quantum-safe-cryptography"),
                 ("IBM: Quantum Computing in Practice", "Free. Realistic use cases and best practices for running circuits on 100+ qubit processors.", "https://quantum.cloud.ibm.com/learning/courses/quantum-computing-in-practice"),
                 ("UChicago Professional: Quantum Science, Networking, and Communications", "A paid, 8-week instructor-led course (CQE-affiliated, taught by UIUC and UChicago faculty) — recommended background: bachelor's degree in a related field. 232 students enrolled since 2022. Worth comparing against the free SDKs and tutorials below first.", "https://professional.uchicago.edu/find-your-fit/courses/quantum-science-networking-and-communications"),
             ],
@@ -4759,7 +4778,34 @@ if sub_choice == "Emerging Workforce Roles":
         "scientists. The roles below go further still, several accessible well below a Master's degree."
     )
 
-    st.caption("Sources: IBM FutureNow Chicago (2026), IQMP workforce projections, CQE employer analysis 2024, BLS Standard Occupational Classifications, The Quantum Insider salary survey (May 2026, Quantum Technical Writer role).")
+    callout(
+        "The strongest evidence for this comes directly from the Chicago Quantum Exchange. CQE built a database "
+        "of 10,484 real quantum job postings (2018-2023, sourced from QED-C and Quantum Computing Report) and "
+        "found that 55% of quantum jobs in 2022-2023 required only a bachelor's degree, an associate's degree, "
+        "or no degree at all, only 14% required a Master's, 31% required a PhD. PhD requirements are actually "
+        "declining over time (about 35% of postings in 2021 versus about 29% in 2023), while bachelor's-level "
+        "requirements are rising (about 35% to about 38%). In the industry sector specifically, the most relevant "
+        "to this platform, 62-66% of jobs across 2021-2023 required a bachelor's degree or less, even more "
+        "accessible than the cross-sector average. Real example postings requiring only a bachelor's: Supply "
+        "Chain Manager at Rigetti, Principal System Architect at Microsoft Quantum, Lead Optical Engineer at "
+        "Honeywell/Quantinuum."
+    )
+
+    st.caption("Sources: IBM FutureNow Chicago (2026), IQMP workforce projections, CQE employer analysis 2024, BLS Standard Occupational Classifications, The Quantum Insider salary survey (May 2026, Quantum Technical Writer role), Chicago Quantum Exchange degree requirements study (chicagoquantum.org/degreereports, 2024).")
+
+    st.markdown(
+        f"<div style='background:{LGRAY};border-left:4px solid {NAVY};border-radius:6px;padding:14px 18px;margin:12px 0'>"
+        f"<div style='font-weight:700;color:{NAVY};margin-bottom:4px'>Want to see real openings right now?</div>"
+        f"<div style='font-size:0.9rem;color:#333'>"
+        f"CQE's <a href='https://jobs.chicagoquantum.org/jobs' target='_blank'>Talent Portal</a> is a large, active job "
+        f"board, 792+ open roles as of this writing, spanning the national and international quantum industry. "
+        f"Worth being upfront: it's not exclusively Chicago-based, and most listed roles skew toward senior and "
+        f"mid-senior positions requiring significant prior experience. But it has real filters by seniority, "
+        f"location, and salary, and it's worth checking specifically for the more accessible technician and "
+        f"support roles that do appear, rather than expecting mostly local, entry-level postings."
+        f"</div></div>",
+        unsafe_allow_html=True
+    )
 
     roles = {
         "Computing and Data": {
@@ -5577,6 +5623,11 @@ if sub_choice == "Illinois Alignment":
          ["Community trust building for IQMP", "Local talent pipeline development", "Equity metrics for IQMP community benefits reporting"]),
         ("Chicago Quantum Exchange (CQE) Workforce Mission", TEAL,
          "CQE leads two federal designations: an EDA Tech Hub (The Bloch) and an NSF Regional Innovation Engines development award. "
+         "The EDA announced an intent to award more than $30 million to The Bloch (July 2026), which unlocked additional "
+         "matched commitments from Illinois DCEO, University of Chicago, Infleqtion, IonQ, IBM, and Northwest Indiana's "
+         "One Region. Key Bloch partners also include the Illinois Manufacturing Excellence Center (IMEC). One named "
+         "Bloch project, Qreate, led by CQE, is building a shared quantum sensing testbed at Purdue Northwest plus "
+         "automation software through Infleqtion, aimed at transitioning Midwest quantum companies to scaled manufacturing. "
          "CQE's 2026 unified strategy explicitly calls for community-level workforce access programs.",
          "Quantum x HPC Pathways is the community-level implementation of what CQE's Advancing Together strategy calls for. "
          "Program data on South Side participation fills a gap CQE has identified in workforce research.",
@@ -5817,6 +5868,7 @@ if sub_choice == "Methodology and Data Sources":
          "Quantum workforce completions framework. First systematic mapping of quantum-relevant "
          "postsecondary completions in Illinois using CIP code analysis.",
          ["33,441 quantum-relevant completions in 2024", "171 CIP codes reviewed",
+          "+33% since 2018 (National Quantum Initiative Act), +60% over the full last decade",
           "Data developed with CQE, IQMP, and Illinois EDC Economic Research Center"],
          "https://www.istcoalition.org", GREEN),
         ("Boston Consulting Group / Chicago Quantum Exchange, 2024",
@@ -6096,6 +6148,7 @@ if sub_choice == "Myth vs. Fact: Understanding IQMP":
 
 
 
+if sub_choice == "Stakeholder Map Overview":
     section_header("Stakeholder Map",
                    "The quantum ecosystem in Illinois spans six sectors. Chicago WHPC connects the civic layer to all others.")
 
