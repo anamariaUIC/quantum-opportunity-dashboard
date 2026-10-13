@@ -211,6 +211,7 @@ ECOSYSTEM_ASSETS = pd.DataFrame([
     {"org": "Olive Harvey College", "type": "City College", "lat": 41.712, "lon": -87.591, "focus": "Hosts Fermilab's SMQ* program (10-week Saturday quantum program), IBM apprenticeship", "community_access": "Strong", "has_community_nav": False},
     {"org": "Chi-Craft (CPS)", "type": "Program", "lat": 41.838, "lon": -87.627, "focus": "CPS Applied Computer Science Team, in partnership with IQMP; annual Minecraft-based quantum competition", "community_access": "Strong", "has_community_nav": False},
     {"org": "DPI Demystifying Quantum (Discovery Partners Institute)", "type": "Program", "lat": 41.8788, "lon": -87.6359, "focus": "Separate from Chi-Craft; CPS teacher training workshop (~70 educators); HQ at 200 S. Wacker Dr.", "community_access": "Strong", "has_community_nav": False},
+    {"org": "Quantum Academy (NSF QuBBE, UChicago)", "type": "Program", "lat": 41.7886, "lon": -87.5987, "focus": "CPS high school science teacher RET; summer research experience at UChicago plus curriculum development; $9,000 stipend; UIC-affiliated coordinators", "community_access": "Strong", "has_community_nav": False},
     {"org": "Chicago WHPC", "type": "Bridge Org", "lat": 41.762, "lon": -87.568, "focus": "Community nav, HPC workshops, mentorship","community_access": "Strong","has_community_nav": True},
 ])
 
@@ -442,11 +443,37 @@ CREDENTIAL_DATA = pd.DataFrame([
                                   "Science & Engineering); paid internships; research and training starting at "
                                   "the high school level",
         "prerequisite":          "Not specified",
-        "target_group":          "High school students through bachelor's/master's level; IQMP educational partner",
+        "target_group":          "High school students through bachelor's/master's level; adult learners and career-changers; IQMP educational partner",
         "pathway_tags":          ["quantum", "hardware", "technician"],
         "south_side_accessible": True,
-        "source":                "iqmp.org/careers (primary, current); CSU is a designated IQMP educational partner "
-                                  "developing paid internships for IBM FutureNow Chicago",
+        "source":                "csu.edu/quantum (primary, current; Oct 2026 review); iqmp.org/careers (primary, current); "
+                                  "CSU is a designated IQMP educational partner developing paid internships for IBM FutureNow Chicago",
+        "url":                    "https://www.csu.edu/quantum/",
+    },
+    {
+        "program":               "Quantum Information Science & Engineering (QISE) Minor (Chicago State University)",
+        "provider":              "Chicago State University, Quantum Education, Science & Technology Center (CQuEST)",
+        "duration":              "Not specified",
+        "cost":                  "Not specified",
+        "credential_type":       "Undergraduate minor (combines hands-on training with theory; IQMP-designed curricula)",
+        "prerequisite":          "Not specified",
+        "target_group":          "Current and prospective CSU undergraduates; CSU students get priority access to IQMP research, internships, and mentoring",
+        "pathway_tags":          ["quantum", "hardware"],
+        "south_side_accessible": True,
+        "source":                "csu.edu/quantum (primary, current; Oct 2026 review). Course list, length, and cost not published on this page \u2014 directional only.",
+        "url":                    "https://www.csu.edu/quantum/",
+    },
+    {
+        "program":               "Mic2ExL Paid Internships (Chicagoland Partnership for Semiconductors and Microelectronics Experiential Learning)",
+        "provider":              "NSF-funded Mic2ExL project; Chicago State University is a partner",
+        "duration":              "Not specified",
+        "cost":                  "Paid internship (amount not published)",
+        "credential_type":       "Paid internship",
+        "prerequisite":          "Not specified",
+        "target_group":          "Adults age 18 and older, including adult learners and career-changers",
+        "pathway_tags":          ["technician", "hardware"],
+        "south_side_accessible": True,
+        "source":                "csu.edu/quantum (primary, current; Oct 2026 review). Eligibility beyond age 18+, duration, pay, and application process not published on this page \u2014 directional only; confirm with CQuEST (Dr. Valerie Goss, Center Director).",
         "url":                    "https://www.csu.edu/quantum/",
     },
     {
@@ -5684,7 +5711,7 @@ if sub_choice == "Illinois Alignment":
         "Research": (TEAL, ["Argonne National Laboratory", "Fermilab", "National Quantum Algorithm Center"]),
         "Universities": (GOLD, ["University of Chicago", "University of Illinois Chicago", "Northwestern University", "UIUC"]),
         "Industry": (GREEN, ["IBM Quantum", "PsiQuantum", "Infleqtion", "EeroQ", "Quantum Machines", "Diraq"]),
-        "Education": ("#8E44AD", ["Chicago Public Schools", "Discovery Partners Institute (DPI)", "City Colleges of Chicago", "Olive Harvey College", "Chicago State University"]),
+        "Education": ("#8E44AD", ["Chicago Public Schools", "Discovery Partners Institute (DPI)", "City Colleges of Chicago", "Olive Harvey College", "Chicago State University", "University of Chicago (NSF QuBBE)"]),
         "Civic Layer": (RED, ["Chicago WHPC", "South Side Libraries", "Community Organizations", "Park District"]),
     }
 
@@ -6159,7 +6186,7 @@ if sub_choice == "Stakeholder Map Overview":
         "Research": (TEAL, ["Argonne National Laboratory", "Fermilab", "National Quantum Algorithm Center"]),
         "Universities": (GOLD, ["University of Chicago", "University of Illinois Chicago", "Northwestern University", "UIUC"]),
         "Industry": (GREEN, ["IBM Quantum", "PsiQuantum", "Infleqtion", "EeroQ", "Quantum Machines", "Diraq"]),
-        "Education": ("#8E44AD", ["Chicago Public Schools", "Discovery Partners Institute (DPI)", "City Colleges of Chicago", "Olive Harvey College", "Chicago State University"]),
+        "Education": ("#8E44AD", ["Chicago Public Schools", "Discovery Partners Institute (DPI)", "City Colleges of Chicago", "Olive Harvey College", "Chicago State University", "University of Chicago (NSF QuBBE)"]),
         "Civic Layer": (RED, ["Chicago WHPC", "South Side Libraries", "Community Organizations"]),
     }
 
