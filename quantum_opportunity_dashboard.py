@@ -440,27 +440,15 @@ CREDENTIAL_DATA = pd.DataFrame([
         "duration":              "Not specified",
         "cost":                  "Not specified",
         "credential_type":       "Certificates (Semiconductor Technology and Manufacturing; Quantum Information "
-                                  "Science & Engineering); paid internships; research and training starting at "
-                                  "the high school level",
+                                  "Science & Engineering) and a QISE Minor (the minor is for CSU undergraduates, so "
+                                  "it requires admission to Chicago State University); paid internships; research "
+                                  "and training starting at the high school level",
         "prerequisite":          "Not specified",
         "target_group":          "High school students through bachelor's/master's level; adult learners and career-changers; IQMP educational partner",
         "pathway_tags":          ["quantum", "hardware", "technician"],
         "south_side_accessible": True,
         "source":                "csu.edu/quantum (primary, current; Oct 2026 review); iqmp.org/careers (primary, current); "
                                   "CSU is a designated IQMP educational partner developing paid internships for IBM FutureNow Chicago",
-        "url":                    "https://www.csu.edu/quantum/",
-    },
-    {
-        "program":               "Quantum Information Science & Engineering (QISE) Minor (Chicago State University)",
-        "provider":              "Chicago State University, Quantum Education, Science & Technology Center (CQuEST)",
-        "duration":              "Not specified",
-        "cost":                  "Not specified",
-        "credential_type":       "Undergraduate minor (combines hands-on training with theory; IQMP-designed curricula)",
-        "prerequisite":          "Not specified",
-        "target_group":          "Current and prospective CSU undergraduates; CSU students get priority access to IQMP research, internships, and mentoring",
-        "pathway_tags":          ["quantum", "hardware"],
-        "south_side_accessible": True,
-        "source":                "csu.edu/quantum (primary, current; Oct 2026 review). Course list, length, and cost not published on this page \u2014 directional only.",
         "url":                    "https://www.csu.edu/quantum/",
     },
     {
