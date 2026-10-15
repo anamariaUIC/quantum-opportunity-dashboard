@@ -209,6 +209,7 @@ ECOSYSTEM_ASSETS = pd.DataFrame([
     {"org": "Fermilab", "type": "National Lab", "lat": 41.840, "lon": -88.258, "focus": "Quantum science; partners with Olive Harvey College to host SMQ* program", "community_access": "Some", "has_community_nav": False},
     {"org": "Research University HPC Center", "type": "University", "lat": 41.870, "lon": -87.650, "focus": "HPC infrastructure, quantum training", "community_access": "Some", "has_community_nav": False},
     {"org": "Olive Harvey College", "type": "City College", "lat": 41.712, "lon": -87.591, "focus": "Hosts Fermilab's SMQ* program (10-week Saturday quantum program), IBM apprenticeship", "community_access": "Strong", "has_community_nav": False},
+    {"org": "Chicago State University (CQuEST)", "type": "University", "lat": 41.7211, "lon": -87.6125, "focus": "Quantum and semiconductor certificates, QISE minor, paid internships; IQMP educational partner and QuBBE workforce partner", "community_access": "Some", "has_community_nav": False},
     {"org": "Chi-Craft (CPS)", "type": "Program", "lat": 41.838, "lon": -87.627, "focus": "CPS Applied Computer Science Team, in partnership with IQMP; annual Minecraft-based quantum competition", "community_access": "Strong", "has_community_nav": False},
     {"org": "DPI Demystifying Quantum (Discovery Partners Institute)", "type": "Program", "lat": 41.8788, "lon": -87.6359, "focus": "Separate from Chi-Craft; CPS teacher training workshop (~70 educators); HQ at 200 S. Wacker Dr.", "community_access": "Strong", "has_community_nav": False},
     {"org": "Quantum Academy (NSF QuBBE, UChicago)", "type": "Program", "lat": 41.7886, "lon": -87.5987, "focus": "CPS high school science teacher RET; summer research experience at UChicago plus curriculum development; $9,000 stipend; UIC-affiliated coordinators", "community_access": "Strong", "has_community_nav": False},
@@ -1571,6 +1572,7 @@ if sub_choice == "Workforce Bridge":
                 "Olive Harvey College",
                 "Kennedy-King College",
                 "City Colleges (general)",
+                "Chicago State University (CQuEST)",
                 "Fermilab SMQ*",
                 "Chicago WHPC (this program)",
             ],
@@ -1581,6 +1583,7 @@ if sub_choice == "Workforce Bridge":
                 "IT certificates, IBM apprenticeship pipeline",
                 "CS, networking, cybersecurity certificates",
                 "Associate degrees in engineering tech, IT, manufacturing",
+                "Quantum and semiconductor certificates, QISE minor, paid internships tied to IBM FutureNow",
                 "Quantum physics, circuit basics (10 weeks)",
                 "Plain-language concepts, programming basics, guided first look at real tools, mentorship, pathway navigation",
             ],
@@ -1591,6 +1594,7 @@ if sub_choice == "Workforce Bridge":
                 "No quantum or HPC on-ramp",
                 "No quantum or HPC on-ramp",
                 "No quantum or HPC connection",
+                "Minor requires CSU admission; no HPC skills or community navigation",
                 "No HPC skills or career navigation",
                 "Fills the gap",
             ],
@@ -1615,7 +1619,7 @@ if sub_choice == "Workforce Bridge":
             (" Plain-Language Education","What is quantum? What jobs exist?", TEAL, "← WE PROVIDE"),
             (" Foundations & Guided First Look", "Concepts · Programming basics · Guided tool demo", TEAL, "← WE PROVIDE"),
             (" Mentorship & Navigation","5+ matches · Opportunity Guide", TEAL, "← WE PROVIDE"),
-            (" Certificates & Degrees","City Colleges · University partners", GREEN, "EXISTS"),
+            (" Certificates & Degrees","City Colleges · Chicago State (CQuEST) · University partners", GREEN, "EXISTS"),
             (" Internship & Research", "Argonne · IBM · IQMP tenants", GREEN, "EXISTS"),
             (" Career & Employment", "IQMP · CQE ecosystem · Industry", NAVY, "DESTINATION"),
         ]
@@ -2303,7 +2307,7 @@ if sub_choice == "Ecosystem Map":
     # Partner logo strip
     partners = [
         "Chicago Quantum Exchange", "IQMP", "Argonne National Laboratory",
-        "Fermilab", "IBM Quantum", "City Colleges of Chicago",
+        "Fermilab", "IBM Quantum", "City Colleges of Chicago", "Chicago State University",
         "Chicago Public Schools", "DPI", "Infleqtion", "EeroQ", "Chicago WHPC"
     ]
     logos_html = "".join(
@@ -2386,7 +2390,7 @@ if sub_choice == "Ecosystem Map":
         {"What exists": "Quantum awareness programs", "Who has it": "SMQ*, DPI, Chi-Craft, CQE", "What's missing": "Technical on-ramp for community members"},
         {"What exists": "HPC infrastructure", "Who has it": "Research university HPC centers, Argonne, NCSA", "What's missing": "Community access to that infrastructure"},
         {"What exists": "Mentorship networks", "Who has it": "Chicago WHPC (300+ members)","What's missing": "Structured matching into South Side community"},
-        {"What exists": "Certificate pathways", "Who has it": "Olive Harvey, City Colleges","What's missing": "Navigation from awareness to enrollment"},
+        {"What exists": "Certificate pathways", "Who has it": "Olive Harvey, City Colleges, Chicago State (CQuEST)","What's missing": "Navigation from awareness to enrollment"},
         {"What exists": "Employer demand", "Who has it": "IBM, IQMP tenants, Argonne","What's missing": "Community-level visibility of roles + credentials"},
         {"What exists": "Workforce data", "Who has it": "ISTC 2026 report", "What's missing": "Community-level participation data"},
     ])
@@ -2512,7 +2516,7 @@ if sub_choice == "Pathway Ladder":
             "step": "4. Certificates & Associate's Degrees",
             "what": "IT, engineering tech, CS, cybersecurity, data science certificate programs",
             "who": "Participants with clear pathway map",
-            "provider": "Olive Harvey, Kennedy-King, Malcolm X, City Colleges of Chicago",
+            "provider": "Olive Harvey, Kennedy-King, Malcolm X, City Colleges of Chicago; Chicago State University (CQuEST certificates)",
             "exists": True, "ours": False,
             "color": GREEN,
         },
@@ -2520,7 +2524,7 @@ if sub_choice == "Pathway Ladder":
             "step": "5. Internship & Research Exposure",
             "what": "IBM apprenticeships, Argonne student programs, university undergraduate research",
             "who": "Certificate completers and enrolled students",
-            "provider": "IBM (500 apprentices), Argonne, research universities",
+            "provider": "IBM (500 apprentices), Argonne, research universities, Chicago State University (CQuEST paid internships)",
             "exists": True, "ours": False,
             "color": GREEN,
         },
@@ -4495,7 +4499,7 @@ if sub_choice == "Why Chicago WHPC?":
     flow_items = [
         ("Awareness Programs", "Chi-Craft, DPI teacher training,\nFermilab Saturday Morning Quantum", TEAL, True),
         ("Chicago WHPC", "HPC workshops, mentorship,\npathway navigation, community education", GOLD, True),
-        ("Educational Institutions", "City Colleges, university partners,\ncertificate programs", TEAL, True),
+        ("Educational Institutions", "City Colleges, Chicago State (CQuEST),\nuniversity partners, certificate programs", TEAL, True),
         ("Employers", "IBM, IQMP tenants, Argonne,\ninternships and careers", NAVY, True),
         ("Quantum Careers", "South Side residents in\nIllinois quantum workforce", GREEN, False),
     ]
@@ -4861,14 +4865,14 @@ if sub_choice == "Emerging Workforce Roles":
             "color": NAVY,
             "roles": [
                 ("Quantum Software Developer", "BS / MS", "Write and optimize quantum circuits using Qiskit, PennyLane, CUDA-Q. Increasingly accessible from BS level.", "University + industry training"),
-                ("Quantum Technician", "AS / BS", "Support quantum hardware operation, calibration, and testing. Emerging role as IQMP scales up.", "Technical training, growing at IQMP"),
+                ("Quantum Technician", "AS / BS", "Support quantum hardware operation, calibration, and testing. Emerging role as IQMP scales up.", "Technical training, Chicago State CQuEST certificates, growing at IQMP"),
                 ("Quantum Applications Researcher", "MS / PhD", "Develop quantum algorithms for specific industry applications.", "University research programs"),
             ]
         },
         "Semiconductor and Hardware": {
             "color": GOLD,
             "roles": [
-                ("Fabrication Technician", "Certificate / AS", "Operate semiconductor manufacturing equipment. High demand as IQMP attracts fabrication tenants.", "City Colleges manufacturing programs"),
+                ("Fabrication Technician", "Certificate / AS", "Operate semiconductor manufacturing equipment. High demand as IQMP attracts fabrication tenants.", "City Colleges manufacturing programs, Chicago State CQuEST semiconductor certificate"),
                 ("Cryogenic Technician / Cryoplant Operator", "HS Diploma / AS", "Maintain and operate dilution refrigerators and cryogenic systems that cool quantum hardware to near absolute zero. \u201cThe people that maintain cryogenic systems already are in high demand... a huge opportunity for the community\u201d \u2014 Emily Easton, CQE. Tied to Bluefors's expanding Chicago presence (mHUB, Hyde Park Labs) and IQMP's planned cryogenic plant.", "No confirmed local training pathway yet identified"),
                 ("Photonics Engineer", "BS", "Design and test optical components for quantum and telecom systems.", "University engineering programs"),
                 ("Precision Manufacturing Specialist", "Certificate", "High-accuracy manufacturing for quantum hardware components.", "CTE programs, City Colleges"),
@@ -5785,6 +5789,7 @@ if sub_choice == "Building the Ecosystem":
             ("Chicago Public Schools", "Chi-Craft competition (CPS Applied Computer Science Team, in partnership with IQMP)"),
             ("Discovery Partners Institute (DPI)", "Separate from CPS; University of Illinois System institute; runs its own Demystifying Quantum teacher training for CPS educators"),
             ("Olive Harvey College", "SMQ* host site, IBM apprenticeship anchor"),
+            ("Chicago State University (CQuEST)", "IQMP educational partner and QuBBE workforce partner; quantum and semiconductor certificates, QISE minor, paid internships"),
         ], "Prepares students through formal credentials and structured programs"),
         ("Community Layer", RED, [
             ("Chicago WHPC", "Civic workforce intermediary - community education, HPC training, mentorship, navigation"),
