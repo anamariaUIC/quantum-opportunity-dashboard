@@ -4834,6 +4834,21 @@ if sub_choice == "Emerging Workforce Roles":
         "Honeywell/Quantinuum."
     )
 
+    callout(
+        "<strong>Counter-evidence worth knowing:</strong> Hughes et al. (2021, arXiv:2109.03601), a survey of "
+        "57 quantum companies developed with QED-C, found that graduate degrees were more often judged important "
+        "than a bachelor's for most roles. Quantum Algorithm Developer was roughly 46% PhD and 18% bachelor's, "
+        "and Error Correction Scientist almost entirely graduate-level. The picture differs by role: for System "
+        "Assembly/Maintenance Technician, roughly 58% of respondents named a bachelor's, about 20% an associate "
+        "degree or vocational certificate, and none a PhD; Test/Measurement Engineer was about 52% bachelor's "
+        "and also had no PhD requirement. For 12 of the 19 roles, no skill rated important was specific to "
+        "quantum. All figures are read from the paper's charts and are approximate. It is a small 2021 survey of "
+        "pure-play quantum companies, while the CQE figures above come from 10,484 postings through 2023, so "
+        "the two are not directly comparable. The takeaway: research roles are graduate-level, but technician, "
+        "test, and software roles are open below a graduate degree. A bachelor's is still the most common "
+        "requirement even for technicians."
+    )
+
     st.caption("Sources: IBM FutureNow Chicago (2026), IQMP workforce projections, CQE employer analysis 2024, BLS Standard Occupational Classifications, The Quantum Insider salary survey (May 2026, Quantum Technical Writer role), Chicago Quantum Exchange degree requirements study (chicagoquantum.org/degreereports, 2024).")
 
     st.markdown(
@@ -6412,6 +6427,13 @@ if sub_choice == "Limitations":
              "IBM's announcement of 750 jobs and 500 apprenticeships represents announced targets, "
              "not confirmed hiring plans. Actual workforce demand may differ based on technology "
              "development timelines, funding, and economic conditions."),
+            ("Evidence on Degree Requirements",
+             "Sources disagree by method. CQE's analysis of 10,484 job postings (2018-2023) found most quantum "
+             "roles require a bachelor's degree or less, while an employer survey (Hughes et al. 2021, "
+             "arXiv:2109.03601) found graduate degrees more often judged important, though with more consensus "
+             "on skills than on degrees. Postings and surveys measure different things, and the survey is small "
+             "and predates the postings data. The claim that quantum careers are open below the PhD level "
+             "is best read as true for many roles, not all."),
             ("Economic Impact Projections",
              "The $80B regional economic impact projection (BCG/CQE 2024) is a modeling output, "
              "not an observed outcome. Economic projections for emerging technology sectors "
