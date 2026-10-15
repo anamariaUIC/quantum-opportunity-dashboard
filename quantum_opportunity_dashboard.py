@@ -465,6 +465,21 @@ CREDENTIAL_DATA = pd.DataFrame([
         "url":                    "https://www.csu.edu/quantum/",
     },
     {
+        "program":               "Q-Cert (Quantum Certificate, Chicago State University / NSF QuBBE)",
+        "provider":              "Chicago State University, with NSF Quantum Leap Challenge Institute QuBBE",
+        "duration":              "Year-long",
+        "cost":                  "Not specified",
+        "credential_type":       "Post-baccalaureate Quantum Science Certification (one-year bridge program)",
+        "prerequisite":          "Bachelor's degree",
+        "target_group":          "Graduates with a bachelor's degree preparing for the quantum economy",
+        "pathway_tags":          ["quantum"],
+        "south_side_accessible": True,
+        "source":                "UChicago News and Chicago Quantum Exchange, Aug 2026 (primary; NSF QuBBE renewal) \u2014 program exists, "
+                                  "set up with CSU in QuBBE's first phase. Current enrollment status, cost, and application process not published "
+                                  "\u2014 directional only; confirm with CQuEST (Dr. Valerie Goss, Center Director).",
+        "url":                    "https://news.uchicago.edu/story/quantum-leap-challenge-institute-renewed-375-million-nsf-invests-quantum-sensing-biology",
+    },
+    {
         "program":               "Quantum Sensing Summer Program (Chicago State University / NSF QuBBE)",
         "provider":              "Chicago State University, in partnership with NSF Quantum Leap Challenge Institute QuBBE",
         "duration":              "Two weeks",
@@ -889,9 +904,18 @@ _CONTRACTUAL_PIPELINES = {
 }
 
 
+# Programs only for people currently enrolled in high school. The intake has no
+# "current high school student" option (it serves adult residents), so these are
+# never recommended, even to Bachelor's/Graduate profiles where the tier is "all".
+_HS_ONLY_PREREQS = {"High school enrollment"}
+
+
 def _prereq_accessible(prerequisite, edu_level):
     """Return True if a credential's prerequisite is accessible at this education level.
+    High-school-enrollment programs are never accessible to adult intake profiles.
     Rule 2: prerequisites containing 'not specified' are treated as accessible to all."""
+    if prerequisite in _HS_ONLY_PREREQS:
+        return False
     if _UNSPECIFIED_PREREQ_MARKER in prerequisite.lower():
         return True
     allowed = _EDU_PREREQ_ACCESS.get(edu_level)
@@ -7146,10 +7170,32 @@ if sub_choice == "Latest Developments":
 
     st.caption(
         "This page tracks significant announcements relevant to the Quantum x HPC Pathways program. "
-        "Last updated: August 2026. Sources linked for each item."
+        "Last updated: October 2026. Sources linked for each item."
     )
 
     developments = [
+        {
+            "date": "August 2026",
+            "title": "NSF Renews Chicago-Area Quantum Sensing Institute (QuBBE) with $37.5M",
+            "summary": (
+                "NSF renewed the Quantum Leap Challenge Institute for Quantum Sensing for Biophysics and "
+                "Bioengineering (NSF QuBBE) with a five-year, $37.5 million investment. The announcement describes "
+                "workforce work already underway: Q-Cert, a one-year post-baccalaureate quantum certificate set up "
+                "with Chicago State University, and Quantum Academy, which engages Chicago-area high school "
+                "students and teachers. Planned for the next phase: a quantum master's program at Chicago State, "
+                "an expanded Q-Cert model, and tighter integration of undergraduate, master's, and PhD training."
+            ),
+            "relevance": (
+                "Chicago State University is both a QuBBE workforce partner and an IQMP educational partner, so "
+                "South Side residents have a growing set of on-ramps through CSU. The master's program is "
+                "planned, not yet available. This platform lists Q-Cert and CSU's CQuEST programs as pathways; "
+                "details such as cost and eligibility are not yet published."
+            ),
+            "color": GREEN,
+            "tag": "Research + Education",
+            "url": "https://news.uchicago.edu/story/quantum-leap-challenge-institute-renewed-375-million-nsf-invests-quantum-sensing-biology",
+            "source": "UChicago News and Chicago Quantum Exchange, August 2026"
+        },
         {
             "date": "June 22-23, 2026",
             "title": "Federal Executive Orders Back Quantum Sector Backing Quantum Sector",

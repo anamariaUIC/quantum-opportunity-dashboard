@@ -145,6 +145,28 @@ check("Childcare support flags surface despite zero pathways",
 print(f"  confidence_note: {r4['confidence_note'][:120]}")
 
 
+print("\n[Test 5] Bachelor's holder: Q-Cert surfaces, high-school-only programs do not")
+intake_bach = {
+    "education":       "Bachelor's degree",
+    "experience":      "Science or engineering background",
+    "employment":      "Currently unemployed",
+    "interests":       ["Quantum hardware (devices, lab work)"],
+    "time":            "Full-time upskilling (10+ hrs/week)",
+    "transportation":  "I have reliable transportation",
+    "childcare":       "Childcare is not a barrier",
+}
+cands5 = score_opportunity(intake_bach, EMPLOYER_DATA, CREDENTIAL_DATA, SKILLS_DATA)
+names5 = [c["program"] for c in cands5]
+check("Q-Cert is a candidate for a bachelor's holder", any("Q-Cert" in n for n in names5), f"got {names5}")
+check("No high-school-enrollment program for a bachelor's holder",
+      not any(("Summer Program" in n) or ("TECHS" in n) for n in names5), f"got {names5}")
+intake_hs = dict(intake_bach, education="High school diploma or GED")
+names5b = [c["program"] for c in score_opportunity(intake_hs, EMPLOYER_DATA, CREDENTIAL_DATA, SKILLS_DATA)]
+check("Q-Cert is NOT offered to a high school diploma holder", not any("Q-Cert" in n for n in names5b), f"got {names5b}")
+check("Q-Cert has_contractual_demand stays False",
+      not any(c["has_contractual_demand"] for c in cands5 if "Q-Cert" in c["program"]))
+
+
 print(f"\n{'='*55}")
 print(f"Results: {PASS} passed, {FAIL} failed")
 if FAIL:
