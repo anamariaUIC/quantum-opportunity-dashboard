@@ -1480,8 +1480,9 @@ if audience != "Overview":
         st.markdown("""
         **Why this matters for funders:** This initiative is building a proposed
         community-level dataset tracking who actually participates in quantum workforce
-        pipeline programs, a layer of data that regional workforce strategy documents
-        (including CQE's own Advancing Together report) identify as a gap. Year 1 produces
+        pipeline programs. This is consistent with CQE's Advancing Together report, which
+        proposes shared participation indicators and using participation and outreach data
+        to identify gaps in access to early quantum exposure. Year 1 produces
         documented participants, progression metrics, a replicable toolkit, and 2-3
         institutional partnerships, the evidence base for scaling.
         """)
@@ -1760,7 +1761,7 @@ if sub_choice == "Executive Summary":
     metric_row([
         ("projected IL-WI-IN quantum economic impact by 2035", "$80B", "BCG/CQE 2024", TEAL),
         ("quantum-relevant IL postsecondary completions in 2024", "33,441", "+33% since 2018 (ISTC 2026)", GOLD),
-        ("projected quantum jobs in IL-WI-IN region by 2035", "191,000", "CQE/BCG, cited in ISTC 2026", NAVY),
+        ("projected quantum jobs in IL-WI-IN region by 2035 (upper end of range)", "up to 191,000", "CQE/BCG, cited in ISTC 2026", NAVY),
         ("Quantum Meets HPC event attendees; 56% never ran a quantum circuit", "200+", "Chicago WHPC, 2026 (N=181)", TEAL),
     ])
 
@@ -1890,7 +1891,7 @@ if sub_choice == "Why Now?":
     metric_row([
         ("federal + state investment tied to IQMP and its tenant companies", "$2.7B+",
          "Federal $1.2B in 4 IQMP tenants (May 2026, part of $2B/9-company national CHIPS Act program) + Illinois $500M state + company investments", RED),
-        ("projected quantum jobs in IL-WI-IN region by 2035", "191,000",
+        ("projected quantum jobs in IL-WI-IN region by 2035 (upper end of range)", "up to 191,000",
          "CQE/BCG analysis cited in ISTC May 2026 report", TEAL),
         ("IBM jobs + apprenticeships announced at IQMP", "1,250",
          "750 FT + 500 Moonshot apprenticeships with City Colleges (April 2026)", NAVY),
@@ -1910,7 +1911,7 @@ if sub_choice == "Why Now?":
          "On-Ramp program active at mHUB and UChicago Science Incubator. memQ, Bluefors, Quantum Machines, stac12 operating today.",
          TEAL),
         ("Jobs and Demand for Talent",
-         "750 IBM FutureNow jobs. 500 Moonshot apprenticeships with City Colleges. 191,000 projected regional jobs by 2035.",
+         "750 IBM FutureNow jobs. 500 Moonshot apprenticeships with City Colleges. up to 191,000 projected regional jobs by 2035.",
          TEAL),
         ("The Gap: Who Participates?",
          "Without a community bridge, surrounding neighborhoods observe economic activity without participating. "
@@ -2061,8 +2062,8 @@ if sub_choice == "Why Now?":
          "Evaluation Framework (Methodology section)",
          GOLD),
         ("How does this align with existing Illinois workforce efforts?",
-         "Quantum x HPC Pathways is the community implementation layer for CQE's Advancing Together "
-         "strategy, a community feeder for IBM/City Colleges apprenticeships, and "
+         "Quantum x HPC Pathways is a community-level effort aligned with the priorities of CQE's Advancing Together "
+         "strategy (awareness, career navigation, participation data), a community feeder for IBM/City Colleges apprenticeships, and "
          "a data contributor to Illinois's quantum talent pipeline.",
          "Illinois Alignment, Stakeholder Map Overview (Policy section)",
          GREEN),
@@ -5686,10 +5687,11 @@ if sub_choice == "Illinois Alignment":
          "One Region. Key Bloch partners also include the Illinois Manufacturing Excellence Center (IMEC). One named "
          "Bloch project, Qreate, led by CQE, is building a shared quantum sensing testbed at Purdue Northwest plus "
          "automation software through Infleqtion, aimed at transitioning Midwest quantum companies to scaled manufacturing. "
-         "CQE's 2026 unified strategy explicitly calls for community-level workforce access programs.",
-         "Quantum x HPC Pathways is the community-level implementation of what CQE's Advancing Together strategy calls for. "
-         "Program data on South Side participation fills a gap CQE has identified in workforce research.",
-         ["Direct implementation of CQE community strategy", "Data partner for CQE workforce research", "EDA Tech Hub workforce component"]),
+         "CQE's 2026 strategy, Advancing Together, sets five regional priorities: awareness, preparation, mobility, employer leadership and coordination. "
+         "They include career navigation across institutions and shared participation indicators.",
+         "Quantum x HPC Pathways is a community-level effort aligned with those priorities. It is independent of the CQE strategy, which does not mention it. "
+         "Program data on South Side participation could complement the shared participation indicators the strategy proposes.",
+         ["Aligned with CQE regional priorities", "Possible data contributor to regional indicators", "Possible fit with EDA Tech Hub workforce work"]),
         ("IBM FutureNow Chicago + Moonshot Apprenticeships", GREEN,
          "IBM signed a contract with the State of Illinois (April 2026) to create 750 full-time jobs by the end of 2030, "
          "in exchange for an estimated $19 million in state income tax credits. Jobs will be housed at IQMP's Quantum Works "
@@ -5947,7 +5949,7 @@ if sub_choice == "Methodology and Data Sources":
          "https://www.chicagowhpc.org", GOLD),
         ("Boston Consulting Group / Chicago Quantum Exchange, \"Advancing Together\" Regional Workforce Strategy, 2026",
          "Regional quantum and HPC jobs projection cited throughout this platform's workforce figures.",
-         ["191,000 projected quantum-adjacent jobs in the IL-WI-IN region by 2035",
+         ["Up to 191,000 projected quantum jobs in the IL-WI-IN region by 2035 (report range: 80,000 to 191,000)",
           "Projection, not a confirmed or guaranteed outcome"],
          "https://chicagoquantum.org", TEAL),
         ("State of Illinois / Illinois DCEO, IQMP capital investment announcements, 2024-2026",
@@ -7322,18 +7324,17 @@ if sub_choice == "Latest Developments":
             "title": "CQE Releases 'Advancing Together' — Unified Midwest Quantum Workforce Strategy",
             "summary": (
                 "The Chicago Quantum Exchange released 'Advancing Together: A Unified Strategy "
-                "for Scaling Midwest Quantum Talent,' backed by NSF. "
-                "The strategy projects 191,000 quantum jobs in the IL-WI-IN region by 2035 "
-                "and explicitly calls for community-level navigation programs connecting "
-                "residents to the ecosystem. "
-                "CQE Director David Awschalom: 'Smart, curious learners are everywhere. "
-                "Our job is to create the awareness, access points, and unified systems "
-                "to ensure that everyone has a shot at these well-paid jobs.'"
+                "for Scaling Midwest Quantum Talent.' "
+                "It cites an NSF-supported analysis estimating 80,000 to 191,000 quantum jobs in the IL-WI-IN region by 2035 "
+                "(the release says as many as 191,000) and sets five regional priorities, including career navigation across institutions. "
+                "CQE Director David Awschalom: '...smart, curious learners are everywhere. "
+                "Our job in the Quantum Prairie is to create the awareness, access points, and unified systems "
+                "to ensure that everyone has a shot at these well-paid jobs...'"
             ),
             "relevance": (
-                "This strategy document validates Quantum x HPC Pathways by name and function. "
-                "CQE is calling for exactly the community navigation layer Chicago WHPC provides. "
-                "The 191,000 jobs projection replaces the 80,000 figure previously used."
+                "The strategy is regional and institution-focused. It does not mention Quantum x HPC Pathways or call for community navigation programs for South Side residents. "
+                "Its priorities on awareness, career navigation and participation indicators are consistent with this platform's goals. "
+                "191,000 is the top of the report's 80,000 to 191,000 range, not a replacement for it."
             ),
             "color": TEAL,
             "tag": "Workforce Strategy",
@@ -7474,8 +7475,8 @@ if sub_choice == "Latest Developments":
         "<strong>The bottom line:</strong> In the three months since April 2026, the Illinois quantum "
         "ecosystem has seen: bipartisan federal investment ($1.2B), an active on-ramp program with "
         "companies already operating in Chicago, a named apprenticeship program (IBM Moonshot) "
-        "designed with City Colleges, a CQE strategy document explicitly calling for community "
-        "navigation programs, and federal executive orders cementing federal quantum commitment. "
+        "designed with City Colleges, a CQE regional workforce strategy emphasizing awareness, career navigation "
+        "and shared participation indicators, and federal executive orders cementing federal quantum commitment. "
         "The case for launching Quantum x HPC Pathways in Winter 2026 has never been stronger."
     )
 
